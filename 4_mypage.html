@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - 바로교육</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mypage.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="바로교육">
+                        <span>바로교육</span>
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-menu">
+                        <li><a href="2_total_lecture.html">강의</a></li>
+                        <li><a href="index.html#reviews">후기</a></li>
+                        <li><a href="4_mypage.html" class="active">나의 강의실</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="#login" class="login-btn">로그인</a>
+                    <a href="#signup" class="signup-btn">회원가입</a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 마이페이지 컨테이너 -->
+    <main class="mypage-container">
+        <div class="container">
+            <!-- 상단 프로필 영역 -->
+            <section class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-info">
+                        <div class="profile-image">
+                            <img src="images/man2.jpg" alt="프로필 이미지">
+                            <button class="edit-profile-btn">✏️</button>
+                        </div>
+                        <div class="profile-details">
+                            <h1>김학습님, 반갑습니다! 👋</h1>
+                            <p>오늘도 새로운 것을 배워보세요!</p>
+                        </div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">3</span>
+                            <span class="stat-label">수강 중</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">수료 완료</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 내 강좌 영역 -->
+            <section class="my-courses-section">
+                <div class="section-header">
+                    <h2>📚 내 강좌</h2>
+                    <div class="course-filter">
+                        <button class="filter-btn active" data-filter="all">전체</button>
+                        <button class="filter-btn" data-filter="progress">진행 중</button>
+                        <button class="filter-btn" data-filter="completed">수료</button>
+                    </div>
+                </div>
+                
+                <div class="courses-grid">
+                    <!-- 진행 중인 강좌 1 -->
+                    <div class="course-card" data-status="progress">
+                        <div class="course-thumbnail">
+                            <img src="images/pd1.jpg" alt="AI 상세페이지 최적화">
+                            <span class="status-badge progress">진행 중</span>
+                        </div>
+                        <div class="course-info">
+                            <h3>AI 상세페이지 최적화</h3>
+                            <p class="instructor">김마케팅 강사</p>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span class="progress-text">65% 완료</span>
+                            </div>
+                            <div class="course-meta">
+                                <span class="remaining-days">D-23</span>
+                                <span class="total-lessons">12강 중 8강 수강</span>
+                            </div>
+                            <button class="enter-classroom-btn">강의실 입장</button>
+                        </div>
+                    </div>
+
+                    <!-- 진행 중인 강좌 2 -->
+                    <div class="course-card" data-status="progress">
+                        <div class="course-thumbnail">
+                            <img src="images/pd2.jpg" alt="디지털 마케팅 기초">
+                            <span class="status-badge progress">진행 중</span>
+                        </div>
+                        <div class="course-info">
+                            <h3>디지털 마케팅 기초</h3>
+                            <p class="instructor">박디지털 강사</p>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                                <span class="progress-text">30% 완료</span>
+                            </div>
+                            <div class="course-meta">
+                                <span class="remaining-days">D-45</span>
+                                <span class="total-lessons">16강 중 5강 수강</span>
+                            </div>
+                            <button class="enter-classroom-btn">강의실 입장</button>
+                        </div>
+                    </div>
+
+                    <!-- 진행 중인 강좌 3 -->
+                    <div class="course-card" data-status="progress">
+                        <div class="course-thumbnail">
+                            <img src="images/pd3.jpg" alt="브랜딩 전략">
+                            <span class="status-badge progress">진행 중</span>
+                        </div>
+                        <div class="course-info">
+                            <h3>브랜딩 전략 완성</h3>
+                            <p class="instructor">이브랜드 강사</p>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="progress-text">85% 완료</span>
+                            </div>
+                            <div class="course-meta">
+                                <span class="remaining-days">D-12</span>
+                                <span class="total-lessons">10강 중 8강 수강</span>
+                            </div>
+                            <button class="enter-classroom-btn">강의실 입장</button>
+                        </div>
+                    </div>
+
+                    <!-- 수료한 강좌 1 -->
+                    <div class="course-card" data-status="completed">
+                        <div class="course-thumbnail">
+                            <img src="images/pd4.jpg" alt="창업 실무">
+                            <span class="status-badge completed">수료</span>
+                        </div>
+                        <div class="course-info">
+                            <h3>창업 실무 가이드</h3>
+                            <p class="instructor">최창업 강사</p>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <span class="progress-text">수료 완료</span>
+                            </div>
+                            <div class="course-meta">
+                                <span class="completion-date">2024.01.15 수료</span>
+                            </div>
+                            <button class="enter-classroom-btn">복습하기</button>
+                        </div>
+                    </div>
+
+                    <!-- 수료한 강좌 2 -->
+                    <div class="course-card" data-status="completed">
+                        <div class="course-thumbnail">
+                            <img src="images/pd11.jpg" alt="CRM 관리">
+                            <span class="status-badge completed">수료</span>
+                        </div>
+                        <div class="course-info">
+                            <h3>CRM 고객관리 시스템</h3>
+                            <p class="instructor">정CRM 강사</p>
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <span class="progress-text">수료 완료</span>
+                            </div>
+                            <div class="course-meta">
+                                <span class="completion-date">2023.12.28 수료</span>
+                            </div>
+                            <button class="enter-classroom-btn">복습하기</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 수료증 & 과제 영역 -->
+            <section class="certificates-section">
+                <h2>🎓 수료증 & 📄 과제 현황</h2>
+                <div class="certificates-grid">
+                    <div class="certificate-item">
+                        <div class="certificate-info">
+                            <h3>창업 실무 가이드</h3>
+                            <p>수료일: 2024.01.15</p>
+                        </div>
+                        <div class="certificate-actions">
+                            <button class="download-btn">수료증 다운로드</button>
+                            <span class="assignment-status completed">과제 제출 완료</span>
+                        </div>
+                    </div>
+                    <div class="certificate-item">
+                        <div class="certificate-info">
+                            <h3>CRM 고객관리 시스템</h3>
+                            <p>수료일: 2023.12.28</p>
+                        </div>
+                        <div class="certificate-actions">
+                            <button class="download-btn">수료증 다운로드</button>
+                            <span class="assignment-status completed">과제 제출 완료</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 결제 내역 영역 -->
+            <section class="payment-section">
+                <h2>💳 결제 내역</h2>
+                <div class="payment-list">
+                    <div class="payment-item">
+                        <div class="payment-info">
+                            <h3>AI 상세페이지 최적화</h3>
+                            <p>결제일: 2024.02.01</p>
+                        </div>
+                        <div class="payment-details">
+                            <span class="amount">500,000원</span>
+                            <span class="method">카드결제</span>
+                            <button class="receipt-btn">영수증 다운로드</button>
+                        </div>
+                    </div>
+                    <div class="payment-item">
+                        <div class="payment-info">
+                            <h3>디지털 마케팅 기초</h3>
+                            <p>결제일: 2024.01.20</p>
+                        </div>
+                        <div class="payment-details">
+                            <span class="amount">300,000원</span>
+                            <span class="method">계좌이체</span>
+                            <button class="receipt-btn">영수증 다운로드</button>
+                        </div>
+                    </div>
+                    <div class="payment-item">
+                        <div class="payment-info">
+                            <h3>브랜딩 전략 완성</h3>
+                            <p>결제일: 2024.01.10</p>
+                        </div>
+                        <div class="payment-details">
+                            <span class="amount">400,000원</span>
+                            <span class="method">카드결제</span>
+                            <button class="receipt-btn">영수증 다운로드</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 고객센터 영역 -->
+            <section class="support-section">
+                <div class="support-grid">
+                    <div class="support-item">
+                        <div class="support-icon">📞</div>
+                        <h3>문의하기</h3>
+                        <p>궁금한 점이 있으시면 언제든지 문의해주세요</p>
+                        <button class="contact-btn">문의하기</button>
+                    </div>
+                    <div class="support-item">
+                        <div class="support-icon">📖</div>
+                        <h3>자주 묻는 질문</h3>
+                        <p>자주 묻는 질문들을 확인해보세요</p>
+                        <button class="faq-btn">FAQ 보기</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>바로교육</h3>
+                    <p>바로 배워서, 바로 써먹는 온라인 교육 플랫폼</p>
+                </div>
+                <div class="footer-section">
+                    <h4>이용안내</h4>
+                    <ul>
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">환불정책</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>고객센터</h4>
+                    <p>📞 1588-1234</p>
+                    <p>📧 help@baroedu.com</p>
+                    <p>🕙 평일 09:00-18:00</p>
+                </div>
+                <div class="footer-section">
+                    <h4>SNS</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 바로교육. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="mypage.js"></script>
+</body>
+</html>

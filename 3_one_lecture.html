@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 상세페이지 최적화 - 바로교육</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="one-lecture.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="바로교육">
+                        <span>바로교육</span>
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-menu">
+                        <li><a href="2_total_lecture.html">강의</a></li>
+                        <li><a href="index.html#reviews">후기</a></li>
+                        <li><a href="4_mypage.html">나의 강의실</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="#login" class="login-btn">로그인</a>
+                    <a href="#signup" class="signup-btn">회원가입</a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 상단 히어로 영역 -->
+    <section class="course-hero-section">
+        <div class="container">
+            <div class="course-hero-wrapper">
+                <!-- 왼쪽: 썸네일 이미지 -->
+                <div class="course-left-section">
+                    <div class="course-thumbnail">
+                        <img src="images/pd1.jpg" alt="AI 상세페이지 최적화">
+                        <span class="badge-original">ORIGINAL</span>
+                    </div>
+                </div>
+
+                <!-- 오른쪽: 강좌 정보 -->
+                <div class="course-main-info">
+                    <h1 class="course-title">AI 상세페이지 최적화</h1>
+                    <p class="course-subtitle">3주 만에 마케팅 전문가 되기</p>
+                    
+                    <div class="course-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-score">4.8</span>
+                        <span class="review-count">(127명의 수강생)</span>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="price-info">
+                            <span class="original-price">100만원</span>
+                            <span class="current-price">50만원</span>
+                            <span class="discount-rate">50% 할인</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-purchase" onclick="alert('수강신청이 완료되었습니다!'); location.href='4_mypage.html';">
+                            <span class="icon">🛒</span>
+                            수강 신청하기
+                        </button>
+                        <button class="btn-wishlist">
+                            <span class="icon">❤️</span>
+                            찜하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 히어로 하단 정보 -->
+            <div class="hero-bottom-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">강사</span>
+                        <span class="value">김마케팅</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">난이도</span>
+                        <span class="value">초급 ~ 중급</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">수강기간</span>
+                        <span class="value">평생 소장</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">수강방식</span>
+                        <span class="value">온라인 VOD</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">언어</span>
+                        <span class="value">한국어</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">준비물</span>
+                        <span class="value">PC 또는 모바일</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 강사 소개 -->
+    <section class="instructor-section">
+        <div class="container">
+            <h2 class="section-title">강사 소개</h2>
+            <div class="instructor-profile">
+                <img src="images/instructor-new.jpg" alt="김마케팅 강사">
+                <div class="instructor-details">
+                    <h3>김마케팅</h3>
+                    <p class="title">AI 마케팅 전문가</p>
+                    <p class="description">
+                        10년 이상의 디지털 마케팅 경험<br>
+                        AI 기반 상세페이지 최적화 전문<br>
+                        대기업 마케팅 컨설턴트
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 강의 상세 페이지 영역 -->
+    <section class="course-detail-section">
+        <div class="container">
+            <div class="detail-image-wrapper">
+                <img src="images/portfolio2.jpg" alt="강의 상세 이미지" class="detail-main-image">
+                
+                <!-- 추가 상세 이미지들 -->
+                <div class="detail-content">
+                    <h2 class="detail-title">🎯 이런 분들께 추천합니다</h2>
+                    <ul class="target-list">
+                        <li>온라인 쇼핑몰을 운영하는 사업자</li>
+                        <li>상세페이지 제작에 어려움을 겪는 분</li>
+                        <li>AI 도구를 활용하고 싶은 마케터</li>
+                        <li>전환율을 높이고 싶은 이커머스 담당자</li>
+                    </ul>
+
+                    <h2 class="detail-title">📚 커리큘럼</h2>
+                    <div class="curriculum-preview">
+                        <div class="chapter">
+                            <h3>Chapter 1. AI 마케팅의 이해</h3>
+                            <ul>
+                                <li>AI가 바꾸는 마케팅의 미래</li>
+                                <li>상세페이지 최적화의 중요성</li>
+                                <li>성공 사례 분석</li>
+                            </ul>
+                        </div>
+                        <div class="chapter">
+                            <h3>Chapter 2. AI 도구 활용법</h3>
+                            <ul>
+                                <li>ChatGPT를 활용한 카피라이팅</li>
+                                <li>Midjourney로 이미지 생성하기</li>
+                                <li>AI 도구 연계 활용법</li>
+                            </ul>
+                        </div>
+                        <div class="chapter">
+                            <h3>Chapter 3. 실전 프로젝트</h3>
+                            <ul>
+                                <li>실제 상품 상세페이지 제작</li>
+                                <li>A/B 테스트 진행하기</li>
+                                <li>성과 분석 및 개선</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3>💡 수강 후 이런 것들을 할 수 있어요!</h3>
+                        <ul>
+                            <li>AI를 활용한 효과적인 상세페이지 제작</li>
+                            <li>고객 심리를 반영한 카피라이팅</li>
+                            <li>전환율 높은 페이지 구성 능력</li>
+                            <li>데이터 기반 페이지 최적화</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 수강 후기 -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2 class="section-title">베스트 리뷰 후기</h2>
+            
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="images/man2.jpg" alt="김민수">
+                        <div class="reviewer-details">
+                            <h4>김민수</h4>
+                            <p class="reviewer-title">부동산 전문 개발업체 CEO</p>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="score">5.0</span>
+                        </div>
+                    </div>
+                    <p class="review-text">
+                        정말 감자가 완전치 같아요! 부동산 투자에 관한 
+                        친짜 속 얘기를 배웠습니다. 실제 부동산 문의 노
+                        하우를 직접 들을 수 있어서 좋았습니다.
+                    </p>
+                </div>
+
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="images/man3.jpg" alt="박영희">
+                        <div class="reviewer-details">
+                            <h4>박영희</h4>
+                            <p class="reviewer-title">부동산 전문 투자 전문가</p>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="score">5.0</span>
+                        </div>
+                    </div>
+                    <p class="review-text">
+                        강의 내용이 정말 실무 기반이에요. 제가하고 있
+                        는 부동산 일도 많은 참고 개념에서 활용하고 있
+                        습니다. 3년차 공인중개사로서 많이 도움이 되었
+                        어요. 실제로 배운 점이 정말 많다고 생각해요.
+                    </p>
+                </div>
+
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="images/instructor-new.jpg" alt="이서현">
+                        <div class="reviewer-details">
+                            <h4>이서현 님</h4>
+                            <p class="reviewer-title">30대 직장인 전문 투자자</p>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="score">5.0</span>
+                        </div>
+                    </div>
+                    <p class="review-text">
+                        나무 도움이 많이 되는 강의네요. 특히요. 부천의
+                        기초롤빼뜨려 보 살거 해주는 기법가족들도 잘 
+                        수 있었어요.
+                    </p>
+                </div>
+
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="images/man2.jpg" alt="정민호">
+                        <div class="reviewer-details">
+                            <h4>정민호</h4>
+                            <p class="reviewer-title">30대 직장인 전문 투자자</p>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="score">5.0</span>
+                        </div>
+                    </div>
+                    <p class="review-text">
+                        처음에 30분 듣고 놀랐습니다! AI 교육과정 상세
+                        교육의 방법에 대해 많이하는가. 강의 내용이 심
+                        고 이해하기 쉬더라구요. 구름어진 지식이로빨
+                        낙이 더욱 명쾌해요.
+                    </p>
+                </div>
+
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="images/man3.jpg" alt="최무열">
+                        <div class="reviewer-details">
+                            <h4>최무열</h4>
+                            <p class="reviewer-title">20대 초급기 전문 투자자</p>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="score">5.0</span>
+                        </div>
+                    </div>
+                    <p class="review-text">
+                        처음에는 도상 어려워했지만- 계속 들이 보니 2
+                        개 좋어 눈에 들어오는 알아보기 시작했어요. 집
+                        답력 교육이 실제로 많이 성장하고 있어요.
+                    </p>
+                </div>
+
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="images/instructor-new.jpg" alt="투자전문가구">
+                        <div class="reviewer-details">
+                            <h4>투자전문가구</h4>
+                            <p class="reviewer-title">40대 투자 전문 투자자</p>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="score">5.0</span>
+                        </div>
+                    </div>
+                    <p class="review-text">
+                        처음에 30분 듣고 놀랐습니다! AI 교육과정 상세
+                        교육 입니다! 좋이 교육시 시상에서 구물러 목표
+                        정이 오원갔다고 생각해요.
+                    </p>
+                </div>
+            </div>
+
+            <div class="review-more">
+                <button class="btn-more">후기 더보기</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">자주 묻는 질문</h2>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>수강기간은 어떻게 되나요?</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>한 번 구매하시면 평생 소장 가능합니다. 언제든지 반복 수강하실 수 있어요.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>환불은 가능한가요?</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>수강 시작 후 7일 이내, 전체 강의의 10% 미만 수강 시 100% 환불 가능합니다.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>어떤 준비물이 필요한가요?</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>PC 또는 모바일 기기만 있으면 됩니다. 별도의 소프트웨어는 필요하지 않습니다.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>수료증은 발급되나요?</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>전체 강의의 80% 이상 수강 완료 시 수료증이 자동 발급됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 하단 수강신청 영역 -->
+    <section class="bottom-cta">
+        <div class="container">
+            <div class="cta-wrapper">
+                <div class="cta-content">
+                    <h2>지금 바로 시작하세요!</h2>
+                    <p>AI로 상세페이지를 혁신하는 첫 걸음</p>
+                </div>
+                <div class="cta-action">
+                    <div class="price-info">
+                        <span class="original">₩1,000,000</span>
+                        <span class="current">₩500,000</span>
+                    </div>
+                    <button class="btn-enroll" onclick="alert('수강신청이 완료되었습니다!'); location.href='4_mypage.html';">수강신청하기</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 관련 강좌 -->
+    <section class="related-courses">
+        <div class="container">
+            <h2 class="section-title">관련 강좌</h2>
+            
+            <div class="courses-grid">
+                <div class="course-card" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <img src="images/pd2.jpg" alt="관련 강좌">
+                    <div class="course-info">
+                        <h3>바이브 코딩 기초부터 실전</h3>
+                        <p>웹 개발의 모든 것</p>
+                        <div class="price">₩129,000</div>
+                    </div>
+                </div>
+                
+                <div class="course-card" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <img src="images/pd3.jpg" alt="관련 강좌">
+                    <div class="course-info">
+                        <h3>창업 실무 가이드</h3>
+                        <p>성공하는 창업의 비밀</p>
+                        <div class="price">₩79,000</div>
+                    </div>
+                </div>
+                
+                <div class="course-card" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <img src="images/Name.jpg" alt="관련 강좌">
+                    <div class="course-info">
+                        <h3>브랜딩 전략 완성</h3>
+                        <p>차별화된 브랜드 만들기</p>
+                        <div class="price">₩99,000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>바로교육</h3>
+                    <p>바로 배워서, 바로 써먹는 온라인 교육 플랫폼</p>
+                </div>
+                <div class="footer-section">
+                    <h4>이용안내</h4>
+                    <ul>
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">환불정책</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>고객센터</h4>
+                    <p>📞 1588-1234</p>
+                    <p>📧 help@baroedu.com</p>
+                    <p>🕙 평일 09:00-18:00</p>
+                </div>
+                <div class="footer-section">
+                    <h4>SNS</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 바로교육. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="one-lecture.js"></script>
+</body>
+</html> 

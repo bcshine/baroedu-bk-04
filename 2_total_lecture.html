@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 강좌 - 바로교육</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="total-lecture.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="바로교육">
+                        <span>바로교육</span>
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-menu">
+                        <li><a href="2_total_lecture.html" class="active">강의</a></li>
+                        <li><a href="index.html#reviews">후기</a></li>
+                        <li><a href="4_mypage.html">나의강의실</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="#login" class="login-btn">로그인</a>
+                    <a href="#signup" class="signup-btn">회원가입</a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <!-- 상단 영역 -->
+        <section class="page-header">
+            <div class="container">
+                <h1>전체 강좌</h1>
+                <p>당신의 성장을 위한 최고의 강의를 만나보세요</p>
+                
+                <!-- 검색창 -->
+                <div class="search-section">
+                    <div class="search-wrapper">
+                        <input type="text" class="search-input" placeholder="강좌명, 강사명, 키워드로 검색하세요">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 카테고리 및 필터 -->
+        <section class="filter-section">
+            <div class="container">
+                <!-- 카테고리 탭 -->
+                <div class="category-wrapper">
+                    <div class="category-tabs">
+                        <button class="category-tab active" data-category="all">전체</button>
+                        <button class="category-tab" data-category="marketing">마케팅</button>
+                        <button class="category-tab" data-category="design">브랜드</button>
+                        <button class="category-tab" data-category="development">창업</button>
+                        <button class="category-tab" data-category="crm">CRM</button>
+                    </div>
+                </div>
+
+                <!-- 정렬 및 필터 -->
+                <div class="filter-controls">
+                    <div class="sort-section">
+                        <label>정렬:</label>
+                        <select class="sort-select">
+                            <option value="popular">인기순</option>
+                            <option value="latest">최신순</option>
+                            <option value="rating">평점순</option>
+                            <option value="price-low">가격 낮은순</option>
+                            <option value="price-high">가격 높은순</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-options">
+                        <div class="filter-group">
+                            <label>가격:</label>
+                            <select class="filter-select">
+                                <option value="all">전체</option>
+                                <option value="free">무료</option>
+                                <option value="paid">유료</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>난이도:</label>
+                            <select class="filter-select">
+                                <option value="all">전체</option>
+                                <option value="beginner">입문</option>
+                                <option value="intermediate">중급</option>
+                                <option value="advanced">고급</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>강좌 길이:</label>
+                            <select class="filter-select">
+                                <option value="all">전체</option>
+                                <option value="short">짧은 강좌 (5시간 미만)</option>
+                                <option value="medium">중간 강좌 (5-20시간)</option>
+                                <option value="long">장기 과정 (20시간 이상)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 강좌 목록 -->
+        <section class="courses-section">
+            <div class="container">
+                <div class="courses-header">
+                    <div class="courses-count">
+                        <span>총 <strong>24개</strong>의 강좌</span>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">⊞</button>
+                        <button class="view-btn" data-view="list">≡</button>
+                    </div>
+                </div>
+
+                <div class="courses-grid" id="courses-grid">
+                    <!-- 강좌 카드 1 -->
+                    <div class="course-card" data-category="marketing" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                        <div class="course-image">
+                            <img src="images/pd1.jpg" alt="마케팅 기초 완성">
+                            <div class="course-badge">베스트</div>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-meta">
+                                <span class="category">마케팅</span>
+                                <span class="level">입문</span>
+                            </div>
+                            <h3 class="course-title">마케팅 기초 완성</h3>
+                            <p class="course-description">바로 적용 가능한 마케팅 전략과 실전 노하우</p>
+                            <div class="instructor">
+                                <img src="images/instructor-new.jpg" alt="강사">
+                                <span>김마케팅 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-score">4.8</span>
+                                    <span class="review-count">(127)</span>
+                                </div>
+                                <span class="duration">12시간</span>
+                            </div>
+                            <div class="course-price">
+                                <span class="current-price">₩89,000</span>
+                                <span class="original-price">₩120,000</span>
+                            </div>
+                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                        </div>
+                    </div>
+
+                    <!-- 강좌 카드 2 -->
+                    <div class="course-card" data-category="development" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                        <div class="course-image">
+                            <img src="images/pd2.jpg" alt="바이브 코딩 기초부터 실전">
+                            <div class="course-badge new">신규</div>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-meta">
+                                <span class="category">창업</span>
+                                <span class="level">중급</span>
+                            </div>
+                            <h3 class="course-title">바이브 코딩 기초부터 실전</h3>
+                            <p class="course-description">HTML, CSS, JavaScript 완전 정복</p>
+                            <div class="instructor">
+                                <img src="images/instructor-new.jpg" alt="강사">
+                                <span>박코딩 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-score">4.9</span>
+                                    <span class="review-count">(89)</span>
+                                </div>
+                                <span class="duration">18시간</span>
+                            </div>
+                            <div class="course-price">
+                                <span class="current-price">₩129,000</span>
+                            </div>
+                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                        </div>
+                    </div>
+
+                    <!-- 강좌 카드 3 -->
+                    <div class="course-card" data-category="development" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                        <div class="course-image">
+                            <img src="images/pd3.jpg" alt="창업 실무 가이드">
+                            <div class="course-badge hot">인기</div>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-meta">
+                                <span class="category">창업</span>
+                                <span class="level">입문</span>
+                            </div>
+                            <h3 class="course-title">창업 실무 가이드</h3>
+                            <p class="course-description">성공하는 창업을 위한 완벽 가이드</p>
+                            <div class="instructor">
+                                <img src="images/instructor-new.jpg" alt="강사">
+                                <span>이창업 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-score">4.7</span>
+                                    <span class="review-count">(156)</span>
+                                </div>
+                                <span class="duration">15시간</span>
+                            </div>
+                            <div class="course-price">
+                                <span class="current-price">₩79,000</span>
+                            </div>
+                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                        </div>
+                    </div>
+
+                    <!-- 강좌 카드 4 -->
+                    <div class="course-card" data-category="design" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                        <div class="course-image">
+                            <img src="images/Name.jpg" alt="브랜딩 전략 완성">
+                        </div>
+                        <div class="course-info">
+                            <div class="course-meta">
+                                <span class="category">브랜드</span>
+                                <span class="level">중급</span>
+                            </div>
+                            <h3 class="course-title">브랜딩 전략 완성</h3>
+                            <p class="course-description">성공적인 브랜드 구축과 마케팅 전략</p>
+                            <div class="instructor">
+                                <img src="images/Name.jpg" alt="강사">
+                                <span>최브랜드 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-score">4.8</span>
+                                    <span class="review-count">(98)</span>
+                                </div>
+                                <span class="duration">10시간</span>
+                            </div>
+                            <div class="course-price">
+                                <span class="current-price">₩99,000</span>
+                            </div>
+                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                        </div>
+                    </div>
+
+                    <!-- 강좌 카드 5 -->
+                    <div class="course-card" data-category="crm" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                        <div class="course-image">
+                            <img src="images/pd11.jpg" alt="CRM 시스템 활용법">
+                        </div>
+                        <div class="course-info">
+                            <div class="course-meta">
+                                <span class="category">CRM</span>
+                                <span class="level">입문</span>
+                            </div>
+                            <h3 class="course-title">CRM 시스템 활용법</h3>
+                            <p class="course-description">고객 관계 관리를 위한 실전 CRM 활용</p>
+                            <div class="instructor">
+                                <img src="images/instructor-new.jpg" alt="강사">
+                                <span>정CRM 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-score">4.6</span>
+                                    <span class="review-count">(73)</span>
+                                </div>
+                                <span class="duration">8시간</span>
+                            </div>
+                            <div class="course-price">
+                                <span class="current-price">₩69,000</span>
+                            </div>
+                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                        </div>
+                    </div>
+
+                    <!-- 강좌 카드 6 -->
+                    <div class="course-card" data-category="marketing" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                        <div class="course-image">
+                            <img src="images/pd12.jpg" alt="SNS 마케팅 마스터">
+                            <div class="course-badge free">무료</div>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-meta">
+                                <span class="category">마케팅</span>
+                                <span class="level">입문</span>
+                            </div>
+                            <h3 class="course-title">SNS 마케팅 마스터</h3>
+                            <p class="course-description">인스타그램, 페이스북 마케팅 완전 정복</p>
+                            <div class="instructor">
+                                <img src="images/instructor-new.jpg" alt="강사">
+                                <span>강SNS 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-score">4.9</span>
+                                    <span class="review-count">(234)</span>
+                                </div>
+                                <span class="duration">6시간</span>
+                            </div>
+                            <div class="course-price">
+                                <span class="current-price free">무료</span>
+                            </div>
+                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 더보기 버튼 -->
+                <div class="load-more">
+                    <button class="load-more-btn">더 많은 강좌 보기</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>바로교육</h3>
+                    <p>바로 배워서, 바로 써먹는 온라인 교육 플랫폼</p>
+                </div>
+                <div class="footer-section">
+                    <h4>이용안내</h4>
+                    <ul>
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">환불정책</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>고객센터</h4>
+                    <p>📞 1588-1234</p>
+                    <p>📧 help@baroedu.com</p>
+                    <p>🕙 평일 09:00-18:00</p>
+                </div>
+                <div class="footer-section">
+                    <h4>SNS</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 바로교육. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="total-lecture.js"></script>
+</body>
+</html>

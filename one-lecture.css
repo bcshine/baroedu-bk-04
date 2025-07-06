@@ -1,0 +1,906 @@
+/* 세부 강좌 페이지 스타일 */
+
+/* 컨테이너 */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* 상단 히어로 영역 */
+.course-hero-section {
+    background: #f8f9fa;
+    padding: 4rem 0;
+    margin-top: 80px;
+}
+
+.course-hero-wrapper {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* 좌측 섹션 */
+.course-left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* 썸네일 */
+.course-thumbnail {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    background: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-thumbnail:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+}
+
+.course-thumbnail img {
+    width: 100%;
+    height: 480px;
+    display: block;
+    object-fit: cover;
+}
+
+.badge-original {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    background: #ff4757;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 16px rgba(255, 71, 87, 0.4);
+}
+
+
+
+/* 강좌 메인 정보 */
+.course-main-info {
+    padding: 1.5rem 0 0 0;
+    max-width: 500px;
+}
+
+.course-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.course-subtitle {
+    font-size: 1.125rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.course-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+}
+
+.rating-score {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: #333;
+}
+
+.review-count {
+    color: #666;
+    font-size: 0.9375rem;
+}
+
+/* 히어로 하단 정보 */
+.hero-bottom-info {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.hero-bottom-info .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.hero-bottom-info .info-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+}
+
+.hero-bottom-info .info-item .label {
+    font-size: 0.875rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-bottom-info .info-item .value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* 가격 정보 */
+.price-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.price-info {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.discount-rate {
+    display: inline-block;
+    background: #ff4757;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.original-price {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: line-through;
+}
+
+.current-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+/* 액션 버튼 */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-purchase {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1.25rem 2rem;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-purchase:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-purchase .icon {
+    font-size: 1.125rem;
+}
+
+.btn-wishlist {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    padding: 1.25rem;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 120px;
+}
+
+.btn-wishlist:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+
+
+/* 강사 소개 섹션 */
+.instructor-section {
+    padding: 4rem 0;
+    background: white;
+}
+
+.instructor-section .section-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: #2c3e50;
+}
+
+.instructor-profile {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.instructor-profile img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.instructor-details h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.instructor-details .title {
+    color: #7f8c8d;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+}
+
+.instructor-details .description {
+    line-height: 1.6;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* 강의 상세 섹션 */
+.course-detail-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.detail-image-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.detail-main-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.detail-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.detail-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.target-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 3rem;
+}
+
+.target-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.target-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+/* 커리큘럼 미리보기 */
+.curriculum-preview {
+    margin-bottom: 3rem;
+}
+
+.chapter {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.chapter h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.chapter ul {
+    list-style: none;
+    padding: 0;
+}
+
+.chapter li {
+    padding: 0.5rem 0;
+    color: #666;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.chapter li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #2563eb;
+}
+
+/* 하이라이트 박스 */
+.highlight-box {
+    background: #e3f2fd;
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid #2563eb;
+}
+
+.highlight-box h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1565c0;
+}
+
+.highlight-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.highlight-box li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.highlight-box li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #1565c0;
+}
+
+/* 수강 후기 섹션 */
+.reviews-section {
+    padding: 4rem 0;
+    background: white;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.review-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s;
+}
+
+.review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.reviewer-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.reviewer-details h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.reviewer-details .reviewer-title {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.reviewer-info .rating {
+    margin-left: auto;
+    text-align: right;
+}
+
+.reviewer-info .stars {
+    display: block;
+    color: #ffc107;
+    font-size: 0.875rem;
+}
+
+.reviewer-info .score {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.review-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #666;
+}
+
+.review-more {
+    text-align: center;
+}
+
+.btn-more {
+    background: white;
+    color: #2563eb;
+    border: 2px solid #2563eb;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-more:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* FAQ 섹션 */
+.faq-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.faq-question:hover {
+    background: #f8f9fa;
+}
+
+.faq-question h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.faq-question .toggle {
+    font-size: 1.5rem;
+    color: #666;
+    transition: transform 0.3s;
+}
+
+.faq-item.active .toggle {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    padding: 0 1.5rem 1.5rem;
+    color: #666;
+    line-height: 1.6;
+    display: none;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+/* 하단 CTA */
+.bottom-cta {
+    background: #2563eb;
+    color: white;
+    padding: 3rem 0;
+}
+
+.cta-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cta-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.cta-content p {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+.cta-action {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.cta-action .price-info {
+    text-align: right;
+}
+
+.cta-action .original {
+    display: block;
+    font-size: 1.125rem;
+    text-decoration: line-through;
+    opacity: 0.7;
+    margin-bottom: 0.25rem;
+}
+
+.cta-action .current {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.btn-enroll {
+    background: white;
+    color: #2563eb;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-enroll:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+}
+
+/* 관련 강좌 */
+.related-courses {
+    padding: 4rem 0;
+    background: white;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.course-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.course-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.course-card .course-info {
+    padding: 1.5rem;
+}
+
+.course-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.course-card p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.course-card .price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .course-hero-wrapper {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 3rem;
+    }
+    
+    .course-thumbnail img {
+        height: 380px;
+    }
+    
+    .course-main-info {
+        padding: 1.5rem;
+    }
+    
+    .course-title {
+        font-size: 2.25rem;
+    }
+    
+    .hero-bottom-info {
+        margin-top: 2.5rem;
+        padding: 1.5rem;
+    }
+    
+    .hero-bottom-info .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .instructor-profile {
+        max-width: 500px;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .course-hero-section {
+        padding: 3rem 0;
+    }
+    
+    .course-hero-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .course-left-section {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .course-thumbnail {
+        width: 100%;
+    }
+    
+    .course-thumbnail img {
+        height: 380px;
+    }
+    
+    .course-main-info {
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+    
+    .course-title {
+        font-size: 2rem;
+    }
+    
+    .current-price {
+        font-size: 2rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-wishlist {
+        min-width: auto;
+    }
+    
+    .hero-bottom-info {
+        margin-top: 2rem;
+        padding: 1.5rem;
+    }
+    
+    .hero-bottom-info .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .hero-bottom-info .info-item {
+        padding: 0.75rem;
+    }
+    
+    .instructor-profile {
+        flex-direction: column;
+        text-align: center;
+        max-width: 400px;
+        gap: 1.5rem;
+    }
+    
+    .instructor-profile img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-wrapper {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .cta-action {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .cta-action .price-info {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .course-hero-section {
+        padding: 2rem 0;
+        margin-top: 60px;
+    }
+    
+    .course-title {
+        font-size: 1.75rem;
+    }
+    
+    .course-subtitle {
+        font-size: 1rem;
+    }
+    
+    .course-main-info {
+        padding: 1rem;
+    }
+    
+    .current-price {
+        font-size: 1.75rem;
+    }
+    
+    .course-thumbnail img {
+        height: 320px;
+    }
+    
+    .hero-bottom-info {
+        margin-top: 1.5rem;
+        padding: 1rem;
+    }
+    
+    .hero-bottom-info .info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .hero-bottom-info .info-item {
+        padding: 0.5rem;
+    }
+    
+    .instructor-profile {
+        max-width: 320px;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+    
+    .instructor-profile img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .instructor-details h3 {
+        font-size: 1.25rem;
+    }
+    
+    .instructor-details .title {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .detail-content {
+        padding: 2rem;
+    }
+} 
