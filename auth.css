@@ -109,22 +109,122 @@
     color: #999;
 }
 
-/* 로그인 유지 체크박스 */
+/* 자동로그인 버튼 스타일 */
+.auto-login-btn {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    border: none !important;
+    margin-top: 10px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+}
+
+.auto-login-btn:hover {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+.auto-login-btn:active {
+    transform: translateY(0) !important;
+}
+
+.auto-login-btn::before {
+    content: '⚡';
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.auto-login-btn:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* 자동로그인 체크박스 스타일 개선 */
 .remember-me {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 15px 0 !important;
+    padding: 10px !important;
+    background: #f8fafc !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
 .remember-me input[type="checkbox"] {
-    width: auto;
-    margin-right: 8px;
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #3b82f6 !important;
+    cursor: pointer !important;
 }
 
 .remember-me label {
-    margin-bottom: 0;
-    font-size: 14px;
-    color: #666;
+    font-size: 14px !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    user-select: none !important;
+}
+
+.remember-me label:hover {
+    color: #3b82f6 !important;
+}
+
+/* 자동로그인 상태 표시 */
+.auto-login-status {
+    position: fixed !important;
+    top: 20px !important;
+    left: 20px !important;
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+    z-index: 1000 !important;
+    animation: slideInLeft 0.3s ease !important;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 자동로그인 설정 토글 */
+.auto-login-toggle {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin-top: 10px !important;
+}
+
+.auto-login-toggle h4 {
+    margin: 0 0 8px 0 !important;
+    font-size: 14px !important;
+    color: #374151 !important;
+}
+
+.auto-login-toggle p {
+    margin: 0 !important;
+    font-size: 12px !important;
+    color: #6b7280 !important;
+    line-height: 1.4 !important;
 }
 
 /* 버튼 스타일 */
@@ -371,4 +471,5 @@
     height: 16px;
     border-radius: 50%;
     background: currentColor;
-} 
+}
+

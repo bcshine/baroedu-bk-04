@@ -353,9 +353,10 @@
                     </div>
                     <div class="remember-me">
                         <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">로그인 상태 유지</label>
+                        <label for="rememberMe">자동로그인 (다음 접속 시 자동으로 로그인)</label>
                     </div>
                     <button type="submit" class="auth-btn">로그인</button>
+                    <button type="button" class="auth-btn auto-login-btn" onclick="handleAutoLogin()">저장된 계정으로 자동로그인</button>
                 </form>
                 <div class="divider">또는</div>
                 <div class="auth-links">
@@ -445,5 +446,120 @@
     <!-- 인증 시스템 -->
     <script src="auth.js"></script>
     <script src="total-lecture.js"></script>
+    
+    <!-- 인증 상태 관리 스크립트 -->
+    <script>
+        // 페이지 로드 시 인증 상태 확인
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📚 전체 강좌 페이지 로드됨');
+            
+            // authManager가 로드될 때까지 대기
+            const waitForAuthManager = setInterval(() => {
+                if (typeof authManager !== 'undefined') {
+                    console.log('✅ authManager 로드됨');
+                    clearInterval(waitForAuthManager);
+                    
+                    // authManager의 인증 상태 변경 콜백 등록
+                    authManager.onAuthStateChanged((event, user) => {
+                        console.log('🔄 전체 강좌 페이지 - 인증 상태 변경:', event, user);
+                        
+                        if (event === 'login' && user) {
+                            console.log('✅ 로그인 감지 - UI 업데이트');
+                            updateAuthUI(user);
+                        } else if (event === 'logout') {
+                            console.log('❌ 로그아웃 감지 - UI 업데이트');
+                            updateAuthUI(null);
+                        }
+                    });
+                    
+                    // 초기 인증 상태 확인 및 UI 업데이트
+                    if (authManager.isLoggedIn && authManager.currentUser) {
+                        console.log('✅ 이미 로그인 상태');
+                        updateAuthUI(authManager.currentUser);
+                    } else {
+                        console.log('❌ 비로그인 상태');
+                        updateAuthUI(null);
+                    }
+                }
+            }, 100);
+        });
+        
+        // 인증 UI 업데이트 함수
+        function updateAuthUI(user) {
+            const authButtons = document.querySelector('.auth-buttons');
+            
+            if (!authButtons) {
+                console.error('auth-buttons 요소를 찾을 수 없습니다');
+                return;
+            }
+            
+            if (user) {
+                // 로그인 상태 UI
+                console.log('🔄 로그인 상태 UI로 변경:', user.email);
+                authButtons.innerHTML = `
+                    <div class="user-menu">
+                        <span class="user-name">${user.user_metadata?.name || user.email}</span>
+                        <button class="logout-btn" onclick="authManager.handleLogout()">로그아웃</button>
+                    </div>
+                `;
+            } else {
+                // 비로그인 상태 UI
+                console.log('🔄 비로그인 상태 UI로 변경');
+                authButtons.innerHTML = `
+                    <a href="#" class="login-btn" onclick="openLoginModal()">로그인</a>
+                    <a href="#" class="signup-btn" onclick="openSignupModal()">회원가입</a>
+                `;
+            }
+        }
+        
+        // 토스트 메시지 표시
+        function showToast(message, type = 'info') {
+            // 기존 토스트 제거
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            // 토스트 스타일
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 4px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-size: 14px;
+                max-width: 300px;
+                word-wrap: break-word;
+            `;
+
+            document.body.appendChild(toast);
+
+            // 3초 후 자동 제거
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            
+            if (event.target === loginModal) {
+                closeModal('loginModal');
+            }
+            if (event.target === signupModal) {
+                closeModal('signupModal');
+            }
+        }
+    </script>
 </body>
 </html>

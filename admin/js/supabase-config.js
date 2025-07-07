@@ -5,9 +5,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // 관리자 이메일 목록 (간단한 권한 확인용)
 const ADMIN_EMAILS = [
     'admin@baroedu.com',
-    'manager@baroedu.com', 
-    'test@baroedu.com',
-    'developer@test.com' // 테스트용
+    'manager@baroedu.com'
 ];
 
 // Supabase 클라이언트 초기화

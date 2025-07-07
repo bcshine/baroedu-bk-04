@@ -125,85 +125,7 @@
             width: 1rem;
             height: 1rem;
         }
-        .test-account-info {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .test-account-info h5 {
-            color: #495057;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        .test-account-info h5 i {
-            margin-right: 8px;
-            color: #667eea;
-        }
-        .test-account-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .test-account-list li {
-            background: #f8f9fa;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            border-left: 4px solid #667eea;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .test-account-list li:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
-        }
-        .test-account-list li strong {
-            color: #495057;
-            margin-right: 10px;
-        }
-        .test-account-list li .text-muted {
-            font-size: 12px;
-        }
-        .btn-test {
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 12px;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn-test:hover {
-            background: #218838;
-        }
-        .setup-guide {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .setup-guide h6 {
-            color: #856404;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .setup-guide ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .setup-guide li {
-            margin-bottom: 5px;
-            color: #856404;
-        }
+
     </style>
 </head>
 <body class="hold-transition login-page">
@@ -216,40 +138,7 @@
             </a>
         </div>
 
-        <!-- 테스트 계정 정보 -->
-        <div class="test-account-info">
-            <h5>
-                <i class="fas fa-user-cog"></i>
-                테스트 계정 정보
-            </h5>
-            <ul class="test-account-list">
-                <li onclick="fillTestAccount('test@baroedu.com', 'test123!')">
-                    <strong>test@baroedu.com</strong>
-                    <span class="text-muted">/ test123!</span>
-                    <button class="btn-test" onclick="event.stopPropagation(); fillTestAccount('test@baroedu.com', 'test123!')">
-                        자동 입력
-                    </button>
-                </li>
-                <li onclick="fillTestAccount('admin@baroedu.com', 'admin123!')">
-                    <strong>admin@baroedu.com</strong>
-                    <span class="text-muted">/ admin123!</span>
-                    <button class="btn-test" onclick="event.stopPropagation(); fillTestAccount('admin@baroedu.com', 'admin123!')">
-                        자동 입력
-                    </button>
-                </li>
-            </ul>
-        </div>
 
-        <!-- 계정 설정 안내 -->
-        <div class="setup-guide">
-            <h6>📋 계정 설정 안내</h6>
-            <ol>
-                <li>위 테스트 계정을 Supabase에서 먼저 생성해주세요</li>
-                <li>Supabase 대시보드 > Authentication > Users에서 수동으로 생성</li>
-                <li>생성 후 위 계정으로 로그인하시면 됩니다</li>
-                <li>관리자 권한은 이메일 주소로 확인됩니다</li>
-            </ol>
-        </div>
 
         <!-- 로그인 카드 -->
         <div class="card">
@@ -347,23 +236,7 @@
             }
         });
 
-        // 테스트 계정 자동 입력
-        function fillTestAccount(email, password) {
-            document.getElementById('email').value = email;
-            document.getElementById('password').value = password;
-            
-            // 입력 필드 하이라이트
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            
-            emailInput.style.backgroundColor = '#e8f5e8';
-            passwordInput.style.backgroundColor = '#e8f5e8';
-            
-            setTimeout(() => {
-                emailInput.style.backgroundColor = '';
-                passwordInput.style.backgroundColor = '';
-            }, 1000);
-        }
+
         
         // 로그인 폼 처리
         document.getElementById('login-form').addEventListener('submit', async function(e) {
@@ -424,9 +297,9 @@
                 let errorMessage = '로그인에 실패했습니다.';
                 
                 if (error.message.includes('Invalid credentials') || error.message.includes('Invalid login credentials')) {
-                    errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.\n먼저 Supabase에서 테스트 계정을 생성했는지 확인해주세요.';
+                    errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.';
                 } else if (error.message.includes('관리자 권한이 없습니다')) {
-                    errorMessage = '관리자 권한이 없습니다. 허용된 관리자 계정으로 로그인하세요.\n허용된 이메일: test@baroedu.com, admin@baroedu.com';
+                    errorMessage = '관리자 권한이 없습니다. 허용된 관리자 계정으로 로그인하세요.';
                 } else if (error.message.includes('Email not confirmed')) {
                     errorMessage = '이메일 인증이 완료되지 않았습니다. Supabase에서 계정을 수동으로 승인해주세요.';
                 } else if (error.message.includes('Supabase') || error.message.includes('API')) {

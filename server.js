@@ -131,30 +131,7 @@ app.post('/api/admin/login', [
     try {
         const { email, password } = req.body;
 
-        // 테스트 계정 확인 (임시)
-        if (email === 'admin@baroedu.com' && password === 'admin123!@#') {
-            // JWT 토큰 생성
-            const token = jwt.sign(
-                { 
-                    id: 'test-admin-001', 
-                    email: 'admin@baroedu.com',
-                    role: 'admin' 
-                },
-                config.JWT_SECRET,
-                { expiresIn: config.JWT_EXPIRES_IN }
-            );
 
-            return res.json({
-                success: true,
-                token,
-                user: {
-                    id: 'test-admin-001',
-                    email: 'admin@baroedu.com',
-                    name: '바로교육 관리자',
-                    role: 'admin'
-                }
-            });
-        }
 
         // Supabase 인증 (실제 계정용)
         const { data: authData, error: authError } = await supabaseAdmin.auth.signInWithPassword({
