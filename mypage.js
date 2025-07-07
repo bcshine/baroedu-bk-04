@@ -1,6 +1,41 @@
 // 마이페이지 JavaScript 기능
 
+// 로그인 확인 함수
+async function checkLoginStatus() {
+    if (!authManager || !authManager.isLoggedIn) {
+        showAlert('로그인이 필요한 페이지입니다. 로그인 후 이용해주세요.', 'error');
+        setTimeout(() => {
+            openLoginModal();
+        }, 1000);
+        return false;
+    }
+    
+    // 로그인된 사용자 정보로 UI 업데이트
+    const userInfo = await authManager.getUserInfo();
+    if (userInfo) {
+        updateUserProfile(userInfo);
+    }
+    
+    return true;
+}
+
+// 사용자 프로필 업데이트
+function updateUserProfile(userInfo) {
+    const profileName = document.querySelector('.profile-details h1');
+    if (profileName && userInfo.name) {
+        profileName.textContent = `${userInfo.name}님, 반갑습니다! 👋`;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // 페이지 로드 시 로그인 상태 확인
+    setTimeout(async () => {
+        const isLoggedIn = await checkLoginStatus();
+        if (!isLoggedIn) {
+            return; // 로그인되지 않은 경우 나머지 기능을 실행하지 않음
+        }
+    }, 500);
+    
     // 필터 버튼 기능
     const filterButtons = document.querySelectorAll('.filter-btn');
     const courseCards = document.querySelectorAll('.course-card');

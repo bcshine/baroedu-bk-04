@@ -1,0 +1,374 @@
+/* 바로교육 - 인증 시스템 CSS (auth.css) */
+
+/* 모달 기본 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 모달 헤더 */
+.modal-header {
+    padding: 24px 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-header p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #333;
+}
+
+/* 모달 본문 */
+.modal-body {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #999;
+}
+
+/* 로그인 유지 체크박스 */
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+.remember-me label {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* 버튼 스타일 */
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+}
+
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.auth-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+/* 링크 스타일 */
+.auth-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-links a {
+    color: #4A90E2;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: #357abd;
+    text-decoration: underline;
+}
+
+.divider {
+    text-align: center;
+    margin: 16px 0;
+    color: #999;
+    font-size: 14px;
+}
+
+/* 사용자 메뉴 스타일 */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-name {
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.logout-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #d32f2f;
+}
+
+/* 에러 메시지 */
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border: 1px solid #ffcdd2;
+}
+
+.success-message {
+    background: #e8f5e8;
+    color: #2e7d32;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border: 1px solid #c8e6c9;
+}
+
+/* 소셜 로그인 버튼 (향후 확장용) */
+.social-login {
+    margin-top: 20px;
+}
+
+.social-btn {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e5e9;
+    background: white;
+    color: #333;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.social-btn:hover {
+    border-color: #4A90E2;
+    background: #f8f9fa;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .modal-header {
+        padding: 20px 20px 16px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 20px;
+    }
+}
+
+/* 로딩 스피너 */
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 비밀번호 강도 표시 */
+.password-strength {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.password-strength-bar {
+    width: 100%;
+    height: 4px;
+    background: #e1e5e9;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.password-strength-fill {
+    height: 100%;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.password-strength-weak .password-strength-fill {
+    background: #f44336;
+    width: 33%;
+}
+
+.password-strength-medium .password-strength-fill {
+    background: #ff9800;
+    width: 66%;
+}
+
+.password-strength-strong .password-strength-fill {
+    background: #4caf50;
+    width: 100%;
+}
+
+/* 폼 검증 스타일 */
+.form-group.error input {
+    border-color: #f44336;
+}
+
+.form-group.success input {
+    border-color: #4caf50;
+}
+
+.field-error {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* 로그인 상태 표시 */
+.auth-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #e8f5e8;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.auth-status.logged-in {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.auth-status.logged-out {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.auth-status-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: currentColor;
+} 

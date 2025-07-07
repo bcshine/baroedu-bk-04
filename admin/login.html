@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>바로교육 관리자 로그인</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <!-- Korean Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .login-box {
+            width: 400px;
+            margin: 5% auto;
+        }
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-logo a {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .login-logo img {
+            width: 60px;
+            height: 60px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: white;
+            padding: 10px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: none;
+        }
+        .card-header {
+            background: transparent;
+            border: none;
+            text-align: center;
+            padding: 30px 30px 20px;
+        }
+        .card-header h3 {
+            color: #495057;
+            font-weight: 600;
+            margin: 0;
+        }
+        .card-body {
+            padding: 0 30px 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .input-group-text {
+            background: transparent;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            color: #6c757d;
+        }
+        .input-group .form-control {
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .forgot-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .forgot-link:hover {
+            color: #764ba2;
+        }
+        .alert {
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+        .loading {
+            display: none;
+        }
+        .loading.active {
+            display: block;
+        }
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+        .test-account-info {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .test-account-info h5 {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .test-account-info h5 i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+        .test-account-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .test-account-list li {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .test-account-list li:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        .test-account-list li strong {
+            color: #495057;
+            margin-right: 10px;
+        }
+        .test-account-list li .text-muted {
+            font-size: 12px;
+        }
+        .btn-test {
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-test:hover {
+            background: #218838;
+        }
+        .setup-guide {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .setup-guide h6 {
+            color: #856404;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .setup-guide ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .setup-guide li {
+            margin-bottom: 5px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- 로고 -->
+        <div class="login-logo">
+            <a href="#">
+                <img src="../images/logo.png" alt="바로교육">
+                <span>바로교육</span>
+            </a>
+        </div>
+
+        <!-- 테스트 계정 정보 -->
+        <div class="test-account-info">
+            <h5>
+                <i class="fas fa-user-cog"></i>
+                테스트 계정 정보
+            </h5>
+            <ul class="test-account-list">
+                <li onclick="fillTestAccount('test@baroedu.com', 'test123!')">
+                    <strong>test@baroedu.com</strong>
+                    <span class="text-muted">/ test123!</span>
+                    <button class="btn-test" onclick="event.stopPropagation(); fillTestAccount('test@baroedu.com', 'test123!')">
+                        자동 입력
+                    </button>
+                </li>
+                <li onclick="fillTestAccount('admin@baroedu.com', 'admin123!')">
+                    <strong>admin@baroedu.com</strong>
+                    <span class="text-muted">/ admin123!</span>
+                    <button class="btn-test" onclick="event.stopPropagation(); fillTestAccount('admin@baroedu.com', 'admin123!')">
+                        자동 입력
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 계정 설정 안내 -->
+        <div class="setup-guide">
+            <h6>📋 계정 설정 안내</h6>
+            <ol>
+                <li>위 테스트 계정을 Supabase에서 먼저 생성해주세요</li>
+                <li>Supabase 대시보드 > Authentication > Users에서 수동으로 생성</li>
+                <li>생성 후 위 계정으로 로그인하시면 됩니다</li>
+                <li>관리자 권한은 이메일 주소로 확인됩니다</li>
+            </ol>
+        </div>
+
+        <!-- 로그인 카드 -->
+        <div class="card">
+            <div class="card-header">
+                <h3>관리자 로그인</h3>
+            </div>
+            <div class="card-body">
+                <!-- 에러 메시지 -->
+                <div id="error-alert" class="alert alert-danger" style="display: none;"></div>
+                
+                <!-- 로그인 폼 -->
+                <form id="login-form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </div>
+                            <input type="email" id="email" class="form-control" placeholder="이메일 주소" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </div>
+                            <input type="password" id="password" class="form-control" placeholder="비밀번호" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="toggle-password" style="cursor: pointer;">
+                                    <i class="fas fa-eye" id="password-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember">
+                            <label class="form-check-label" for="remember">
+                                로그인 상태 유지
+                            </label>
+                        </div>
+                        <a href="#" class="forgot-link">비밀번호를 잊으셨나요?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span class="login-text">로그인</span>
+                        <span class="loading">
+                            <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                            로그인 중...
+                        </span>
+                    </button>
+                </form>
+                
+                <!-- 추가 옵션 -->
+                <div class="mt-3 text-center">
+                    <small class="text-muted">
+                        관리자 계정이 필요하시면 시스템 관리자에게 문의하세요.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- API 클라이언트 -->
+    <script src="js/api-client.js"></script>
+    
+    <script>
+        // 비밀번호 보기/숨기기 토글
+        document.getElementById('toggle-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const passwordEye = document.getElementById('password-eye');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordEye.classList.remove('fa-eye');
+                passwordEye.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordEye.classList.remove('fa-eye-slash');
+                passwordEye.classList.add('fa-eye');
+            }
+        });
+
+        // 테스트 계정 자동 입력
+        function fillTestAccount(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+            
+            // 입력 필드 하이라이트
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            emailInput.style.backgroundColor = '#e8f5e8';
+            passwordInput.style.backgroundColor = '#e8f5e8';
+            
+            setTimeout(() => {
+                emailInput.style.backgroundColor = '';
+                passwordInput.style.backgroundColor = '';
+            }, 1000);
+        }
+        
+        // 로그인 폼 처리
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            console.log('🔄 로그인 시도:', email);
+            
+            // 로딩 상태 표시
+            showLoading(true);
+            hideError();
+            
+            try {
+                // Supabase 연결 확인
+                if (typeof supabase === 'undefined') {
+                    throw new Error('Supabase가 로드되지 않았습니다. 페이지를 새로고침해주세요.');
+                }
+                
+                console.log('✅ Supabase 연결됨');
+                
+                // API 클라이언트 확인
+                if (typeof apiClient === 'undefined') {
+                    throw new Error('API 클라이언트가 로드되지 않았습니다. 페이지를 새로고침해주세요.');
+                }
+                
+                console.log('✅ API 클라이언트 로드됨');
+                
+                // 관리자 로그인 시도
+                console.log('🔐 로그인 요청 중...');
+                const response = await apiClient.login(email, password);
+                console.log('📥 로그인 응답:', response);
+                
+                if (response.success && response.user) {
+                    // 로그인 성공
+                    console.log('✅ 로그인 성공:', response.user.email);
+                    showSuccess('로그인에 성공했습니다.');
+                    
+                    // 로그인 상태 유지 설정
+                    if (remember) {
+                        localStorage.setItem('admin_remember', 'true');
+                    }
+                    
+                    // 대시보드로 이동
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    throw new Error('로그인 응답이 올바르지 않습니다.');
+                }
+                
+            } catch (error) {
+                console.error('❌ 로그인 에러 상세:', error);
+                console.error('❌ 에러 스택:', error.stack);
+                
+                let errorMessage = '로그인에 실패했습니다.';
+                
+                if (error.message.includes('Invalid credentials') || error.message.includes('Invalid login credentials')) {
+                    errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.\n먼저 Supabase에서 테스트 계정을 생성했는지 확인해주세요.';
+                } else if (error.message.includes('관리자 권한이 없습니다')) {
+                    errorMessage = '관리자 권한이 없습니다. 허용된 관리자 계정으로 로그인하세요.\n허용된 이메일: test@baroedu.com, admin@baroedu.com';
+                } else if (error.message.includes('Email not confirmed')) {
+                    errorMessage = '이메일 인증이 완료되지 않았습니다. Supabase에서 계정을 수동으로 승인해주세요.';
+                } else if (error.message.includes('Supabase') || error.message.includes('API')) {
+                    errorMessage = error.message;
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showError(errorMessage);
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // 로딩 상태 표시/숨기기
+        function showLoading(show) {
+            const loginText = document.querySelector('.login-text');
+            const loadingText = document.querySelector('.loading');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            
+            if (show) {
+                loginText.style.display = 'none';
+                loadingText.classList.add('active');
+                submitBtn.disabled = true;
+            } else {
+                loginText.style.display = 'inline';
+                loadingText.classList.remove('active');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        // 에러 메시지 표시
+        function showError(message) {
+            const errorAlert = document.getElementById('error-alert');
+            errorAlert.textContent = message;
+            errorAlert.style.display = 'block';
+            
+            // 5초 후 자동 숨기기
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+            }, 5000);
+        }
+        
+        // 에러 메시지 숨기기
+        function hideError() {
+            const errorAlert = document.getElementById('error-alert');
+            errorAlert.style.display = 'none';
+        }
+        
+        // 성공 메시지 표시
+        function showSuccess(message) {
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success';
+            successAlert.textContent = message;
+            
+            const errorAlert = document.getElementById('error-alert');
+            errorAlert.parentNode.insertBefore(successAlert, errorAlert);
+            
+            // 3초 후 자동 제거
+            setTimeout(() => {
+                successAlert.remove();
+            }, 3000);
+        }
+        
+        // 페이지 로드 시 이미 로그인된 상태인지 확인
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await apiClient.verifyToken();
+                if (response.success && response.user) {
+                    // 이미 로그인된 상태면 대시보드로 이동
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                // 토큰이 유효하지 않으면 로그인 페이지에 머물기
+                console.log('로그인이 필요합니다.');
+            }
+        });
+        
+        // 비밀번호 찾기 처리
+        document.querySelector('.forgot-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            if (!email) {
+                showError('이메일을 먼저 입력해주세요.');
+                return;
+            }
+            
+            showError('비밀번호 재설정 기능은 시스템 관리자에게 문의하세요.');
+        });
+        
+        // Enter 키로 로그인
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('login-form').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html> 
