@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="total-lecture.css">
     <link rel="stylesheet" href="auth.css">
+    
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
 </head>
 <body>
     <!-- 헤더 -->
@@ -124,7 +127,7 @@
             <div class="container">
                 <div class="courses-header">
                     <div class="courses-count">
-                        <span>총 <strong>24개</strong>의 강좌</span>
+                        <span>총 <strong id="course-count">6개</strong>의 강좌</span>
                     </div>
                     <div class="view-toggle">
                         <button class="view-btn active" data-view="grid">⊞</button>
@@ -132,9 +135,24 @@
                     </div>
                 </div>
 
+                <!-- 새로고침 버튼 -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button onclick="loadRealCourses()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        🔄 최신 강좌 불러오기
+                    </button>
+                </div>
+                
                 <div class="courses-grid" id="courses-grid">
-                    <!-- 강좌 카드 1 -->
-                    <div class="course-card" data-category="marketing" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <!-- 로딩 스피너 -->
+                    <div class="loading-container" id="loading-container" style="display: none;">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>강좌를 불러오는 중입니다...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 기본 샘플 강좌 카드들 -->
+                    <div class="course-card" data-category="marketing">
                         <div class="course-image">
                             <img src="images/pd1.jpg" alt="마케팅 기초 완성">
                             <div class="course-badge">베스트</div>
@@ -162,12 +180,11 @@
                                 <span class="current-price">₩89,000</span>
                                 <span class="original-price">₩120,000</span>
                             </div>
-                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                            <button class="enroll-btn">수강신청</button>
                         </div>
                     </div>
 
-                    <!-- 강좌 카드 2 -->
-                    <div class="course-card" data-category="development" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <div class="course-card" data-category="development">
                         <div class="course-image">
                             <img src="images/pd2.jpg" alt="바이브 코딩 기초부터 실전">
                             <div class="course-badge new">신규</div>
@@ -194,12 +211,11 @@
                             <div class="course-price">
                                 <span class="current-price">₩129,000</span>
                             </div>
-                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                            <button class="enroll-btn">수강신청</button>
                         </div>
                     </div>
 
-                    <!-- 강좌 카드 3 -->
-                    <div class="course-card" data-category="development" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <div class="course-card" data-category="development">
                         <div class="course-image">
                             <img src="images/pd3.jpg" alt="창업 실무 가이드">
                             <div class="course-badge hot">인기</div>
@@ -226,12 +242,11 @@
                             <div class="course-price">
                                 <span class="current-price">₩79,000</span>
                             </div>
-                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                            <button class="enroll-btn">수강신청</button>
                         </div>
                     </div>
 
-                    <!-- 강좌 카드 4 -->
-                    <div class="course-card" data-category="design" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <div class="course-card" data-category="design">
                         <div class="course-image">
                             <img src="images/Name.jpg" alt="브랜딩 전략 완성">
                         </div>
@@ -257,12 +272,11 @@
                             <div class="course-price">
                                 <span class="current-price">₩99,000</span>
                             </div>
-                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                            <button class="enroll-btn">수강신청</button>
                         </div>
                     </div>
 
-                    <!-- 강좌 카드 5 -->
-                    <div class="course-card" data-category="crm" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <div class="course-card" data-category="crm">
                         <div class="course-image">
                             <img src="images/pd11.jpg" alt="CRM 시스템 활용법">
                         </div>
@@ -288,12 +302,11 @@
                             <div class="course-price">
                                 <span class="current-price">₩69,000</span>
                             </div>
-                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                            <button class="enroll-btn">수강신청</button>
                         </div>
                     </div>
 
-                    <!-- 강좌 카드 6 -->
-                    <div class="course-card" data-category="marketing" onclick="location.href='3_one_lecture.html'" style="cursor: pointer;">
+                    <div class="course-card" data-category="marketing">
                         <div class="course-image">
                             <img src="images/pd12.jpg" alt="SNS 마케팅 마스터">
                             <div class="course-badge free">무료</div>
@@ -320,7 +333,7 @@
                             <div class="course-price">
                                 <span class="current-price free">무료</span>
                             </div>
-                            <button class="enroll-btn" onclick="location.href='3_one_lecture.html'">수강신청</button>
+                            <button class="enroll-btn">수강신청</button>
                         </div>
                     </div>
                 </div>
@@ -353,10 +366,9 @@
                     </div>
                     <div class="remember-me">
                         <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">자동로그인 (다음 접속 시 자동으로 로그인)</label>
+                        <label for="rememberMe">자동로그인</label>
                     </div>
                     <button type="submit" class="auth-btn">로그인</button>
-                    <button type="button" class="auth-btn auto-login-btn" onclick="handleAutoLogin()">저장된 계정으로 자동로그인</button>
                 </form>
                 <div class="divider">또는</div>
                 <div class="auth-links">
@@ -441,61 +453,57 @@
         </div>
     </footer>
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- 인증 시스템 -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
-    <script src="total-lecture.js"></script>
     
-    <!-- 인증 상태 관리 스크립트 -->
     <script>
-        // 페이지 로드 시 인증 상태 확인
+        // auth.js에서 이미 정의된 변수들을 사용
+        let coursesSupabase = null;
+
+        // 페이지 로드 시 실행
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📚 전체 강좌 페이지 로드됨');
+            console.log('페이지 로드 완료');
             
-            // authManager가 로드될 때까지 대기
-            const waitForAuthManager = setInterval(() => {
-                if (typeof authManager !== 'undefined') {
-                    console.log('✅ authManager 로드됨');
-                    clearInterval(waitForAuthManager);
-                    
-                    // authManager의 인증 상태 변경 콜백 등록
-                    authManager.onAuthStateChanged((event, user) => {
-                        console.log('🔄 전체 강좌 페이지 - 인증 상태 변경:', event, user);
-                        
-                        if (event === 'login' && user) {
-                            console.log('✅ 로그인 감지 - UI 업데이트');
-                            updateAuthUI(user);
-                        } else if (event === 'logout') {
-                            console.log('❌ 로그아웃 감지 - UI 업데이트');
-                            updateAuthUI(null);
-                        }
-                    });
-                    
-                    // 초기 인증 상태 확인 및 UI 업데이트
-                    if (authManager.isLoggedIn && authManager.currentUser) {
-                        console.log('✅ 이미 로그인 상태');
-                        updateAuthUI(authManager.currentUser);
-                    } else {
-                        console.log('❌ 비로그인 상태');
-                        updateAuthUI(null);
-                    }
-                }
-            }, 100);
-        });
-        
-        // 인증 UI 업데이트 함수
-        function updateAuthUI(user) {
-            const authButtons = document.querySelector('.auth-buttons');
-            
-            if (!authButtons) {
-                console.error('auth-buttons 요소를 찾을 수 없습니다');
-                return;
+            // auth.js에서 초기화된 supabase 클라이언트 사용
+            if (window.supabaseClient) {
+                coursesSupabase = window.supabaseClient;
+                console.log('Supabase 클라이언트 연결 완료');
             }
             
+            // 인증 시스템 초기화
+            if (typeof authManager !== 'undefined') {
+                authManager.onAuthStateChanged((event, user) => {
+                    if (event === 'login' && user) {
+                        updateAuthUI(user);
+                    } else if (event === 'logout') {
+                        updateAuthUI(null);
+                    }
+                });
+                
+                if (authManager.isLoggedIn && authManager.currentUser) {
+                    updateAuthUI(authManager.currentUser);
+                }
+            }
+            
+            // "더 많은 강좌 보기" 버튼 이벤트 리스너 추가
+            const loadMoreBtn = document.querySelector('.load-more-btn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', loadRealCourses);
+            }
+            
+            // 5초 후 자동으로 실제 데이터 로드 시도 (조용히)
+            setTimeout(() => {
+                console.log('⏰ 자동 강좌 로드 시작...');
+                loadRealCourses();
+            }, 2000);
+        });
+
+        // 인증 UI 업데이트
+        function updateAuthUI(user) {
+            const authButtons = document.querySelector('.auth-buttons');
+            if (!authButtons) return;
+            
             if (user) {
-                // 로그인 상태 UI
-                console.log('🔄 로그인 상태 UI로 변경:', user.email);
                 authButtons.innerHTML = `
                     <div class="user-menu">
                         <span class="user-name">${user.user_metadata?.name || user.email}</span>
@@ -503,51 +511,202 @@
                     </div>
                 `;
             } else {
-                // 비로그인 상태 UI
-                console.log('🔄 비로그인 상태 UI로 변경');
                 authButtons.innerHTML = `
                     <a href="#" class="login-btn" onclick="openLoginModal()">로그인</a>
                     <a href="#" class="signup-btn" onclick="openSignupModal()">회원가입</a>
                 `;
             }
         }
-        
-        // 토스트 메시지 표시
-        function showToast(message, type = 'info') {
-            // 기존 토스트 제거
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
 
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
+        // 실제 강좌 데이터 로드 (에러 핸들링 개선)
+        async function loadRealCourses() {
+            const loadingContainer = document.getElementById('loading-container');
+            const coursesGrid = document.getElementById('courses-grid');
             
-            // 토스트 스타일
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-                color: white;
-                padding: 16px 24px;
-                border-radius: 4px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-                z-index: 10000;
-                font-size: 14px;
-                max-width: 300px;
-                word-wrap: break-word;
-            `;
+            try {
+                console.log('🔄 강좌 데이터 로드 시작');
+                
+                // 로딩 표시
+                if (loadingContainer) {
+                    loadingContainer.style.display = 'block';
+                }
+                
+                // Supabase 연결 확인
+                if (!coursesSupabase) {
+                    if (window.supabaseClient) {
+                        coursesSupabase = window.supabaseClient;
+                    } else {
+                        console.error('❌ Supabase 클라이언트 없음');
+                        alert('Supabase 연결 오류입니다.');
+                        return;
+                    }
+                }
 
-            document.body.appendChild(toast);
+                // 강좌 데이터 가져오기 (published 상태만)
+                const { data: courses, error } = await coursesSupabase
+                    .from('courses')
+                    .select('*')
+                    .eq('status', 'published')
+                    .order('created_at', { ascending: false });
 
-            // 3초 후 자동 제거
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
+                if (error) {
+                    console.error('❌ 강좌 로드 에러:', error);
+                    alert('강좌 데이터를 불러올 수 없습니다.');
+                    return;
+                }
+
+                console.log('✅ 강좌 데이터 로드 완료:', courses?.length || 0, '개');
+
+                if (courses && courses.length > 0) {
+                    // 기존 샘플 카드 제거
+                    const existingCards = coursesGrid.querySelectorAll('.course-card:not(.loading-container)');
+                    existingCards.forEach(card => card.remove());
+
+                    // 새로운 강좌 카드 추가 (에러 발생 시 건너뛰기)
+                    let successCount = 0;
+                    courses.forEach((course, index) => {
+                        try {
+                            const courseCard = createCourseCard(course);
+                            if (courseCard.innerHTML) { // 빈 div가 아닌 경우만 추가
+                                coursesGrid.appendChild(courseCard);
+                                successCount++;
+                            }
+                        } catch (error) {
+                            console.warn(`⚠️ 강좌 카드 생성 실패 (${index + 1}번째):`, error);
+                        }
+                    });
+
+                    // 강좌 개수 업데이트
+                    const courseCount = document.getElementById('course-count');
+                    if (courseCount) {
+                        courseCount.textContent = successCount + '개';
+                    }
+                    
+                    console.log(`✅ ${successCount}개 강좌 카드 생성 완료`);
+                    
+                    // 조용한 성공 메시지 (alert 대신 콘솔 로그)
+                    if (successCount > 0) {
+                        console.log(`🎉 실제 강좌 ${successCount}개를 성공적으로 불러왔습니다!`);
+                    }
+                } else {
+                    console.log('📝 등록된 강좌가 없습니다.');
+                }
+
+            } catch (error) {
+                console.error('❌ 강좌 로드 실패:', error);
+                alert('강좌 불러오기에 실패했습니다.');
+            } finally {
+                // 로딩 스피너 숨기기
+                if (loadingContainer) {
+                    loadingContainer.style.display = 'none';
+                }
+            }
         }
-        
+
+        // 강좌 카드 생성 (에러 핸들링 개선)
+        function createCourseCard(course) {
+            try {
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card';
+                courseCard.onclick = () => {
+                    window.location.href = `3_one_lecture.html?id=${course.id}`;
+                };
+                courseCard.style.cursor = 'pointer';
+
+                // 안전한 데이터 처리
+                const safeTitle = course.title || '제목 없음';
+                const safeDescription = course.description || '실무에 바로 적용 가능한 강좌입니다.';
+                const safeInstructor = course.instructor_name || '강사명 없음';
+                const categoryName = getCategoryName(course.category_id);
+                const difficultyName = getDifficultyName(course.difficulty);
+                const formattedPrice = formatPrice(course.price);
+                
+                // 안전한 이미지 URL 처리
+                const safeThumbnailUrl = course.thumbnail_url && course.thumbnail_url.startsWith('http') 
+                    ? course.thumbnail_url 
+                    : 'images/pd1.jpg';
+
+                courseCard.innerHTML = `
+                    <div class="course-image">
+                        <img src="${safeThumbnailUrl}" alt="${safeTitle}" 
+                             onerror="this.src='images/pd1.jpg'; console.log('이미지 로드 실패: ${safeThumbnailUrl}');">
+                        <div class="course-badge new">신규</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-meta">
+                            <span class="category">${categoryName}</span>
+                            <span class="level">${difficultyName}</span>
+                        </div>
+                        <h3 class="course-title">${safeTitle}</h3>
+                        <p class="course-description">${safeDescription}</p>
+                        <div class="instructor">
+                            <img src="images/instructor-new.jpg" alt="강사" 
+                                 onerror="this.src='images/pd1.jpg';">
+                            <span>${safeInstructor}</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.8</span>
+                                <span class="review-count">(${Math.floor(Math.random() * 200) + 50})</span>
+                            </div>
+                            <span class="duration">${Math.floor(Math.random() * 20) + 5}시간</span>
+                        </div>
+                        <div class="course-price">
+                            ${formattedPrice}
+                        </div>
+                        <button class="enroll-btn" onclick="event.stopPropagation(); alert('수강신청 기능은 개발 중입니다.')">
+                            수강신청
+                        </button>
+                    </div>
+                `;
+
+                return courseCard;
+            } catch (error) {
+                console.error('강좌 카드 생성 중 오류:', error, course);
+                return document.createElement('div'); // 빈 div 반환
+            }
+        }
+
+        // 카테고리 이름 변환 (안전한 처리)
+        function getCategoryName(categoryId) {
+            const categories = {
+                'marketing': '마케팅',
+                'branding': '브랜드',
+                'brand': '브랜드',
+                'development': '창업',
+                'startup': '창업',
+                'crm': 'CRM'
+            };
+            return categories[categoryId] || '기타';
+        }
+
+        // 난이도 이름 변환 (안전한 처리)
+        function getDifficultyName(difficulty) {
+            const levels = {
+                'beginner': '입문',
+                'intermediate': '중급',
+                'advanced': '고급'
+            };
+            return levels[difficulty] || '입문';
+        }
+
+        // 가격 포맷팅 (안전한 처리)
+        function formatPrice(price) {
+            try {
+                const safePrice = price || 0;
+                if (safePrice === 0 || safePrice === null || safePrice === undefined) {
+                    return '<span class="current-price free">무료</span>';
+                } else {
+                    const numPrice = typeof safePrice === 'string' ? parseInt(safePrice) : safePrice;
+                    return `<span class="current-price">₩${numPrice.toLocaleString()}</span>`;
+                }
+            } catch (error) {
+                console.warn('가격 포맷팅 오류:', error, price);
+                return '<span class="current-price">가격 문의</span>';
+            }
+        }
+
         // 모달 외부 클릭 시 닫기
         window.onclick = function(event) {
             const loginModal = document.getElementById('loginModal');
@@ -560,6 +719,47 @@
                 closeModal('signupModal');
             }
         }
+
+        // 로딩 스피너 CSS
+        const loadingStyles = document.createElement('style');
+        loadingStyles.textContent = `
+            .loading-container {
+                grid-column: 1 / -1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 4rem;
+                text-align: center;
+            }
+
+            .loading-spinner {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #667eea;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .loading-spinner p {
+                color: #666;
+                font-size: 1rem;
+                margin: 0;
+            }
+        `;
+        document.head.appendChild(loadingStyles);
     </script>
 </body>
 </html>

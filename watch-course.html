@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의 시청 - 바로교육</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+        
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #ffd700 !important;
+        }
+        
+        .course-header {
+            background: white;
+            padding: 2rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .course-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .course-instructor {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .course-info {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .course-info .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .video-container {
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 2rem 0;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 450px;
+            background: #000;
+            border: none;
+            outline: none;
+        }
+        
+        .video-controls {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        .course-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .content-section {
+            margin-bottom: 2rem;
+        }
+        
+        .content-section h4 {
+            color: #2c3e50;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .chapter-list li {
+            background: #f8f9fa;
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-list li:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .chapter-list li.current {
+            background: #667eea;
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .btn-custom {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-outline-custom {
+            border: 2px solid #667eea;
+            color: #667eea;
+            background: transparent;
+        }
+        
+        .btn-outline-custom:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        @media (max-width: 768px) {
+            .course-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .video-player {
+                height: 250px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 네비게이션 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                바로교육
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home mr-1"></i>홈
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="2_total_lecture.html">
+                            <i class="fas fa-book mr-1"></i>강의 목록
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="4_mypage.html">
+                            <i class="fas fa-user mr-1"></i>마이페이지
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt mr-1"></i>로그아웃
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 강의 헤더 -->
+    <div class="course-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="course-title" id="course-title">강의 제목 로딩 중...</h1>
+                    <p class="course-instructor" id="course-instructor">강사: 로딩 중...</p>
+                    <div class="course-info">
+                        <span class="badge badge-primary" id="course-category">카테고리</span>
+                        <span class="badge badge-success" id="course-difficulty">난이도</span>
+                        <span class="badge badge-info" id="course-duration">수강 기간</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container my-4">
+        <div class="row">
+            <!-- 왼쪽: 동영상 플레이어 -->
+            <div class="col-lg-8">
+                <!-- 로딩 스피너 -->
+                <div class="loading-spinner" id="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">로딩 중...</span>
+                    </div>
+                    <p class="mt-3">강의를 불러오는 중입니다...</p>
+                </div>
+                
+                <!-- 비디오 컨테이너 -->
+                <div class="video-container" id="video-container" style="display: none;">
+                    <video class="video-player" id="video-player" controls>
+                        <source src="" type="video/mp4">
+                        <p>브라우저가 비디오를 지원하지 않습니다.</p>
+                    </video>
+                    <div class="video-controls">
+                        <div>
+                            <button class="btn btn-sm btn-light" onclick="togglePlayPause()">
+                                <i class="fas fa-play" id="play-icon"></i>
+                            </button>
+                            <button class="btn btn-sm btn-light" onclick="changeSpeed()">
+                                <span id="speed-text">1x</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-light" onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 진도 현황 -->
+                <div class="progress-section">
+                    <h5>
+                        <i class="fas fa-chart-line mr-2"></i>
+                        학습 진도
+                    </h5>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" id="progress-bar" role="progressbar" style="width: 0%">
+                            <span id="progress-text">0%</span>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <strong id="watched-time">00:00</strong>
+                            <br><small class="text-muted">시청 시간</small>
+                        </div>
+                        <div class="col-4">
+                            <strong id="total-time">00:00</strong>
+                            <br><small class="text-muted">총 시간</small>
+                        </div>
+                        <div class="col-4">
+                            <strong id="remaining-time">00:00</strong>
+                            <br><small class="text-muted">남은 시간</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 액션 버튼 -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary-custom btn-custom" onclick="markAsComplete()">
+                        <i class="fas fa-check mr-2"></i>
+                        이 강의 완료하기
+                    </button>
+                    <button class="btn btn-outline-custom btn-custom" onclick="downloadCertificate()">
+                        <i class="fas fa-certificate mr-2"></i>
+                        수료증 다운로드
+                    </button>
+                    <button class="btn btn-outline-custom btn-custom" onclick="shareCourse()">
+                        <i class="fas fa-share mr-2"></i>
+                        강의 공유
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 오른쪽: 강의 내용 -->
+            <div class="col-lg-4">
+                <div class="course-content">
+                    <div class="content-section">
+                        <h4>
+                            <i class="fas fa-list mr-2"></i>
+                            강의 목차
+                        </h4>
+                        <ul class="chapter-list" id="chapter-list">
+                            <li class="current">
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Chapter 1: 강의 소개
+                            </li>
+                            <li>
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Chapter 2: 기본 개념
+                            </li>
+                            <li>
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Chapter 3: 실습 예제
+                            </li>
+                            <li>
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Chapter 4: 고급 기술
+                            </li>
+                            <li>
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Chapter 5: 정리 및 마무리
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h4>
+                            <i class="fas fa-info-circle mr-2"></i>
+                            강의 정보
+                        </h4>
+                        <div class="course-details">
+                            <p><strong>강의 시간:</strong> <span id="course-duration-text">약 2시간</span></p>
+                            <p><strong>난이도:</strong> <span id="course-level">초급</span></p>
+                            <p><strong>언어:</strong> 한국어</p>
+                            <p><strong>자막:</strong> 한국어</p>
+                            <p><strong>수료증:</strong> 제공</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h4>
+                            <i class="fas fa-question-circle mr-2"></i>
+                            질문 및 토론
+                        </h4>
+                        <div class="text-center">
+                            <button class="btn btn-outline-primary btn-sm" onclick="askQuestion()">
+                                <i class="fas fa-plus mr-1"></i>
+                                질문하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 푸터 -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2024 바로교육. 모든 권리 보유.</p>
+        </div>
+    </footer>
+
+    <!-- 메시지 알림 영역 -->
+    <div id="message-area"></div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Supabase 설정
+        const SUPABASE_URL = 'https://bjsstktiiniigdnsdwsr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqc3N0a3RpaW5paWdkbnNkd3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDI4MTEsImV4cCI6MjA2NzA3ODgxMX0.h3W1Q3L_yX8_HPOMmEluq2Qum_INJSCv9OKV4IZdYRs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 전역 변수
+        let currentCourse = null;
+        let currentUser = null;
+        let watchProgress = 0;
+        let currentPlaybackSpeed = 1;
+        let videoPlayer = null;
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initializePage();
+        });
+
+        // 페이지 초기화
+        async function initializePage() {
+            try {
+                // URL에서 강의 ID 추출
+                const urlParams = new URLSearchParams(window.location.search);
+                const courseId = urlParams.get('id');
+                
+                if (!courseId) {
+                    showMessage('강의 ID가 없습니다. 강의 목록으로 이동합니다.', 'error');
+                    setTimeout(() => window.location.href = '2_total_lecture.html', 2000);
+                    return;
+                }
+
+                // 사용자 인증 확인
+                await checkUserAuth();
+                
+                // 강의 정보 로드
+                await loadCourseData(courseId);
+                
+                // 비디오 플레이어 초기화
+                initializeVideoPlayer();
+                
+                // 진도 로드
+                await loadProgress(courseId);
+                
+                console.log('✅ 강의 시청 페이지 초기화 완료');
+                
+            } catch (error) {
+                console.error('❌ 페이지 초기화 에러:', error);
+                showMessage('페이지를 불러오는 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // 사용자 인증 확인
+        async function checkUserAuth() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    currentUser = user;
+                    console.log('✅ 인증된 사용자:', user.email);
+                } else {
+                    console.log('⚠️ 로그인되지 않은 사용자 - 데모 모드');
+                }
+            } catch (error) {
+                console.warn('인증 확인 실패:', error);
+            }
+        }
+
+        // 강의 데이터 로드
+        async function loadCourseData(courseId) {
+            try {
+                showLoading(true);
+                
+                const { data: course, error } = await supabase
+                    .from('courses')
+                    .select('*')
+                    .eq('id', courseId)
+                    .single();
+
+                if (error) {
+                    throw new Error('강의 정보를 불러올 수 없습니다: ' + error.message);
+                }
+
+                if (!course) {
+                    throw new Error('강의를 찾을 수 없습니다.');
+                }
+
+                // 강의 접근 권한 확인
+                if (currentUser) {
+                    const { data: enrollment } = await supabase
+                        .from('enrollments')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .eq('course_id', courseId)
+                        .single();
+
+                    if (!enrollment) {
+                        showMessage('이 강의에 대한 접근 권한이 없습니다.', 'error');
+                        setTimeout(() => window.location.href = '2_total_lecture.html', 2000);
+                        return;
+                    }
+                }
+
+                currentCourse = course;
+                
+                // 강의 정보 표시
+                document.getElementById('course-title').textContent = course.title;
+                document.getElementById('course-instructor').textContent = `강사: ${course.instructor_name}`;
+                document.getElementById('course-category').textContent = getCategoryName(course.category_id);
+                document.getElementById('course-difficulty').textContent = course.difficulty || '초급';
+                document.getElementById('course-level').textContent = course.difficulty || '초급';
+                
+                // 비디오 URL 설정
+                if (course.video_url) {
+                    const videoPlayer = document.getElementById('video-player');
+                    videoPlayer.src = course.video_url;
+                    showLoading(false);
+                    document.getElementById('video-container').style.display = 'block';
+                } else {
+                    throw new Error('강의 동영상이 없습니다.');
+                }
+
+                console.log('✅ 강의 데이터 로드 완료:', course.title);
+                
+            } catch (error) {
+                console.error('강의 데이터 로드 에러:', error);
+                showMessage(error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // 진도 로드
+        async function loadProgress(courseId) {
+            if (!currentUser) return;
+            
+            try {
+                const { data: progress } = await supabase
+                    .from('enrollments')
+                    .select('progress')
+                    .eq('user_id', currentUser.id)
+                    .eq('course_id', courseId)
+                    .single();
+
+                if (progress) {
+                    watchProgress = progress.progress || 0;
+                    updateProgressDisplay(watchProgress);
+                }
+            } catch (error) {
+                console.warn('진도 로드 실패:', error);
+            }
+        }
+
+        // 비디오 플레이어 초기화
+        function initializeVideoPlayer() {
+            videoPlayer = document.getElementById('video-player');
+            
+            // 비디오 이벤트 리스너
+            videoPlayer.addEventListener('loadedmetadata', function() {
+                document.getElementById('total-time').textContent = formatTime(videoPlayer.duration);
+            });
+            
+            videoPlayer.addEventListener('timeupdate', function() {
+                const currentTime = videoPlayer.currentTime;
+                const duration = videoPlayer.duration;
+                
+                if (duration > 0) {
+                    const progress = (currentTime / duration) * 100;
+                    updateProgressDisplay(progress);
+                    
+                    // 진도 자동 저장 (매 30초마다)
+                    if (currentTime % 30 < 1) {
+                        saveProgress(progress);
+                    }
+                }
+                
+                document.getElementById('watched-time').textContent = formatTime(currentTime);
+                document.getElementById('remaining-time').textContent = formatTime(duration - currentTime);
+            });
+            
+            videoPlayer.addEventListener('ended', function() {
+                markAsComplete();
+            });
+        }
+
+        // 진도 표시 업데이트
+        function updateProgressDisplay(progress) {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+        }
+
+        // 진도 저장
+        async function saveProgress(progress) {
+            if (!currentUser || !currentCourse) return;
+            
+            try {
+                await supabase
+                    .from('enrollments')
+                    .update({ progress: progress })
+                    .eq('user_id', currentUser.id)
+                    .eq('course_id', currentCourse.id);
+            } catch (error) {
+                console.warn('진도 저장 실패:', error);
+            }
+        }
+
+        // 카테고리 이름 변환
+        function getCategoryName(categoryId) {
+            const categories = {
+                'marketing': '마케팅',
+                'branding': '브랜드',
+                'development': '창업',
+                'crm': 'CRM'
+            };
+            return categories[categoryId] || '기타';
+        }
+
+        // 시간 포맷팅
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 로딩 표시
+        function showLoading(show) {
+            const spinner = document.getElementById('loading-spinner');
+            const container = document.getElementById('video-container');
+            
+            if (show) {
+                spinner.style.display = 'block';
+                container.style.display = 'none';
+            } else {
+                spinner.style.display = 'none';
+                container.style.display = 'block';
+            }
+        }
+
+        // 메시지 표시
+        function showMessage(message, type = 'info') {
+            const messageArea = document.getElementById('message-area');
+            const alertClass = type === 'error' ? 'alert-danger' : type === 'success' ? 'alert-success' : 'alert-info';
+            
+            messageArea.innerHTML = `
+                <div class="alert ${alertClass} alert-dismissible fade show position-fixed" style="top: 20px; right: 20px; z-index: 9999;">
+                    <strong>${message}</strong>
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                messageArea.innerHTML = '';
+            }, 5000);
+        }
+
+        // 비디오 제어 함수들
+        function togglePlayPause() {
+            const playIcon = document.getElementById('play-icon');
+            
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playIcon.className = 'fas fa-pause';
+            } else {
+                videoPlayer.pause();
+                playIcon.className = 'fas fa-play';
+            }
+        }
+
+        function changeSpeed() {
+            const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+            const currentIndex = speeds.indexOf(currentPlaybackSpeed);
+            const nextIndex = (currentIndex + 1) % speeds.length;
+            
+            currentPlaybackSpeed = speeds[nextIndex];
+            videoPlayer.playbackRate = currentPlaybackSpeed;
+            document.getElementById('speed-text').textContent = currentPlaybackSpeed + 'x';
+        }
+
+        function toggleFullscreen() {
+            if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen();
+            } else if (videoPlayer.mozRequestFullScreen) {
+                videoPlayer.mozRequestFullScreen();
+            } else if (videoPlayer.webkitRequestFullscreen) {
+                videoPlayer.webkitRequestFullscreen();
+            }
+        }
+
+        // 액션 함수들
+        async function markAsComplete() {
+            if (!currentUser || !currentCourse) {
+                showMessage('로그인이 필요합니다.', 'error');
+                return;
+            }
+            
+            try {
+                await supabase
+                    .from('enrollments')
+                    .update({ 
+                        progress: 100,
+                        completed_at: new Date().toISOString()
+                    })
+                    .eq('user_id', currentUser.id)
+                    .eq('course_id', currentCourse.id);
+                
+                showMessage('강의를 완료했습니다! 🎉', 'success');
+                updateProgressDisplay(100);
+                
+            } catch (error) {
+                console.error('완료 처리 에러:', error);
+                showMessage('완료 처리 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        function downloadCertificate() {
+            if (watchProgress < 100) {
+                showMessage('강의를 완료한 후 수료증을 다운로드할 수 있습니다.', 'error');
+                return;
+            }
+            
+            showMessage('수료증 다운로드 기능은 준비 중입니다.', 'info');
+        }
+
+        function shareCourse() {
+            if (navigator.share) {
+                navigator.share({
+                    title: currentCourse?.title || '바로교육 강의',
+                    text: '이 강의를 추천합니다!',
+                    url: window.location.href
+                });
+            } else {
+                // 클립보드에 복사
+                navigator.clipboard.writeText(window.location.href);
+                showMessage('강의 URL이 클립보드에 복사되었습니다!', 'success');
+            }
+        }
+
+        function askQuestion() {
+            showMessage('질문 기능은 준비 중입니다.', 'info');
+        }
+
+        function logout() {
+            if (confirm('로그아웃하시겠습니까?')) {
+                supabase.auth.signOut();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html> 

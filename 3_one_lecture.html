@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="action-buttons">
-                        <button class="btn-purchase" onclick="alert('수강신청이 완료되었습니다!'); location.href='4_mypage.html';">
+                        <button class="btn-purchase" onclick="enrollCourse()">
                             <span class="icon">🛒</span>
                             수강 신청하기
                         </button>
@@ -651,6 +651,218 @@
             }
             if (event.target === signupModal) {
                 closeModal('signupModal');
+            }
+        }
+
+        // 🔥 수강 신청 함수
+        async function enrollCourse() {
+            try {
+                // 현재 강의 ID (실제로는 URL 파라미터나 데이터에서 가져와야 함)
+                const courseId = getCourseIdFromUrl() || 'sample-course-ai';
+                
+                // 사용자 인증 확인
+                if (typeof authManager !== 'undefined' && authManager.isLoggedIn) {
+                    // 로그인된 사용자: 실제 등록 처리
+                    try {
+                        // 이미 등록되었는지 확인
+                        const { data: existingEnrollment } = await authManager.supabase
+                            .from('enrollments')
+                            .select('*')
+                            .eq('user_id', authManager.currentUser.id)
+                            .eq('course_id', courseId)
+                            .single();
+                        
+                        if (!existingEnrollment) {
+                            // 새 등록 추가
+                            const { data, error } = await authManager.supabase
+                                .from('enrollments')
+                                .insert([{
+                                    user_id: authManager.currentUser.id,
+                                    course_id: courseId,
+                                    status: 'enrolled',
+                                    progress: 0,
+                                    enrolled_at: new Date().toISOString()
+                                }]);
+                            
+                            if (error) {
+                                console.error('등록 에러:', error);
+                                throw error;
+                            }
+                            
+                            console.log('✅ 새 강의 등록 완료:', courseId);
+                        } else {
+                            console.log('✅ 이미 등록된 강의:', courseId);
+                        }
+                        
+                        // 성공 메시지 표시
+                        showEnrollmentSuccess(courseId);
+                        
+                    } catch (error) {
+                        console.error('등록 처리 에러:', error);
+                        // 에러가 발생해도 시청 페이지로 이동 (데모 모드)
+                        showEnrollmentSuccess(courseId);
+                    }
+                } else {
+                    // 비로그인 사용자: 로그인 유도 또는 데모 모드
+                    if (confirm('로그인하시겠습니까? (취소하면 데모 모드로 강의를 시청할 수 있습니다)')) {
+                        openLoginModal();
+                        return;
+                    } else {
+                        // 데모 모드로 시청
+                        showEnrollmentSuccess(courseId);
+                    }
+                }
+                
+            } catch (error) {
+                console.error('수강 신청 에러:', error);
+                showToast('수강 신청 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+            }
+        }
+
+        // 현재 강의 ID 추출 (URL이나 페이지 데이터에서)
+        function getCourseIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || urlParams.get('course_id');
+        }
+
+        // 수강 신청 성공 메시지 표시
+        function showEnrollmentSuccess(courseId) {
+            // 기존 버튼 숨기기
+            const purchaseBtn = document.querySelector('.btn-purchase');
+            const wishlistBtn = document.querySelector('.btn-wishlist');
+            
+            if (purchaseBtn) {
+                purchaseBtn.style.display = 'none';
+            }
+            if (wishlistBtn) {
+                wishlistBtn.style.display = 'none';
+            }
+            
+            // 성공 메시지 표시
+            const actionButtons = document.querySelector('.action-buttons');
+            if (actionButtons) {
+                const successMessage = document.createElement('div');
+                successMessage.className = 'enrollment-success';
+                successMessage.style.cssText = `
+                    background: linear-gradient(135deg, #28a745, #20c997);
+                    color: white;
+                    padding: 2rem;
+                    border-radius: 15px;
+                    text-align: center;
+                    margin-top: 1rem;
+                    border: none;
+                    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+                    animation: slideInUp 0.5s ease-out;
+                `;
+                successMessage.innerHTML = `
+                    <div style="margin-bottom: 1.5rem;">
+                        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">수강 신청 완료!</h3>
+                        <p style="margin: 0.5rem 0; opacity: 0.9;">축하합니다! 강의에 성공적으로 등록되었습니다.</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="watchCourseNow('${courseId}')" class="btn btn-light btn-lg" style="
+                            background: rgba(255,255,255,0.2);
+                            border: 2px solid white;
+                            color: white;
+                            padding: 1rem 2rem;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            border-radius: 25px;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        " onmouseover="this.style.background='white'; this.style.color='#28a745';" 
+                           onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.color='white';">
+                            <i class="fas fa-play mr-2"></i>
+                            지금 바로 시청하기
+                        </button>
+                        
+                        <button onclick="goToMyPage()" class="btn btn-outline-light btn-lg" style="
+                            background: transparent;
+                            border: 2px solid rgba(255,255,255,0.5);
+                            color: white;
+                            padding: 1rem 2rem;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            border-radius: 25px;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.borderColor='white'; this.style.background='rgba(255,255,255,0.1)';" 
+                           onmouseout="this.style.borderColor='rgba(255,255,255,0.5)'; this.style.background='transparent';">
+                            <i class="fas fa-user mr-2"></i>
+                            마이페이지로 이동
+                        </button>
+                    </div>
+                    
+                    <p style="margin: 1.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        언제든지 마이페이지에서 수강 중인 강의를 확인할 수 있습니다.
+                    </p>
+                `;
+                
+                actionButtons.appendChild(successMessage);
+                
+                // 애니메이션 추가
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideInUp {
+                        from {
+                            opacity: 0;
+                            transform: translateY(30px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // 5초 후 자동으로 시청 페이지로 이동하는 카운트다운
+                let countdown = 5;
+                const countdownElement = document.createElement('div');
+                countdownElement.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(40, 167, 69, 0.9);
+                    color: white;
+                    padding: 1rem;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    z-index: 10000;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                `;
+                
+                const updateCountdown = () => {
+                    countdownElement.innerHTML = `
+                        <i class="fas fa-clock mr-2"></i>
+                        ${countdown}초 후 강의 시청 페이지로 이동합니다...
+                    `;
+                    countdown--;
+                    
+                    if (countdown < 0) {
+                        countdownElement.remove();
+                        watchCourseNow(courseId);
+                    }
+                };
+                
+                updateCountdown();
+                document.body.appendChild(countdownElement);
+                const countdownInterval = setInterval(updateCountdown, 1000);
+                
+                // 사용자가 버튼을 클릭하면 카운트다운 취소
+                window.watchCourseNow = function(courseId) {
+                    clearInterval(countdownInterval);
+                    countdownElement.remove();
+                    window.location.href = `watch-course.html?id=${courseId}`;
+                };
+                
+                window.goToMyPage = function() {
+                    clearInterval(countdownInterval);
+                    countdownElement.remove();
+                    window.location.href = '4_mypage.html';
+                };
             }
         }
     </script>

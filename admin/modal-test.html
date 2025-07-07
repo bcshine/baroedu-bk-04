@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>모달 테스트 - 바로교육</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>모달 테스트 페이지</h1>
+        <p>이 페이지는 강좌 추가 모달의 기본 기능을 테스트하기 위한 것입니다.</p>
+        
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary" onclick="showAddCourseModal()">
+                <i class="fas fa-plus"></i> 새 강좌 추가 (onclick)
+            </button>
+            
+            <button type="button" class="btn btn-secondary ml-2" id="test-btn">
+                <i class="fas fa-plus"></i> 새 강좌 추가 (이벤트리스너)
+            </button>
+            
+            <button type="button" class="btn btn-info ml-2" onclick="debugTest()">
+                <i class="fas fa-bug"></i> 디버그 정보
+            </button>
+        </div>
+        
+        <div class="alert alert-info">
+            <h5>테스트 방법:</h5>
+            <ol>
+                <li>위의 버튼들을 클릭해서 모달이 열리는지 확인</li>
+                <li>개발자 도구 콘솔에서 에러 메시지 확인</li>
+                <li><code>debugTest()</code> 함수로 상태 확인</li>
+                <li><code>showAddCourseModal()</code> 함수를 콘솔에서 직접 호출</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- 강좌 추가 모달 (간단한 버전) -->
+    <div class="modal fade" id="course-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-title">강좌 추가</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="course-form">
+                        <input type="hidden" id="course-id">
+                        
+                        <div class="form-group">
+                            <label for="course-title">강좌 제목 *</label>
+                            <input type="text" class="form-control" id="course-title" required 
+                                   placeholder="예: SNS 마케팅 마스터 클래스">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course-instructor">강사명 *</label>
+                            <input type="text" class="form-control" id="course-instructor" required 
+                                   placeholder="예: 김마케팅">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course-price">가격 (원)</label>
+                            <input type="number" class="form-control" id="course-price" min="0" 
+                                   placeholder="99000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course-description">상세 설명</label>
+                            <textarea class="form-control" id="course-description" rows="3" 
+                                      placeholder="강좌의 목표, 내용, 수강 대상 등을 자세히 설명해주세요."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="fas fa-times mr-1"></i>취소
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-save mr-1"></i>저장
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 새 강좌 추가 모달 표시 (단순한 버전)
+        function showAddCourseModal() {
+            console.log('🔵 모달 테스트 - 새 강좌 추가 모달 열기');
+            try {
+                // DOM 요소 확인
+                const modalTitle = document.getElementById('modal-title');
+                const courseForm = document.getElementById('course-form');
+                const courseId = document.getElementById('course-id');
+                
+                console.log('DOM 요소 확인:', {
+                    modalTitle: !!modalTitle,
+                    courseForm: !!courseForm,
+                    courseId: !!courseId
+                });
+                
+                if (!modalTitle || !courseForm || !courseId) {
+                    console.error('❌ 필수 DOM 요소 없음');
+                    alert('필수 DOM 요소가 없습니다.');
+                    return;
+                }
+                
+                // 폼 초기화
+                modalTitle.textContent = '새 강좌 추가';
+                courseForm.reset();
+                courseId.value = '';
+                
+                console.log('jQuery 확인:', typeof $);
+                console.log('Bootstrap 모달 함수 확인:', typeof $.fn.modal);
+                
+                // 모달 열기
+                if (typeof $ !== 'undefined' && $.fn.modal) {
+                    $('#course-modal').modal('show');
+                    console.log('✅ Bootstrap 모달로 열기 성공');
+                } else {
+                    // Bootstrap이 없는 경우 직접 CSS로 열기
+                    const modal = document.getElementById('course-modal');
+                    if (modal) {
+                        modal.style.display = 'block';
+                        modal.classList.add('show');
+                        document.body.classList.add('modal-open');
+                        console.log('✅ CSS 직접 조작으로 모달 열기 성공');
+                    } else {
+                        console.error('❌ 모달 요소를 찾을 수 없음');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('❌ 모달 열기 에러:', error);
+                alert('모달 열기 에러: ' + error.message);
+            }
+        }
+        
+        // 디버그 정보 함수
+        function debugTest() {
+            console.log('🔧 디버그 정보:');
+            console.log('- showAddCourseModal 함수:', typeof showAddCourseModal);
+            console.log('- jQuery 로드:', typeof $);
+            console.log('- Bootstrap 모달:', typeof $.fn.modal);
+            console.log('- DOM 준비 상태:', document.readyState);
+            console.log('- course-modal 요소:', !!document.getElementById('course-modal'));
+            console.log('- modal-title 요소:', !!document.getElementById('modal-title'));
+            console.log('- course-form 요소:', !!document.getElementById('course-form'));
+            console.log('- course-id 요소:', !!document.getElementById('course-id'));
+        }
+        
+        // 전역으로 함수 노출
+        window.showAddCourseModal = showAddCourseModal;
+        window.debugTest = debugTest;
+        
+        // 페이지 로드 완료 후 이벤트 리스너 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM 로드 완료');
+            
+            // 이벤트 리스너로 버튼 연결
+            const testBtn = document.getElementById('test-btn');
+            if (testBtn) {
+                testBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🔘 이벤트 리스너 버튼 클릭됨');
+                    showAddCourseModal();
+                });
+            }
+            
+            // 초기 디버그 정보 출력
+            setTimeout(debugTest, 1000);
+        });
+        
+        console.log('✅ 테스트 스크립트 로드 완료');
+    </script>
+</body>
+</html> 
