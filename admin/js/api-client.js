@@ -551,4 +551,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!window.location.pathname.includes('login.html')) {
         checkAuth();
     }
-}); 
+});
+
+// 관리자 이메일 확인 함수 (전역 노출)
+window.isAdminEmail = function(email) {
+    return ADMIN_EMAILS.includes(email.toLowerCase());
+}; 

@@ -1,21 +1,19 @@
 // Supabase 설정 (anon key 전용)
-const SUPABASE_URL = 'https://bjsstktiiniigdnsdwsr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqc3N0a3RpaW5paWdkbnNkd3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDI4MTEsImV4cCI6MjA2NzA3ODgxMX0.h3W1Q3L_yX8_HPOMmEluq2Qum_INJSCv9OKV4IZdYRs';
+// 이 파일은 api-client.js와 함께 사용되므로 중복 선언을 방지합니다.
+// 실제 설정값은 api-client.js에서 관리합니다.
 
-// 관리자 이메일 목록 (간단한 권한 확인용)
-const ADMIN_EMAILS = [
-    'admin@baroedu.com',
+// 관리자 이메일 목록 (간단한 권한 확인용) - 추가 목록
+const ADDITIONAL_ADMIN_EMAILS = [
     'manager@baroedu.com'
 ];
 
-// Supabase 클라이언트 초기화
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Supabase 클라이언트는 api-client.js에서 초기화되므로 여기서는 선언하지 않습니다.
 
 // 관리자 로그인 함수
 async function adminLogin(email, password) {
     try {
-        // 관리자 이메일 확인
-        if (!ADMIN_EMAILS.includes(email.toLowerCase())) {
+        // 관리자 이메일 확인 (api-client.js의 ADMIN_EMAILS 사용)
+        if (!window.isAdminEmail || !window.isAdminEmail(email)) {
             throw new Error('관리자 권한이 없습니다.');
         }
 
@@ -38,7 +36,14 @@ async function adminLogin(email, password) {
 // 관리자 권한 확인 (간단한 방식)
 async function checkAdminRole(userEmail) {
     try {
-        return ADMIN_EMAILS.includes(userEmail.toLowerCase());
+        // api-client.js의 isAdminEmail 함수 사용
+        if (window.isAdminEmail) {
+            return window.isAdminEmail(userEmail);
+        }
+        
+        // 기본 관리자 이메일 확인
+        const adminEmails = ['admin@baroedu.com', 'manager@baroedu.com'];
+        return adminEmails.includes(userEmail.toLowerCase());
     } catch (error) {
         console.error('관리자 권한 확인 에러:', error);
         return false;

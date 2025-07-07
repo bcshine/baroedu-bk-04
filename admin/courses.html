@@ -60,6 +60,297 @@
         .course-rating {
             color: #ffc107;
         }
+        
+        /* 모달 스타일 개선 */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            padding: 20px 30px;
+            border-bottom: none;
+        }
+        
+        .modal-header .modal-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .modal-header .close {
+            color: white;
+            opacity: 0.8;
+            font-size: 1.5rem;
+            text-shadow: none;
+        }
+        
+        .modal-header .close:hover {
+            opacity: 1;
+            color: white;
+        }
+        
+        .modal-body {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .modal-footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 20px 30px;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        /* 기존 폼 필드 스타일 (아래 섹션에서 재정의됨) */
+        
+        .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .form-control::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+        
+        /* Textarea는 높이 자동 조정 */
+        textarea.form-control {
+            height: auto;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Select 박스 스타일 개선 */
+        select.form-control {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+            appearance: none;
+        }
+        
+        .custom-file-label {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            line-height: 1.5;
+            background-color: #fff;
+        }
+        
+        .custom-file-label:hover {
+            background-color: #f8f9fa;
+            border-color: #ccc;
+        }
+        
+        .custom-file-input:focus ~ .custom-file-label {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .custom-file-label::after {
+            content: "Browse";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #495057;
+            background-color: #e9ecef;
+            border-left: 1px solid #e0e0e0;
+            border-radius: 0 8px 8px 0;
+            font-weight: 500;
+        }
+        
+        /* 버튼 스타일 개선 */
+        .btn {
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        /* 진행바 스타일 개선 */
+        .progress {
+            border-radius: 10px;
+            height: 8px;
+            background-color: #e9ecef;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* 알림 스타일 개선 */
+        .alert {
+            border-radius: 8px;
+            border: none;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #0d47a1;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            color: #2e7d32;
+        }
+        
+        /* 폼 섹션 구분 */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .form-section-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.15rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-section-title i {
+            color: #667eea;
+        }
+        
+        /* 폼 그룹 간격 조정 */
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 라벨 스타일 개선 */
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-group label i {
+            color: #667eea;
+            width: 16px;
+        }
+        
+        /* 도움말 텍스트 스타일 개선 */
+        .form-text {
+            margin-top: 6px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .text-muted {
+            color: #6c757d !important;
+        }
+        
+        /* 체크박스 스타일 개선 */
+        .form-check {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin-top: 0;
+            margin-right: 8px;
+            position: static;
+        }
+        
+        .form-check-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        /* 무료 강좌 체크박스 간단하게 */
+        .simple-check {
+            margin-top: 8px;
+            margin-left: 15px;
+        }
+        
+        /* 반응형 개선 */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .modal-footer {
+                padding: 15px 20px;
+            }
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -87,7 +378,7 @@
                             <i class="fas fa-user mr-2"></i> 프로필
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item" onclick="logout()">
+                        <a href="#" class="dropdown-item" onclick="logoutUser()">
                             <i class="fas fa-sign-out-alt mr-2"></i> 로그아웃
                         </a>
                     </div>
@@ -199,6 +490,7 @@
                                             <th>가격</th>
                                             <th>평점</th>
                                             <th>수강생</th>
+                                            <th>영상</th>
                                             <th>상태</th>
                                             <th>생성일</th>
                                             <th>작업</th>
@@ -227,7 +519,7 @@
 
     <!-- 강좌 추가/수정 모달 -->
     <div class="modal fade" id="course-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modal-title">강좌 추가</h4>
@@ -235,98 +527,185 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="course-form">
+                                     <form id="course-form">
                     <div class="modal-body">
                         <input type="hidden" id="course-id">
                         
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="course-title">강좌 제목 *</label>
-                                    <input type="text" class="form-control" id="course-title" required>
+                        <!-- 기본 정보 섹션 -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-info-circle mr-2"></i>기본 정보
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="course-title">강좌 제목 *</label>
+                                        <input type="text" class="form-control" id="course-title" required 
+                                               placeholder="예: SNS 마케팅 마스터 클래스">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="course-status">상태</label>
+                                        <select class="form-control" id="course-status">
+                                            <option value="draft">임시저장</option>
+                                            <option value="published">게시</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="course-status">상태</label>
-                                    <select class="form-control" id="course-status">
-                                        <option value="draft">임시저장</option>
-                                        <option value="published">게시</option>
-                                    </select>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="course-instructor">강사명 *</label>
+                                        <input type="text" class="form-control" id="course-instructor" required 
+                                               placeholder="예: 김마케팅">
+                                    </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="course-category">카테고리</label>
+                                        <select class="form-control" id="course-category">
+                                            <option value="marketing">마케팅</option>
+                                            <option value="branding">브랜드</option>
+                                            <option value="development">창업</option>
+                                            <option value="crm">CRM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="course-description">상세 설명</label>
+                                <textarea class="form-control" id="course-description" rows="4" 
+                                          placeholder="강좌의 목표, 내용, 수강 대상 등을 자세히 설명해주세요."></textarea>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="course-instructor">강사명 *</label>
-                                    <input type="text" class="form-control" id="course-instructor" required>
+                        <!-- 가격 및 옵션 섹션 -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-won-sign mr-2"></i>가격 및 옵션
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="course-price">
+                                            <i class="fas fa-won-sign mr-2"></i>가격 (원)
+                                        </label>
+                                        <input type="number" class="form-control" id="course-price" min="0" 
+                                               placeholder="99000">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="course-difficulty">
+                                            <i class="fas fa-layer-group mr-2"></i>난이도
+                                        </label>
+                                        <select class="form-control" id="course-difficulty">
+                                            <option value="beginner">초급</option>
+                                            <option value="intermediate">중급</option>
+                                            <option value="advanced">고급</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="course-category">카테고리</label>
-                                    <select class="form-control" id="course-category">
-                                        <option value="marketing">마케팅</option>
-                                        <option value="branding">브랜드</option>
-                                        <option value="development">창업</option>
-                                        <option value="crm">CRM</option>
-                                    </select>
+                            
+                            <!-- 무료 강좌 옵션 -->
+                            <div class="simple-check">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="course-is-free">
+                                    <label class="form-check-label" for="course-is-free">
+                                        무료 강좌로 설정
+                                    </label>
                                 </div>
+                                <small class="text-muted ml-4">
+                                    체크하면 가격이 무시되고 무료 강좌로 등록됩니다.
+                                </small>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="course-price">가격 (원)</label>
-                                    <input type="number" class="form-control" id="course-price" min="0">
+                        <!-- 미디어 파일 섹션 -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-photo-video mr-2"></i>미디어 파일
+                            </div>
+                            
+
+                            <!-- 썸네일 이미지 업로드 -->
+                            <div class="form-group">
+                                <label for="course-thumbnail">
+                                    <i class="fas fa-image mr-2"></i>썸네일 이미지
+                                </label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="course-thumbnail" accept="image/*">
+                                    <label class="custom-file-label" for="course-thumbnail">썸네일 이미지를 선택하세요</label>
+                                </div>
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    지원 형식: JPG, PNG, GIF (최대 5MB) - 강좌 목록에 표시될 대표 이미지입니다.
+                                </small>
+                            </div>
+                            
+                            
+
+                            <!-- 영상 파일 업로드 -->
+                            <div class="form-group">
+                                <label for="course-video">
+                                    <i class="fas fa-video mr-2"></i>영상 파일 업로드
+                                </label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="course-video" accept="video/mp4,video/webm,video/avi,video/mov">
+                                    <label class="custom-file-label" for="course-video">영상 파일을 선택하세요</label>
+                                </div>
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    지원 형식: MP4, WebM, AVI, MOV (최대 100MB) - 50MB 이상 파일은 자동 압축됩니다.
+                                </small>
+                            </div>
+                            
+                            <!-- 업로드 진행률 -->
+                            <div class="progress mt-2" id="upload-progress" style="display: none;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">
+                                    <span class="sr-only">0% 완료</span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="course-duration">수강시간 (시간)</label>
-                                    <input type="number" class="form-control" id="course-duration" min="0">
-                                </div>
+                            
+                            <!-- 압축 상태 -->
+                            <div class="alert alert-info mt-2" id="compression-status" style="display: none;">
+                                <i class="fas fa-compress-arrows-alt mr-2"></i>영상 압축 중... 잠시만 기다려주세요.
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="course-difficulty">난이도</label>
-                                    <select class="form-control" id="course-difficulty">
-                                        <option value="beginner">초급</option>
-                                        <option value="intermediate">중급</option>
-                                        <option value="advanced">고급</option>
-                                    </select>
-                                </div>
+                            
+                            <!-- 업로드 성공 상태 -->
+                            <div class="alert alert-success mt-2" id="upload-success" style="display: none;">
+                                <i class="fas fa-check-circle mr-2"></i>영상 업로드가 완료되었습니다!
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="course-short-description">짧은 설명</label>
-                            <input type="text" class="form-control" id="course-short-description" maxlength="100">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="course-description">상세 설명</label>
-                            <textarea class="form-control" id="course-description" rows="4"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="course-thumbnail">썸네일 URL</label>
-                            <input type="url" class="form-control" id="course-thumbnail">
-                        </div>
-
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="course-is-free">
-                            <label class="form-check-label" for="course-is-free">
-                                무료 강좌
-                            </label>
+                            <div class="form-group mt-3">
+                                <label for="course-video-url">영상 URL (직접 입력)</label>
+                                <input type="url" class="form-control" id="course-video-url" 
+                                       placeholder="https://example.com/video.mp4">
+                                <small class="form-text text-muted">또는 기존 영상 URL을 직접 입력하세요</small>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary">저장</button>
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div>
+                                <small class="text-muted">* 필수 입력 항목</small>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">
+                                    <i class="fas fa-times mr-1"></i>취소
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save mr-1"></i>저장
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -344,56 +723,399 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Supabase 설정 -->
-    <script src="js/supabase-config.js"></script>
-    <!-- API 클라이언트 -->
-    <script src="js/api-client.js"></script>
+    <!-- FFmpeg.js for video compression -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js"></script>
     
     <script>
-        let coursesTable = null;
+        // ===============================
+        // Supabase 설정 (인라인으로 모든 코드 포함)
+        // ===============================
+        const SUPABASE_URL = 'https://bjsstktiiniigdnsdwsr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqc3N0a3RpaW5paWdkbnNkd3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDI4MTEsImV4cCI6MjA2NzA3ODgxMX0.h3W1Q3L_yX8_HPOMmEluq2Qum_INJSCv9OKV4IZdYRs';
+        
+        const ADMIN_EMAILS = [
+            'admin@baroedu.com',
+            'manager@baroedu.com', 
+            'test@baroedu.com'
+        ];
 
-        // 페이지 로드 시 초기화
-        document.addEventListener('DOMContentLoaded', async function() {
+        // Supabase 클라이언트 초기화
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ===============================
+        // 전역 변수
+        // ===============================
+        let coursesTable = null;
+        let currentUser = null;
+        let ffmpeg = null;
+        let uploadedVideoUrl = null;
+        let uploadedThumbnailUrl = null;
+
+        // ===============================
+        // 전역 함수들 (모달 및 액션)
+        // ===============================
+        
+        // 새 강좌 추가 모달 표시
+        function showAddCourseModal() {
+            console.log('🔵 새 강좌 추가 모달 열기');
             try {
-                // 인증 확인
-                const user = await checkAuth();
+                document.getElementById('modal-title').textContent = '새 강좌 추가';
+                document.getElementById('course-form').reset();
+                document.getElementById('course-id').value = '';
                 
-                if (user) {
-                    // 사용자 정보 업데이트
-                    document.getElementById('admin-name').textContent = user.name || user.email || '관리자';
-                    
-                    // 강좌 관리 페이지 초기화
-                    await initCoursesPage();
-                    
-                    console.log('✅ 강좌 관리 페이지 초기화 완료');
-                } else {
-                    // 인증 실패 시 로그인 페이지로 이동
-                    window.location.href = 'login.html';
+                // 파일 입력 라벨 초기화
+                const videoFileLabel = document.querySelector('#course-video').parentElement.querySelector('.custom-file-label');
+                const thumbnailFileLabel = document.querySelector('#course-thumbnail').parentElement.querySelector('.custom-file-label');
+                if (videoFileLabel) {
+                    videoFileLabel.textContent = '영상 파일을 선택하세요';
+                }
+                if (thumbnailFileLabel) {
+                    thumbnailFileLabel.textContent = '썸네일 이미지를 선택하세요';
                 }
                 
-            } catch (error) {
-                console.error('❌ 페이지 초기화 에러:', error);
-                window.location.href = 'login.html';
-            }
-        });
-
-        // 강좌 관리 페이지 초기화
-        async function initCoursesPage() {
-            try {
-                // 강좌 테이블 초기화
-                await initCoursesTable();
+                // 상태 UI 초기화
+                hideUploadProgress();
+                hideCompressionStatus();
+                hideUploadSuccess();
                 
-                // 강좌 목록 로드
-                await loadCourses();
+                // 업로드 변수 초기화
+                uploadedVideoUrl = null;
+                uploadedThumbnailUrl = null;
                 
-                console.log('✅ 강좌 관리 페이지 로드 완료');
+                $('#course-modal').modal('show');
+                console.log('✅ 모달 열기 성공');
             } catch (error) {
-                console.error('❌ 강좌 관리 페이지 초기화 에러:', error);
-                showToast('강좌 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
+                console.error('❌ 모달 열기 에러:', error);
+                alert('모달을 여는 중 오류가 발생했습니다.');
             }
         }
 
+        // 영상 재생
+        function playVideo(videoUrl) {
+            if (!videoUrl) {
+                alert('영상 URL이 없습니다.');
+                return;
+            }
+            window.open(videoUrl, '_blank', 'width=800,height=600');
+        }
+
+        // 강좌 상세보기
+        function viewCourse(courseId) {
+            alert('강좌 상세보기 기능은 준비 중입니다.');
+        }
+
+        // 강좌 수정
+        function editCourse(courseId) {
+            alert('강좌 수정 기능은 준비 중입니다.');
+        }
+
+        // 강좌 삭제
+        function deleteCourse(courseId) {
+            if (confirm('정말로 이 강좌를 삭제하시겠습니까?')) {
+                alert('강좌 삭제 기능은 준비 중입니다.');
+            }
+        }
+
+        // 로그아웃
+        function logoutUser() {
+            if (confirm('정말로 로그아웃하시겠습니까?')) {
+                try {
+                    supabase.auth.signOut();
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                } catch (error) {
+                    console.error('로그아웃 에러:', error);
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+
+        // ===============================
+        // 영상 파일 처리 함수들
+        // ===============================
+        
+        // FFmpeg 초기화
+        async function initFFmpeg() {
+            try {
+                if (ffmpeg) return ffmpeg;
+                
+                // 동적으로 FFmpeg 로드
+                const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/esm/index.js');
+                const { fetchFile, toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');
+                
+                ffmpeg = new FFmpeg();
+                
+                const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                    workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript')
+                });
+                
+                console.log('✅ FFmpeg 초기화 완료');
+                return ffmpeg;
+            } catch (error) {
+                console.error('❌ FFmpeg 초기화 에러:', error);
+                return null;
+            }
+        }
+
+        // 영상 압축
+        async function compressVideo(file) {
+            try {
+                console.log('🔄 영상 압축 시작:', file.name);
+                
+                const ffmpegInstance = await initFFmpeg();
+                if (!ffmpegInstance) {
+                    throw new Error('FFmpeg 초기화 실패');
+                }
+
+                const { fetchFile } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');
+                
+                // 입력 파일 등록
+                await ffmpegInstance.writeFile('input.mp4', await fetchFile(file));
+                
+                // 압축 옵션 설정 (720p, H.264, CRF 23)
+                await ffmpegInstance.exec([
+                    '-i', 'input.mp4',
+                    '-c:v', 'libx264',
+                    '-crf', '23',
+                    '-preset', 'medium',
+                    '-vf', 'scale=-2:720',
+                    '-c:a', 'aac',
+                    '-b:a', '128k',
+                    'output.mp4'
+                ]);
+                
+                // 압축된 파일 읽기
+                const data = await ffmpegInstance.readFile('output.mp4');
+                const compressedBlob = new Blob([data.buffer], { type: 'video/mp4' });
+                
+                // 파일 정리
+                await ffmpegInstance.deleteFile('input.mp4');
+                await ffmpegInstance.deleteFile('output.mp4');
+                
+                console.log(`✅ 영상 압축 완료: ${file.size} → ${compressedBlob.size} bytes`);
+                return compressedBlob;
+            } catch (error) {
+                console.error('❌ 영상 압축 에러:', error);
+                throw error;
+            }
+        }
+
+        // Supabase Storage에 영상 업로드
+        async function uploadVideoToStorage(file, fileName) {
+            try {
+                console.log('🔄 Supabase Storage에 업로드 시작:', fileName);
+                
+                const { data, error } = await supabase.storage
+                    .from('course-videos')
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
+
+                if (error) {
+                    throw error;
+                }
+
+                // 공개 URL 생성
+                const { data: { publicUrl } } = supabase.storage
+                    .from('course-videos')
+                    .getPublicUrl(fileName);
+
+                console.log('✅ 업로드 완료:', publicUrl);
+                return publicUrl;
+            } catch (error) {
+                console.error('❌ 업로드 에러:', error);
+                throw error;
+            }
+        }
+
+        // 영상 파일 처리 (압축 + 업로드)
+        async function processVideoFile(file) {
+            try {
+                const maxSize = 100 * 1024 * 1024; // 100MB
+                const shouldCompress = file.size > 50 * 1024 * 1024; // 50MB 이상 시 압축
+                
+                // UI 업데이트
+                showUploadProgress(0);
+                
+                // 파일 크기 체크
+                if (file.size > maxSize) {
+                    showCompressionStatus('파일 크기가 100MB를 초과합니다. 압축을 시도합니다.');
+                }
+
+                let processedFile = file;
+
+                // 압축 필요 시 압축 실행
+                if (shouldCompress) {
+                    try {
+                        showCompressionStatus('영상 압축 중...');
+                        processedFile = await compressVideo(file);
+                        hideCompressionStatus();
+                        
+                        // 압축 후에도 크기가 클 경우
+                        if (processedFile.size > maxSize) {
+                            throw new Error('압축 후에도 파일 크기가 너무 큽니다.');
+                        }
+                    } catch (compressError) {
+                        console.warn('압축 실패, 원본 파일 사용:', compressError);
+                        hideCompressionStatus();
+                        processedFile = file;
+                    }
+                }
+
+                // Supabase Storage에 업로드
+                showUploadProgress(50);
+                
+                const fileName = `video_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.mp4`;
+                const videoUrl = await uploadVideoToStorage(processedFile, fileName);
+                
+                showUploadProgress(100);
+                uploadedVideoUrl = videoUrl;
+                
+                // 성공 상태 표시
+                showUploadSuccess();
+                setTimeout(() => {
+                    hideUploadProgress();
+                }, 1000);
+                
+                return videoUrl;
+            } catch (error) {
+                console.error('❌ 영상 파일 처리 에러:', error);
+                hideUploadProgress();
+                hideCompressionStatus();
+                throw error;
+            }
+        }
+
+        // UI 헬퍼 함수들
+        function showUploadProgress(percent) {
+            const progressDiv = document.getElementById('upload-progress');
+            const progressBar = progressDiv.querySelector('.progress-bar');
+            
+            progressDiv.style.display = 'block';
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = percent + '%';
+        }
+
+        function hideUploadProgress() {
+            document.getElementById('upload-progress').style.display = 'none';
+        }
+
+        function showCompressionStatus(message) {
+            const statusDiv = document.getElementById('compression-status');
+            statusDiv.style.display = 'block';
+            statusDiv.querySelector('i').nextSibling.textContent = ' ' + message;
+        }
+
+        function hideCompressionStatus() {
+            document.getElementById('compression-status').style.display = 'none';
+        }
+
+        function showUploadSuccess() {
+            document.getElementById('upload-success').style.display = 'block';
+        }
+
+        function hideUploadSuccess() {
+            document.getElementById('upload-success').style.display = 'none';
+        }
+
+        // 썸네일 이미지 업로드
+        async function uploadThumbnailToStorage(file, fileName) {
+            try {
+                console.log('🔄 썸네일 이미지 업로드 시작:', fileName);
+                
+                const { data, error } = await supabase.storage
+                    .from('course-thumbnails')
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
+
+                if (error) {
+                    throw error;
+                }
+
+                // 공개 URL 생성
+                const { data: { publicUrl } } = supabase.storage
+                    .from('course-thumbnails')
+                    .getPublicUrl(fileName);
+
+                console.log('✅ 썸네일 업로드 완료:', publicUrl);
+                return publicUrl;
+            } catch (error) {
+                console.error('❌ 썸네일 업로드 에러:', error);
+                throw error;
+            }
+        }
+
+        // 썸네일 이미지 처리
+        async function processThumbnailFile(file) {
+            try {
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                
+                // 파일 크기 체크
+                if (file.size > maxSize) {
+                    throw new Error('썸네일 이미지는 5MB 이하여야 합니다.');
+                }
+
+                // 이미지 파일 형식 체크
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    throw new Error('지원하지 않는 이미지 형식입니다. (JPG, PNG, GIF, WebP만 지원)');
+                }
+
+                // Supabase Storage에 업로드
+                const fileName = `thumbnail_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${file.type.split('/')[1]}`;
+                const thumbnailUrl = await uploadThumbnailToStorage(file, fileName);
+                
+                uploadedThumbnailUrl = thumbnailUrl;
+                
+                return thumbnailUrl;
+            } catch (error) {
+                console.error('❌ 썸네일 처리 에러:', error);
+                throw error;
+            }
+        }
+
+        // ===============================
+        // 인증 관련 함수들
+        // ===============================
+        
+        // 인증 확인
+        async function checkAuth() {
+            try {
+                console.log('🔵 인증 확인 시작');
+                
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    console.log('❌ 사용자 없음');
+                    throw new Error('인증되지 않은 사용자입니다.');
+                }
+
+                // 관리자 이메일 확인
+                if (!ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+                    console.log('❌ 관리자 권한 없음:', user.email);
+                    throw new Error('관리자 권한이 없습니다.');
+                }
+
+                console.log('✅ 인증 성공:', user.email);
+                currentUser = user;
+                return user;
+                
+            } catch (error) {
+                console.error('❌ 인증 에러:', error);
+                return null;
+            }
+        }
+
+        // ===============================
+        // 강좌 관리 함수들
+        // ===============================
+        
         // 강좌 테이블 초기화
         async function initCoursesTable() {
             try {
@@ -417,12 +1139,12 @@
                         "zeroRecords": "검색 결과가 없습니다."
                     },
                     pageLength: 25,
-                    order: [[8, 'desc']], // 생성일 기준 내림차순
+                    order: [[9, 'desc']],
                     columnDefs: [
-                        { targets: [0, 9], orderable: false }, // 썸네일, 작업 컬럼 정렬 비활성화
-                        { targets: [4], className: 'text-right' }, // 가격 컬럼 우측 정렬
-                        { targets: [5, 6], className: 'text-center' }, // 평점, 수강생 컬럼 중앙 정렬
-                        { targets: [8], type: 'date' } // 생성일 컬럼
+                        { targets: [0, 7, 10], orderable: false },
+                        { targets: [4], className: 'text-right' },
+                        { targets: [5, 6, 7], className: 'text-center' },
+                        { targets: [9], type: 'date' }
                     ]
                 });
                 
@@ -437,7 +1159,6 @@
             try {
                 console.log('🔄 강좌 목록 로드 중...');
                 
-                // Supabase에서 강좌 목록 가져오기
                 const { data: courses, error } = await supabase
                     .from('courses')
                     .select('*')
@@ -445,7 +1166,6 @@
 
                 if (error) {
                     console.warn('강좌 목록 조회 에러:', error);
-                    // 에러 시 샘플 데이터 표시
                     displaySampleCourses();
                     return;
                 }
@@ -470,7 +1190,7 @@
             }
         }
 
-        // 실제 강좌 데이터 표시 (바로교육 사이트 기반)
+        // 샘플 강좌 데이터 표시
         function displaySampleCourses() {
             if (!coursesTable) return;
 
@@ -478,122 +1198,68 @@
                 {
                     id: '1',
                     title: 'SNS 마케팅 마스터',
-                    instructor: '김마케팅',
-                    category: 'marketing',
+                    instructor_name: '김마케팅',
+                    category_id: 'marketing',
                     price: 99000,
                     rating: 4.8,
-                    students: 150,
+                    total_students: 150,
                     status: 'published',
-                    thumbnail: '../images/pd1.jpg',
+                    thumbnail_url: '../images/pd1.jpg',
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
                     created_at: '2024-01-15T10:30:00Z'
                 },
                 {
                     id: '2',
                     title: 'AI 상세페이지 최적화',
-                    instructor: '이디자인',
-                    category: 'branding',
+                    instructor_name: '이디자인',
+                    category_id: 'branding',
                     price: 0,
+                    is_free: true,
                     rating: 4.5,
-                    students: 89,
+                    total_students: 89,
                     status: 'published',
-                    thumbnail: '../images/pd2.jpg',
+                    thumbnail_url: '../images/pd2.jpg',
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
                     created_at: '2024-01-10T15:45:00Z'
                 },
                 {
                     id: '3',
                     title: '바이럴 콘텐츠 기초부터 실전',
-                    instructor: '박바이럴',
-                    category: 'marketing',
+                    instructor_name: '박바이럴',
+                    category_id: 'marketing',
                     price: 149000,
                     rating: 4.9,
-                    students: 203,
+                    total_students: 203,
                     status: 'published',
-                    thumbnail: '../images/pd3.jpg',
+                    thumbnail_url: '../images/pd3.jpg',
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
                     created_at: '2024-01-08T11:20:00Z'
                 },
                 {
                     id: '4',
                     title: '쇼핑몰 창업 A to Z',
-                    instructor: '최창업',
-                    category: 'development',
+                    instructor_name: '최창업',
+                    category_id: 'development',
                     price: 199000,
                     rating: 4.7,
-                    students: 132,
+                    total_students: 132,
                     status: 'published',
-                    thumbnail: '../images/pd4.jpg',
+                    thumbnail_url: '../images/pd4.jpg',
+                    video_url: null,
                     created_at: '2024-01-05T14:20:00Z'
                 },
                 {
                     id: '5',
                     title: '고객 관리 시스템 구축',
-                    instructor: '정시스템',
-                    category: 'crm',
+                    instructor_name: '정시스템',
+                    category_id: 'crm',
                     price: 129000,
                     rating: 4.6,
-                    students: 78,
+                    total_students: 78,
                     status: 'published',
-                    thumbnail: '../images/pd11.jpg',
+                    thumbnail_url: '../images/pd11.jpg',
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
                     created_at: '2024-01-03T09:15:00Z'
-                },
-                {
-                    id: '6',
-                    title: '브랜딩 전략 수립',
-                    instructor: '김브랜드',
-                    category: 'branding',
-                    price: 179000,
-                    rating: 4.8,
-                    students: 95,
-                    status: 'published',
-                    thumbnail: '../images/pd12.jpg',
-                    created_at: '2024-01-02T16:30:00Z'
-                },
-                {
-                    id: '7',
-                    title: '온라인 마케팅 전략',
-                    instructor: '이온라인',
-                    category: 'marketing',
-                    price: 0,
-                    rating: 4.4,
-                    students: 234,
-                    status: 'published',
-                    thumbnail: '../images/pd13.jpg',
-                    created_at: '2024-01-01T11:45:00Z'
-                },
-                {
-                    id: '8',
-                    title: '스타트업 사업계획서 작성',
-                    instructor: '박사업',
-                    category: 'development',
-                    price: 89000,
-                    rating: 4.5,
-                    students: 67,
-                    status: 'draft',
-                    thumbnail: '../images/pd14.jpg',
-                    created_at: '2023-12-30T13:20:00Z'
-                },
-                {
-                    id: '9',
-                    title: '소셜미디어 운영 전략',
-                    instructor: '최소셜',
-                    category: 'marketing',
-                    price: 119000,
-                    rating: 4.7,
-                    students: 156,
-                    status: 'published',
-                    thumbnail: '../images/portfolio2.jpg',
-                    created_at: '2023-12-28T10:10:00Z'
-                },
-                {
-                    id: '10',
-                    title: '웹디자인 기초',
-                    instructor: '김웹디',
-                    category: 'branding',
-                    price: 79000,
-                    rating: 4.3,
-                    students: 112,
-                    status: 'published',
-                    thumbnail: '../images/webdesign.png',
-                    created_at: '2023-12-25T15:30:00Z'
                 }
             ];
 
@@ -609,18 +1275,18 @@
 
         // 강좌 행 생성
         function createCourseRow(course) {
-            const thumbnail = course.thumbnail ? 
-                `<img src="${course.thumbnail}" alt="썸네일" class="course-thumbnail">` : 
+            const thumbnail = course.thumbnail_url ? 
+                `<img src="${course.thumbnail_url}" alt="썸네일" class="course-thumbnail">` : 
                 `<div class="course-thumbnail bg-secondary d-flex align-items-center justify-content-center">
                     <i class="fas fa-book text-white"></i>
                 </div>`;
             
             const title = course.title || '제목 없음';
-            const instructor = course.instructor || '강사 미정';
-            const category = getCategoryName(course.category);
-            const price = course.price > 0 ? 
-                `<span class="course-price">${Number(course.price).toLocaleString()}원</span>` : 
-                '<span class="badge badge-success">무료</span>';
+            const instructor = course.instructor_name || '강사 미정';
+            const category = getCategoryName(course.category_id);
+            const price = (course.is_free || course.price === 0) ? 
+                '<span class="badge badge-success">무료</span>' :
+                `<span class="course-price">${Number(course.price).toLocaleString()}원</span>`;
             
             const rating = course.rating ? 
                 `<span class="course-rating">
@@ -628,13 +1294,19 @@
                 </span>` : 
                 '<span class="text-muted">평가 없음</span>';
             
-            const students = course.students || 0;
+            const students = course.total_students || 0;
+            
+            const video = course.video_url ? 
+                `<button class="btn btn-success btn-sm" onclick="playVideo('${course.video_url}')" title="영상 재생">
+                    <i class="fas fa-play"></i>
+                </button>` : 
+                '<span class="text-muted">영상 없음</span>';
             
             const status = course.status === 'published' ? 
                 '<span class="badge badge-success">게시</span>' : 
                 '<span class="badge badge-warning">임시저장</span>';
             
-            const createdAt = course.created_at ? db.formatDate(course.created_at) : '날짜 없음';
+            const createdAt = course.created_at ? formatDate(course.created_at) : '날짜 없음';
             
             const actions = `
                 <div class="btn-group btn-group-sm">
@@ -650,81 +1322,29 @@
                 </div>
             `;
 
-            return [thumbnail, title, instructor, category, price, rating, students, status, createdAt, actions];
+            return [thumbnail, title, instructor, category, price, rating, students, video, status, createdAt, actions];
         }
 
+        // ===============================
+        // 유틸리티 함수들
+        // ===============================
+        
         // 카테고리 이름 변환
-        function getCategoryName(category) {
+        function getCategoryName(categoryId) {
             const categories = {
                 'marketing': '마케팅',
                 'branding': '브랜드',
                 'development': '창업',
                 'crm': 'CRM'
             };
-            return categories[category] || category || '기타';
+            return categories[categoryId] || categoryId || '기타';
         }
 
-        // 새 강좌 추가 모달 표시
-        function showAddCourseModal() {
-            document.getElementById('modal-title').textContent = '새 강좌 추가';
-            document.getElementById('course-form').reset();
-            document.getElementById('course-id').value = '';
-            $('#course-modal').modal('show');
+        // 날짜 포맷팅
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR');
         }
-
-        // 강좌 상세보기
-        function viewCourse(courseId) {
-            showToast('강좌 상세보기 기능은 준비 중입니다.', 'info');
-        }
-
-        // 강좌 수정
-        function editCourse(courseId) {
-            showToast('강좌 수정 기능은 준비 중입니다.', 'info');
-        }
-
-        // 강좌 삭제
-        function deleteCourse(courseId) {
-            if (confirm('정말로 이 강좌를 삭제하시겠습니까?')) {
-                showToast('강좌 삭제 기능은 준비 중입니다.', 'info');
-            }
-        }
-
-        // 강좌 폼 제출
-        document.getElementById('course-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            try {
-                const courseData = {
-                    title: document.getElementById('course-title').value,
-                    instructor: document.getElementById('course-instructor').value,
-                    category: document.getElementById('course-category').value,
-                    price: parseInt(document.getElementById('course-price').value) || 0,
-                    duration: parseInt(document.getElementById('course-duration').value) || 0,
-                    difficulty: document.getElementById('course-difficulty').value,
-                    short_description: document.getElementById('course-short-description').value,
-                    description: document.getElementById('course-description').value,
-                    thumbnail: document.getElementById('course-thumbnail').value,
-                    status: document.getElementById('course-status').value,
-                    is_free: document.getElementById('course-is-free').checked
-                };
-
-                const courseId = document.getElementById('course-id').value;
-                
-                if (courseId) {
-                    // 수정 로직
-                    showToast('강좌 수정 기능은 준비 중입니다.', 'info');
-                } else {
-                    // 추가 로직
-                    showToast('강좌 추가 기능은 준비 중입니다.', 'info');
-                }
-                
-                $('#course-modal').modal('hide');
-                
-            } catch (error) {
-                console.error('강좌 저장 에러:', error);
-                showToast('강좌 저장 중 오류가 발생했습니다.', 'error');
-            }
-        });
 
         // 토스트 메시지 표시
         function showToast(message, type = 'success') {
@@ -762,6 +1382,222 @@
                 }
             }, 3000);
         }
+
+        // ===============================
+        // 폼 이벤트 리스너
+        // ===============================
+        
+        // 미디어 파일 선택 이벤트 리스너
+        function addMediaEventListeners() {
+            // 영상 파일 이벤트 리스너
+            const videoInput = document.getElementById('course-video');
+            const videoFileLabel = videoInput?.parentElement.querySelector('.custom-file-label');
+            
+            if (videoInput && videoFileLabel) {
+                videoInput.addEventListener('change', async function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    try {
+                        // 파일명 표시
+                        videoFileLabel.textContent = file.name;
+                        
+                        // 상태 초기화
+                        hideUploadProgress();
+                        hideCompressionStatus();
+                        hideUploadSuccess();
+                        
+                        // 영상 파일 처리 (압축 + 업로드)
+                        const videoUrl = await processVideoFile(file);
+                        
+                        // 업로드된 URL을 input에 저장
+                        document.getElementById('course-video-url').value = videoUrl;
+                        
+                        console.log('✅ 영상 업로드 완료:', videoUrl);
+                    } catch (error) {
+                        console.error('❌ 영상 파일 처리 에러:', error);
+                        alert('영상 업로드 중 오류가 발생했습니다: ' + error.message);
+                        
+                        // 에러 시 파일명 초기화
+                        videoFileLabel.textContent = '영상 파일을 선택하세요';
+                        videoInput.value = '';
+                    }
+                });
+            }
+
+            // 썸네일 이미지 이벤트 리스너
+            const thumbnailInput = document.getElementById('course-thumbnail');
+            const thumbnailFileLabel = thumbnailInput?.parentElement.querySelector('.custom-file-label');
+            
+            if (thumbnailInput && thumbnailFileLabel) {
+                thumbnailInput.addEventListener('change', async function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    try {
+                        // 파일명 표시
+                        thumbnailFileLabel.textContent = file.name;
+                        
+                        // 썸네일 이미지 처리
+                        const thumbnailUrl = await processThumbnailFile(file);
+                        
+                        console.log('✅ 썸네일 업로드 완료:', thumbnailUrl);
+                        
+                        // 성공 메시지 표시
+                        showToast('썸네일 이미지가 성공적으로 업로드되었습니다!', 'success');
+                        
+                    } catch (error) {
+                        console.error('❌ 썸네일 처리 에러:', error);
+                        alert('썸네일 업로드 중 오류가 발생했습니다: ' + error.message);
+                        
+                        // 에러 시 파일명 초기화
+                        thumbnailFileLabel.textContent = '썸네일 이미지를 선택하세요';
+                        thumbnailInput.value = '';
+                    }
+                });
+            }
+        }
+        
+        // 폼 이벤트 리스너 추가
+        function addFormEventListeners() {
+            const courseForm = document.getElementById('course-form');
+            if (courseForm) {
+                courseForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    try {
+                        // 영상 업로드 확인
+                        const videoUrlInput = document.getElementById('course-video-url').value;
+                        const videoFile = document.getElementById('course-video').files[0];
+                        
+                        if (videoFile && !videoUrlInput) {
+                            alert('영상 업로드가 진행 중입니다. 완료 후 다시 시도해주세요.');
+                            return;
+                        }
+                        
+                        // 무료 강좌인 경우 가격을 0으로 설정
+                        const isFree = document.getElementById('course-is-free').checked;
+                        const priceValue = isFree ? 0 : (parseInt(document.getElementById('course-price').value) || 0);
+                        
+                        // 실제 테이블 구조에 맞는 데이터 구성
+                        const courseData = {
+                            title: document.getElementById('course-title').value,
+                            instructor_name: document.getElementById('course-instructor').value,
+                            category_id: document.getElementById('course-category').value,
+                            difficulty: document.getElementById('course-difficulty').value,
+                            price: priceValue,
+                            is_free: isFree,
+                            description: document.getElementById('course-description').value,
+                            thumbnail_url: uploadedThumbnailUrl || null,
+                            video_url: videoUrlInput || uploadedVideoUrl || null,
+                            status: document.getElementById('course-status').value
+                        };
+
+                        const courseId = document.getElementById('course-id').value;
+                        
+                        if (courseId) {
+                            const { data, error } = await supabase
+                                .from('courses')
+                                .update(courseData)
+                                .eq('id', courseId);
+
+                            if (error) {
+                                throw new Error(`강좌 수정 에러: ${error.message}`);
+                            }
+
+                            showToast('강좌가 성공적으로 수정되었습니다.', 'success');
+                        } else {
+                            const { data, error } = await supabase
+                                .from('courses')
+                                .insert([courseData]);
+
+                            if (error) {
+                                throw new Error(`강좌 추가 에러: ${error.message}`);
+                            }
+
+                            showToast('새 강좌가 성공적으로 추가되었습니다.', 'success');
+                        }
+                        
+                        // 폼 초기화
+                        document.getElementById('course-form').reset();
+                        const videoFileLabel = document.querySelector('#course-video').parentElement.querySelector('.custom-file-label');
+                        const thumbnailFileLabel = document.querySelector('#course-thumbnail').parentElement.querySelector('.custom-file-label');
+                        if (videoFileLabel) videoFileLabel.textContent = '영상 파일을 선택하세요';
+                        if (thumbnailFileLabel) thumbnailFileLabel.textContent = '썸네일 이미지를 선택하세요';
+                        uploadedVideoUrl = null;
+                        uploadedThumbnailUrl = null;
+                        
+                        // 상태 UI 초기화
+                        hideUploadProgress();
+                        hideCompressionStatus();
+                        hideUploadSuccess();
+                        
+                        $('#course-modal').modal('hide');
+                        await loadCourses();
+                        
+                    } catch (error) {
+                        console.error('강좌 저장 에러:', error);
+                        showToast(`강좌 저장 중 오류가 발생했습니다: ${error.message}`, 'error');
+                    }
+                });
+            }
+        }
+
+        // ===============================
+        // 페이지 초기화
+        // ===============================
+        
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                console.log('🔵 페이지 로드 시작');
+                
+                // 인증 확인
+                const user = await checkAuth();
+                
+                if (user) {
+                    console.log('✅ 인증된 사용자:', user.email);
+                    document.getElementById('admin-name').textContent = user.email || '관리자';
+                    await initCoursesPage();
+                } else {
+                    console.log('❌ 인증 실패 - 로그인 페이지로 이동');
+                    window.location.href = 'login.html';
+                }
+                
+            } catch (error) {
+                console.error('❌ 페이지 초기화 에러:', error);
+                window.location.href = 'login.html';
+            }
+        });
+
+        // 강좌 관리 페이지 초기화
+        async function initCoursesPage() {
+            try {
+                console.log('🔵 강좌 관리 페이지 초기화 시작');
+                await initCoursesTable();
+                await loadCourses();
+                addFormEventListeners();
+                addMediaEventListeners();
+                console.log('✅ 강좌 관리 페이지 초기화 완료');
+            } catch (error) {
+                console.error('❌ 강좌 관리 페이지 초기화 에러:', error);
+                showToast('강좌 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // ===============================
+        // 전역 함수 노출 (window 객체에 등록)
+        // ===============================
+        
+        // 모든 함수를 전역으로 노출
+        window.showAddCourseModal = showAddCourseModal;
+        window.playVideo = playVideo;
+        window.viewCourse = viewCourse;
+        window.editCourse = editCourse;
+        window.deleteCourse = deleteCourse;
+        window.logoutUser = logoutUser;
+        
+        console.log('✅ 모든 스크립트 로드 완료');
     </script>
 </body>
 </html> 
