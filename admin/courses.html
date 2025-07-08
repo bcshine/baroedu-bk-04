@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>강좌 관리 - 바로교육 관리자</title>
+    <!-- Favicon 404 에러 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -1237,6 +1239,40 @@
     
     <script>
         // ===============================
+        // 404 에러 디버깅 및 전역 에러 핸들링
+        // ===============================
+        console.log('🚀 강좌 관리 페이지 로딩 시작');
+        
+        // 404 에러 전역 캐치
+        window.addEventListener('error', function(e) {
+            console.error('🚨 전역 에러 감지:', e.error);
+            if (e.message && (e.message.includes('404') || e.message.includes('Not Found'))) {
+                console.error('📍 404 에러 위치:', e.filename, '라인:', e.lineno);
+                console.error('📝 404 에러 메시지:', e.message);
+            }
+        });
+        
+        // 네트워크 요청 에러 캐치
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('🚨 Promise 거부 에러:', e.reason);
+            if (e.reason && e.reason.toString().includes('404')) {
+                console.error('📍 404 네트워크 에러:', e.reason);
+            }
+        });
+        
+        // 이미지 로딩 에러 개선된 핸들러
+        document.addEventListener('DOMContentLoaded', function() {
+            // 모든 이미지에 에러 핸들러 추가
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.warn('🖼️ 이미지 로딩 실패:', this.src);
+                    this.style.display = 'none';
+                });
+            });
+        });
+        
+        // ===============================
         // Supabase 설정 (인라인으로 모든 코드 포함)
         // ===============================
         const SUPABASE_URL = 'https://bjsstktiiniigdnsdwsr.supabase.co';
@@ -1425,6 +1461,42 @@
             } catch (error) {
                 console.error('수강자 관리 모달 에러:', error);
                 showToast('수강자 관리 모달을 여는 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // 수강자 관리 모달 직접 열기 함수 추가
+        async function manageCourseStudents(courseId) {
+            await viewCourse(courseId);
+        }
+
+        // 수강자 목록 새로고침 함수
+        async function loadAllUsers() {
+            try {
+                const courseId = document.getElementById('manage-course-id').value;
+                if (!courseId) {
+                    showToast('강좌 정보가 없습니다.', 'error');
+                    return;
+                }
+                
+                console.log('🔄 수강자 목록 새로고침:', courseId);
+                
+                // 수강자 목록 다시 로드
+                await loadStudentsForCourse(courseId);
+                
+                // 수강생 수 업데이트
+                const { data: enrollments, error } = await supabase
+                    .from('enrollments')
+                    .select('*')
+                    .eq('course_id', courseId);
+
+                const studentCount = enrollments ? enrollments.length : 0;
+                document.getElementById('manage-course-students').textContent = `총 수강생: ${studentCount}명`;
+                
+                showToast('수강자 목록이 새로고침되었습니다.', 'success');
+                
+            } catch (error) {
+                console.error('수강자 목록 새로고침 에러:', error);
+                showToast('수강자 목록 새로고침 중 오류가 발생했습니다.', 'error');
             }
         }
 
@@ -2381,42 +2453,48 @@
         
         let studentsTable = null;
         
-        // 특정 강좌의 수강자 목록 로드
+        // 특정 강좌의 수강자 목록 로드 (RPC 함수 사용)
         async function loadStudentsForCourse(courseId) {
             try {
-                console.log('🔄 수강자 목록 로드 중...', courseId);
+                console.log('🔄 RPC 함수로 수강자 목록 로드 중...', courseId);
                 
-                // Supabase Auth 사용자 목록 가져오기
-                const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
-                
-                if (authError) {
-                    console.error('Auth 사용자 목록 조회 에러:', authError);
-                    // Auth 실패 시 대체 방법 시도
-                    await loadStudentsFromProfiles(courseId);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    console.error('❌ 관리자 권한이 필요합니다');
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
                     return;
                 }
 
-                console.log('✅ Auth 사용자 목록:', authUsers.users.length, '명');
-
-                // 해당 강좌의 수강 정보 가져오기
-                const { data: enrollments, error: enrollError } = await supabase
-                    .from('enrollments')
-                    .select('*')
-                    .eq('course_id', courseId);
-
-                if (enrollError) {
-                    console.error('수강 정보 조회 에러:', enrollError);
+                // PostgreSQL RPC 함수로 사용자와 수강 정보 조회 (UUID 타입 사용)
+                const { data: usersData, error: rpcError } = await supabase
+                    .rpc('get_users_with_enrollments_admin', {
+                        p_course_id: courseId
+                    });
+                
+                if (rpcError) {
+                    console.error('❌ RPC 함수 조회 에러:', rpcError);
+                    showToast('사용자 목록을 불러올 수 없습니다: ' + rpcError.message, 'error');
+                    return;
                 }
 
-                // 사용자 데이터와 수강 정보 매칭
-                const studentsData = authUsers.users.map(user => {
-                    const enrollment = enrollments?.find(e => e.user_id === user.id) || null;
+                console.log('✅ RPC 함수로 사용자 목록 조회 완료:', usersData?.length || 0, '명');
+
+                // 데이터 변환
+                const studentsData = (usersData || []).map(user => {
+                    const enrollment = user.enrollment_id ? {
+                        id: user.enrollment_id,
+                        status: user.enrollment_status,
+                        progress: user.progress || 0,
+                        created_at: user.enrollment_created_at
+                    } : null;
+                    
                     return {
-                        id: user.id,
-                        email: user.email,
-                        name: user.user_metadata?.name || user.user_metadata?.display_name || user.email?.split('@')[0] || '이름 없음',
+                        id: user.user_id,
+                        email: user.email || '이메일 없음',
+                        name: user.name || user.email?.split('@')[0] || '이름 없음',
                         phone: user.phone || null,
-                        created_at: user.created_at,
+                        created_at: user.user_created_at,
                         enrollment: enrollment
                     };
                 });
@@ -3026,9 +3104,11 @@
             showToast('실제 바로교육 사용자 목록을 표시합니다.', 'info');
         }
 
-        // 전체 수강자에게 권한 부여
+        // 전체 수강자에게 권한 부여 (개선된 버전)
         async function grantAllAccess() {
             try {
+                console.log('🔄 전체 권한 부여 시작...');
+                
                 const courseId = document.getElementById('manage-course-id').value;
                 if (!courseId) {
                     showToast('강좌 정보가 없습니다.', 'error');
@@ -3039,106 +3119,109 @@
                     return;
                 }
 
-                console.log('🔄 전체 권한 부여 중...', courseId);
-
-                // 실제 사용자 목록 사용 (기존의 realUsers 데이터)
-                const allUsers = [
-                    { id: 'd409eb0c-f155-4dbc-8f5e-e37e99df047f', email: 'test@baroedu.com' },
-                    { id: '76521ced-a495-4ff2-8ca7-bbaea86e604d', email: 'admin@baroedu.com' },
-                    { id: '7fbb0467-8a77-4849-9136-cf73d671a554', email: 'bcshin0303@naver.com' },
-                    { id: '34468c65-4297-4a8c-8b00-708b078144ea', email: 'bcshin03@naver.com' },
-                    { id: '0c7f4aff-3617-4b5e-80fb-647d6e8eaf43', email: 'dbal951120@naver.com' },
-                    { id: '50a9ec3d-d54e-40a5-8ed3-3f7e62236e16', email: 'midcampus31@gmail.com' },
-                    { id: 'ee7c4dec-e471-4026-bc01-c75b5f999c4c', email: 'midcampus51@gmail.com' },
-                    { id: 'b53bed35-12f8-4780-8dbe-9d25f1b37e32', email: 'bcshin03@gmail.com' }
-                ];
-
-                // 이미 등록된 사용자들 조회
-                const { data: existingEnrollments, error: enrollError } = await supabase
-                    .from('enrollments')
-                    .select('user_id')
-                    .eq('course_id', courseId);
-
-                if (enrollError) {
-                    console.warn('기존 등록 정보 조회 실패:', enrollError);
-                }
-
-                // 등록되지 않은 사용자들 필터링
-                const existingUserIds = new Set((existingEnrollments || []).map(e => e.user_id));
-                const newEnrollments = allUsers
-                    .filter(user => !existingUserIds.has(user.id))
-                    .map(user => ({
-                        user_id: user.id,
-                        course_id: courseId,
-                        status: 'enrolled',
-                        progress: 0,
-                        enrolled_at: new Date().toISOString()
-                    }));
-
-                if (newEnrollments.length === 0) {
-                    showToast('모든 사용자가 이미 등록되어 있습니다.', 'info');
+                // Supabase 연결 확인
+                if (!supabase) {
+                    console.error('❌ Supabase 연결이 없습니다!');
+                    showToast('데이터베이스 연결 오류입니다. 페이지를 새로고침해 주세요.', 'error');
                     return;
                 }
 
-                // 1. 새 등록 정보 삽입
-                const { error: insertError } = await supabase
-                    .from('enrollments')
-                    .insert(newEnrollments);
-
-                if (insertError) {
-                    throw new Error('등록 실패: ' + insertError.message);
+                // 버튼 비활성화
+                const grantButton = document.getElementById('grant-all-access');
+                if (grantButton) {
+                    grantButton.disabled = true;
+                    grantButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>권한 부여 중...';
                 }
 
-                // 2. 각 사용자에게 영상 접근 권한 부여
-                const accessPromises = newEnrollments.map(async (enrollment) => {
-                    try {
-                        // user_course_access 테이블에 권한 추가
-                        const { error: accessError } = await supabase
-                            .from('user_course_access')
-                            .upsert([{
-                                user_id: enrollment.user_id,
-                                course_id: courseId,
-                                access_granted: true,
-                                granted_at: new Date().toISOString(),
-                                granted_by: currentUser?.id || 'admin'
-                            }], {
-                                onConflict: 'user_id,course_id'
-                            });
+                // 🔑 관리자 권한으로 전체 권한 부여 (RPC 함수 사용)
+                console.log('🔍 관리자 권한 확인 및 전체 권한 부여 시작...');
+                
+                // 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    
+                    if (grantButton) {
+                        grantButton.disabled = false;
+                        grantButton.innerHTML = '<i class="fas fa-unlock mr-1"></i>전체 권한 부여';
+                    }
+                    return;
+                }
 
-                        if (accessError) {
-                            console.warn(`사용자 ${enrollment.user_id} 권한 부여 실패:`, accessError);
-                        } else {
-                            console.log(`✅ 사용자 ${enrollment.user_id}에게 강좌 접근 권한 부여됨`);
+                // PostgreSQL RPC 함수로 전체 권한 부여 (UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_grant_all_access', { 
+                        p_course_id: courseId 
+                    });
+
+                if (rpcError) {
+                    throw new Error(`RPC 함수 실행 실패: ${rpcError.message}`);
+                }
+
+                if (!result.success) {
+                    throw new Error(`전체 권한 부여 실패: ${result.message}`);
+                }
+
+                console.log('✅ 전체 권한 부여 완료:', result);
+                
+                // 강좌 정보 확인
+                try {
+                    const { data: course, error: courseError } = await supabase
+                        .from('courses')
+                        .select('title, video_url')
+                        .eq('id', courseId)
+                        .single();
+
+                    if (!courseError && course) {
+                        console.log('✅ 전체 강좌 접근 권한 부여 완료:', course.title);
+                        if (course.video_url) {
+                            console.log('📹 모든 사용자가 영상 URL에 접근 가능:', course.video_url);
                         }
-                    } catch (error) {
-                        console.warn(`사용자 ${enrollment.user_id} 권한 처리 중 오류:`, error);
                     }
-                });
-
-                await Promise.all(accessPromises);
-
-                // 3. 강좌 정보 확인
-                const { data: course, error: courseError } = await supabase
-                    .from('courses')
-                    .select('title, video_url')
-                    .eq('id', courseId)
-                    .single();
-
-                if (!courseError && course) {
-                    console.log('✅ 전체 강좌 접근 권한 부여 완료:', course.title);
-                    if (course.video_url) {
-                        console.log('📹 모든 사용자가 영상 URL에 접근 가능:', course.video_url);
-                    }
+                } catch (courseError) {
+                    console.warn('강좌 정보 조회 실패:', courseError);
+                    // 강좌 정보 조회 실패해도 등록은 완료된 상태이므로 계속 진행
                 }
 
-                showToast(`${newEnrollments.length}명에게 강좌 접근 권한을 부여했습니다. 이제 해당 영상을 시청할 수 있습니다.`, 'success');
+                // 최종 성공 메시지
+                showToast(
+                    `전체 권한 부여 완료! 총 ${result.total_users}명 중 ${result.enrolled_count}명 신규 등록, ${result.skipped_count}명 기존 등록`, 
+                    'success'
+                );
                 
                 // 수강자 목록 새로고침
                 await loadStudentsForCourse(courseId);
 
+                // 버튼 상태 복원
+                if (grantButton) {
+                    grantButton.disabled = false;
+                    grantButton.innerHTML = '<i class="fas fa-check mr-1"></i>완료';
+                    
+                    // 2초 후 원래 상태로 복원
+                    setTimeout(() => {
+                        if (grantButton) {
+                            grantButton.innerHTML = '<i class="fas fa-unlock mr-1"></i>전체 권한 부여';
+                        }
+                    }, 2000);
+                }
+
             } catch (error) {
-                console.error('전체 권한 부여 에러:', error);
+                console.error('❌ 전체 권한 부여 에러:', error);
                 showToast(`전체 권한 부여 중 오류가 발생했습니다: ${error.message}`, 'error');
+                
+                // 버튼 상태 복원 (에러 시)
+                const grantButton = document.getElementById('grant-all-access');
+                if (grantButton) {
+                    grantButton.disabled = false;
+                    grantButton.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i>실패';
+                    
+                    // 3초 후 원래 상태로 복원
+                    setTimeout(() => {
+                        if (grantButton) {
+                            grantButton.innerHTML = '<i class="fas fa-unlock mr-1"></i>전체 권한 부여';
+                        }
+                    }, 3000);
+                }
             }
         }
 
@@ -3157,16 +3240,28 @@
 
                 console.log('🔄 전체 권한 제거 중...', courseId);
 
-                const { error } = await supabase
-                    .from('enrollments')
-                    .delete()
-                    .eq('course_id', courseId);
-
-                if (error) {
-                    throw new Error('권한 제거 실패: ' + error.message);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    return;
                 }
 
-                showToast('모든 수강자의 권한이 제거되었습니다.', 'success');
+                // PostgreSQL RPC 함수로 전체 권한 제거 (UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_revoke_all_access', {
+                        p_course_id: courseId
+                    });
+
+                if (rpcError) {
+                    throw new Error('RPC 함수 실행 실패: ' + rpcError.message);
+                }
+
+                if (!result.success) {
+                    throw new Error('전체 권한 제거 실패: ' + result.message);
+                }
+
+                showToast(`전체 권한 제거 완료! ${result.deleted_count}개의 등록이 제거되었습니다.`, 'success');
                 
                 // 수강자 목록 새로고침
                 await loadStudentsForCourse(courseId);
@@ -3237,28 +3332,36 @@
 
                 console.log('🔄 수강자 등록 시작...');
 
-                // 1. enrollments 테이블에 등록 정보 삽입
-                const enrollmentData = {
-                    user_id: userId,
-                    course_id: courseId,
-                    status: 'enrolled',
-                    progress: 0,
-                    enrolled_at: new Date().toISOString()
-                };
-
-                console.log('📝 등록 데이터:', enrollmentData);
-
-                const { data: enrollResult, error: enrollError } = await supabase
-                    .from('enrollments')
-                    .insert([enrollmentData])
-                    .select('*');
-
-                if (enrollError) {
-                    console.error('❌ enrollments 테이블 삽입 에러:', enrollError);
-                    throw new Error('등록 실패: ' + enrollError.message);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    
+                    if (buttonElement) {
+                        buttonElement.disabled = false;
+                        buttonElement.innerHTML = '<i class="fas fa-plus"></i>';
+                    }
+                    return;
                 }
 
-                console.log('✅ enrollments 테이블에 등록 완료:', enrollResult);
+                // PostgreSQL RPC 함수로 사용자 등록 (UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_enroll_user', {
+                        p_user_id: userId,
+                        p_course_id: courseId
+                    });
+
+                if (rpcError) {
+                    console.error('❌ RPC 함수 실행 에러:', rpcError);
+                    throw new Error('등록 실패: ' + rpcError.message);
+                }
+
+                if (!result.success) {
+                    console.error('❌ 등록 처리 실패:', result);
+                    throw new Error('등록 실패: ' + result.message);
+                }
+
+                console.log('✅ enrollments 테이블에 등록 완료:', result);
 
                 // 2. 영상 접근 권한 부여 (간단한 방식)
                 try {
@@ -3345,52 +3448,28 @@
 
                 console.log('🔄 수강자 등록 해제 중...', userId, courseId);
 
-                // 1. enrollments 테이블에서 등록 정보 삭제
-                const { error: deleteError } = await supabase
-                    .from('enrollments')
-                    .delete()
-                    .eq('user_id', userId)
-                    .eq('course_id', courseId);
-
-                if (deleteError) {
-                    throw new Error('등록 해제 실패: ' + deleteError.message);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    return;
                 }
 
-                // 2. 사용자 프로필에서 강좌 접근 권한 제거
-                const { data: userProfile, error: profileError } = await supabase
-                    .from('profiles')
-                    .select('course_access')
-                    .eq('id', userId)
-                    .single();
+                // PostgreSQL RPC 함수로 사용자 등록 해제 (UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_unenroll_user', {
+                        p_user_id: userId,
+                        p_course_id: courseId
+                    });
 
-                if (!profileError && userProfile) {
-                    // 기존 접근 권한 목록에서 강좌 제거
-                    const currentAccess = userProfile.course_access || [];
-                    const updatedAccess = currentAccess.filter(id => id !== courseId);
-                    
-                    const { error: updateError } = await supabase
-                        .from('profiles')
-                        .update({ course_access: updatedAccess })
-                        .eq('id', userId);
-
-                    if (updateError) {
-                        console.warn('프로필 업데이트 실패:', updateError);
-                    } else {
-                        console.log('✅ 사용자 프로필에서 강좌 접근 권한 제거됨');
-                    }
+                if (rpcError) {
+                    console.error('❌ RPC 함수 실행 에러:', rpcError);
+                    throw new Error('등록 해제 실패: ' + rpcError.message);
                 }
 
-                // 3. user_course_access 테이블에서 접근 권한 제거
-                const { error: accessError } = await supabase
-                    .from('user_course_access')
-                    .delete()
-                    .eq('user_id', userId)
-                    .eq('course_id', courseId);
-
-                if (accessError) {
-                    console.warn('접근 권한 테이블에서 제거 실패:', accessError);
-                } else {
-                    console.log('✅ user_course_access 테이블에서 권한 제거됨');
+                if (!result.success) {
+                    console.error('❌ 등록 해제 처리 실패:', result);
+                    throw new Error('등록 해제 실패: ' + result.message);
                 }
 
                 // 4. 강좌 정보 확인
@@ -3447,40 +3526,48 @@
             }
         }
 
-        // 탭에서 실제 사용자 데이터 로드
+        // 탭에서 실제 사용자 데이터 로드 (RPC 함수 사용)
         async function loadStudentsInTab(courseId) {
             try {
-                // Supabase Auth 사용자 목록 가져오기
-                const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+                console.log('🔄 탭에서 RPC 함수로 사용자 목록 로드 중...', courseId);
                 
-                if (authError) {
-                    console.error('Auth 사용자 목록 조회 에러:', authError);
-                    // Auth 실패 시 대체 방법 시도
-                    await loadStudentsFromProfilesInTab(courseId);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    console.error('❌ 관리자 권한이 필요합니다');
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
                     return;
                 }
 
-                console.log('✅ 탭에서 Auth 사용자 목록:', authUsers.users.length, '명');
-
-                // 해당 강좌의 수강 정보 가져오기
-                const { data: enrollments, error: enrollError } = await supabase
-                    .from('enrollments')
-                    .select('*')
-                    .eq('course_id', courseId);
-
-                if (enrollError) {
-                    console.error('수강 정보 조회 에러:', enrollError);
+                // PostgreSQL RPC 함수로 사용자와 수강 정보 조회 (탭용 - UUID 타입 사용)
+                const { data: usersData, error: rpcError } = await supabase
+                    .rpc('get_users_with_enrollments_admin', {
+                        p_course_id: courseId
+                    });
+                
+                if (rpcError) {
+                    console.error('❌ RPC 함수 조회 에러:', rpcError);
+                    showToast('사용자 목록을 불러올 수 없습니다: ' + rpcError.message, 'error');
+                    return;
                 }
 
-                // 사용자 데이터와 수강 정보 매칭
-                const studentsData = authUsers.users.map(user => {
-                    const enrollment = enrollments?.find(e => e.user_id === user.id) || null;
+                console.log('✅ 탭에서 RPC 함수로 사용자 목록 조회 완료:', usersData?.length || 0, '명');
+
+                // 데이터 변환
+                const studentsData = (usersData || []).map(user => {
+                    const enrollment = user.enrollment_id ? {
+                        id: user.enrollment_id,
+                        status: user.enrollment_status,
+                        progress: user.progress || 0,
+                        created_at: user.enrollment_created_at
+                    } : null;
+                    
                     return {
-                        id: user.id,
-                        email: user.email,
-                        name: user.user_metadata?.name || user.user_metadata?.display_name || user.email?.split('@')[0] || '이름 없음',
+                        id: user.user_id,
+                        email: user.email || '이메일 없음',
+                        name: user.name || user.email?.split('@')[0] || '이름 없음',
                         phone: user.phone || null,
-                        created_at: user.created_at,
+                        created_at: user.user_created_at,
                         enrollment: enrollment
                     };
                 });
@@ -3890,7 +3977,7 @@
             }
         }
 
-        // 탭에서 전체 권한 부여
+        // 탭에서 전체 권한 부여 (개선된 버전)
         async function grantAllAccessFromTab() {
             try {
                 const courseId = document.getElementById('course-id').value;
@@ -3903,83 +3990,55 @@
                     return;
                 }
 
-                console.log('🔄 탭에서 전체 권한 부여 중...', courseId);
-
-                // 실제 사용자 목록 사용 (기존의 realUsers 데이터)
-                const allUsers = [
-                    { id: 'd409eb0c-f155-4dbc-8f5e-e37e99df047f', email: 'test@baroedu.com' },
-                    { id: '76521ced-a495-4ff2-8ca7-bbaea86e604d', email: 'admin@baroedu.com' },
-                    { id: '7fbb0467-8a77-4849-9136-cf73d671a554', email: 'bcshin0303@naver.com' },
-                    { id: '34468c65-4297-4a8c-8b00-708b078144ea', email: 'bcshin03@naver.com' },
-                    { id: '0c7f4aff-3617-4b5e-80fb-647d6e8eaf43', email: 'dbal951120@naver.com' },
-                    { id: '50a9ec3d-d54e-40a5-8ed3-3f7e62236e16', email: 'midcampus31@gmail.com' },
-                    { id: 'ee7c4dec-e471-4026-bc01-c75b5f999c4c', email: 'midcampus51@gmail.com' },
-                    { id: 'b53bed35-12f8-4780-8dbe-9d25f1b37e32', email: 'bcshin03@gmail.com' }
-                ];
-
-                // 이미 등록된 사용자들 조회
-                const { data: existingEnrollments, error: enrollError } = await supabase
-                    .from('enrollments')
-                    .select('user_id')
-                    .eq('course_id', courseId);
-
-                if (enrollError) {
-                    console.warn('기존 등록 정보 조회 실패:', enrollError);
-                }
-
-                // 등록되지 않은 사용자들 필터링
-                const existingUserIds = new Set((existingEnrollments || []).map(e => e.user_id));
-                const newEnrollments = allUsers
-                    .filter(user => !existingUserIds.has(user.id))
-                    .map(user => ({
-                        user_id: user.id,
-                        course_id: courseId,
-                        status: 'enrolled',
-                        progress: 0,
-                        enrolled_at: new Date().toISOString()
-                    }));
-
-                if (newEnrollments.length === 0) {
-                    showToast('모든 사용자가 이미 등록되어 있습니다.', 'info');
+                // Supabase 연결 확인
+                if (!supabase) {
+                    console.error('❌ Supabase 연결이 없습니다!');
+                    showToast('데이터베이스 연결 오류입니다. 페이지를 새로고침해 주세요.', 'error');
                     return;
                 }
 
-                // 1. 새 등록 정보 삽입
-                const { error: insertError } = await supabase
-                    .from('enrollments')
-                    .insert(newEnrollments);
-
-                if (insertError) {
-                    throw new Error('등록 실패: ' + insertError.message);
+                // 버튼 비활성화
+                const tabGrantButton = document.getElementById('tab-grant-all-access');
+                if (tabGrantButton) {
+                    tabGrantButton.disabled = true;
+                    tabGrantButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>권한 부여 중...';
                 }
 
-                // 2. 각 사용자에게 영상 접근 권한 부여
-                const accessPromises = newEnrollments.map(async (enrollment) => {
-                    try {
-                        // user_course_access 테이블에 권한 추가
-                        const { error: accessError } = await supabase
-                            .from('user_course_access')
-                            .upsert([{
-                                user_id: enrollment.user_id,
-                                course_id: courseId,
-                                access_granted: true,
-                                granted_at: new Date().toISOString(),
-                                granted_by: currentUser?.id || 'admin'
-                            }], {
-                                onConflict: 'user_id,course_id'
-                            });
+                console.log('🔄 탭에서 전체 권한 부여 중...', courseId);
 
-                        if (accessError) {
-                            console.warn(`탭에서 사용자 ${enrollment.user_id} 권한 부여 실패:`, accessError);
-                        } else {
-                            console.log(`✅ 탭에서 사용자 ${enrollment.user_id}에게 강좌 접근 권한 부여됨`);
-                        }
-                    } catch (error) {
-                        console.warn(`탭에서 사용자 ${enrollment.user_id} 권한 처리 중 오류:`, error);
+                // 🔑 관리자 권한으로 전체 권한 부여 (RPC 함수 사용)
+                console.log('🔍 탭: 관리자 권한 확인 및 전체 권한 부여 시작...');
+                
+                // 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    
+                    if (tabGrantButton) {
+                        tabGrantButton.disabled = false;
+                        tabGrantButton.innerHTML = '<i class="fas fa-unlock mr-1"></i>전체 권한 부여';
                     }
-                });
+                    return;
+                }
 
-                await Promise.all(accessPromises);
+                // PostgreSQL RPC 함수로 전체 권한 부여 (탭용 - UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_grant_all_access', { 
+                        p_course_id: courseId 
+                    });
+
+                if (rpcError) {
+                    throw new Error(`RPC 함수 실행 실패: ${rpcError.message}`);
+                }
+
+                if (!result.success) {
+                    throw new Error(`전체 권한 부여 실패: ${result.message}`);
+                }
+
+                console.log('✅ 탭: 전체 권한 부여 완료:', result);
+                
+                // 현재 사용자 정보 가져오기 (로그 용도)
+                const { data: { user: currentUser } } = await supabase.auth.getUser();
 
                 // 3. 강좌 정보 확인
                 const { data: course, error: courseError } = await supabase
@@ -3989,21 +4048,52 @@
                     .single();
 
                 if (!courseError && course) {
-                    console.log('✅ 탭에서 전체 강좌 접근 권한 부여 완료:', course.title);
+                    console.log('✅ 전체 강좌 접근 권한 부여 완료:', course.title);
                     if (course.video_url) {
                         console.log('📹 모든 사용자가 영상 URL에 접근 가능:', course.video_url);
                     }
                 }
 
-                showToast(`${newEnrollments.length}명에게 강좌 접근 권한을 부여했습니다. 이제 해당 영상을 시청할 수 있습니다.`, 'success');
+                showToast(
+                    `전체 권한 부여 완료! 총 ${result.total_users}명 중 ${result.enrolled_count}명 신규 등록, ${result.skipped_count}명 기존 등록`, 
+                    'success'
+                );
                 
                 // 수강자 목록 새로고침
                 await loadStudentsForCourseInTab(courseId);
                 await updateStudentCount(courseId);
 
+                // 버튼 상태 복원 (성공 시)
+                const tabGrantSuccessButton = document.getElementById('tab-grant-all-access');
+                if (tabGrantSuccessButton) {
+                    tabGrantSuccessButton.disabled = false;
+                    tabGrantSuccessButton.innerHTML = '<i class="fas fa-check mr-1"></i>완료';
+                    
+                    // 2초 후 원래 상태로 복원
+                    setTimeout(() => {
+                        if (tabGrantSuccessButton) {
+                            tabGrantSuccessButton.innerHTML = '<i class="fas fa-unlock mr-1"></i>전체 권한 부여';
+                        }
+                    }, 2000);
+                }
+
             } catch (error) {
                 console.error('탭에서 전체 권한 부여 에러:', error);
                 showToast(`전체 권한 부여 중 오류가 발생했습니다: ${error.message}`, 'error');
+                
+                // 버튼 상태 복원 (에러 시)
+                const tabGrantErrorButton = document.getElementById('tab-grant-all-access');
+                if (tabGrantErrorButton) {
+                    tabGrantErrorButton.disabled = false;
+                    tabGrantErrorButton.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i>실패';
+                    
+                    // 3초 후 원래 상태로 복원
+                    setTimeout(() => {
+                        if (tabGrantErrorButton) {
+                            tabGrantErrorButton.innerHTML = '<i class="fas fa-unlock mr-1"></i>전체 권한 부여';
+                        }
+                    }, 3000);
+                }
             }
         }
 
@@ -4022,16 +4112,28 @@
 
                 console.log('🔄 탭에서 전체 권한 제거 중...', courseId);
 
-                const { error } = await supabase
-                    .from('enrollments')
-                    .delete()
-                    .eq('course_id', courseId);
-
-                if (error) {
-                    throw new Error('권한 제거 실패: ' + error.message);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    return;
                 }
 
-                showToast('모든 수강자의 권한이 제거되었습니다.', 'success');
+                // PostgreSQL RPC 함수로 전체 권한 제거 (탭용 - UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_revoke_all_access', {
+                        p_course_id: courseId
+                    });
+
+                if (rpcError) {
+                    throw new Error('RPC 함수 실행 실패: ' + rpcError.message);
+                }
+
+                if (!result.success) {
+                    throw new Error('전체 권한 제거 실패: ' + result.message);
+                }
+
+                showToast(`전체 권한 제거 완료! ${result.deleted_count}개의 등록이 제거되었습니다.`, 'success');
                 
                 // 수강자 목록 새로고침
                 await loadStudentsForCourseInTab(courseId);
@@ -4103,28 +4205,36 @@
 
                 console.log('🔄 탭에서 수강자 등록 시작...');
 
-                // 1. enrollments 테이블에 등록 정보 삽입
-                const enrollmentData = {
-                    user_id: userId,
-                    course_id: courseId,
-                    status: 'enrolled',
-                    progress: 0,
-                    enrolled_at: new Date().toISOString()
-                };
-
-                console.log('📝 탭 등록 데이터:', enrollmentData);
-
-                const { data: enrollResult, error: enrollError } = await supabase
-                    .from('enrollments')
-                    .insert([enrollmentData])
-                    .select('*');
-
-                if (enrollError) {
-                    console.error('❌ 탭에서 enrollments 테이블 삽입 에러:', enrollError);
-                    throw new Error('등록 실패: ' + enrollError.message);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    
+                    if (tabButton) {
+                        tabButton.disabled = false;
+                        tabButton.innerHTML = '<i class="fas fa-plus"></i>';
+                    }
+                    return;
                 }
 
-                console.log('✅ 탭에서 enrollments 테이블에 등록 완료:', enrollResult);
+                // PostgreSQL RPC 함수로 사용자 등록 (탭용 - UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_enroll_user', {
+                        p_user_id: userId,
+                        p_course_id: courseId
+                    });
+
+                if (rpcError) {
+                    console.error('❌ 탭 RPC 함수 실행 에러:', rpcError);
+                    throw new Error('등록 실패: ' + rpcError.message);
+                }
+
+                if (!result.success) {
+                    console.error('❌ 탭 등록 처리 실패:', result);
+                    throw new Error('등록 실패: ' + result.message);
+                }
+
+                console.log('✅ 탭에서 enrollments 테이블에 등록 완료:', result);
 
                 // 2. 영상 접근 권한 부여 (간단한 방식)
                 try {
@@ -4213,55 +4323,31 @@
 
                 console.log('🔄 탭에서 수강자 등록 해제 중...', userId, courseId);
 
-                // 1. enrollments 테이블에서 등록 정보 삭제
-                const { error: deleteError } = await supabase
-                    .from('enrollments')
-                    .delete()
-                    .eq('user_id', userId)
-                    .eq('course_id', courseId);
-
-                if (deleteError) {
-                    throw new Error('등록 해제 실패: ' + deleteError.message);
+                // 🔑 관리자 권한 확인
+                const isAdmin = await checkAdminPermission();
+                if (!isAdmin) {
+                    showToast('관리자 권한이 필요합니다. 관리자 계정으로 로그인해주세요.', 'error');
+                    return;
                 }
 
-                // 2. 사용자 프로필에서 강좌 접근 권한 제거
-                const { data: userProfile, error: profileError } = await supabase
-                    .from('profiles')
-                    .select('course_access')
-                    .eq('id', userId)
-                    .single();
+                // PostgreSQL RPC 함수로 사용자 등록 해제 (탭용 - UUID 타입 사용)
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_unenroll_user', {
+                        p_user_id: userId,
+                        p_course_id: courseId
+                    });
 
-                if (!profileError && userProfile) {
-                    // 기존 접근 권한 목록에서 강좌 제거
-                    const currentAccess = userProfile.course_access || [];
-                    const updatedAccess = currentAccess.filter(id => id !== courseId);
-                    
-                    const { error: updateError } = await supabase
-                        .from('profiles')
-                        .update({ course_access: updatedAccess })
-                        .eq('id', userId);
-
-                    if (updateError) {
-                        console.warn('탭에서 프로필 업데이트 실패:', updateError);
-                    } else {
-                        console.log('✅ 탭에서 사용자 프로필에서 강좌 접근 권한 제거됨');
-                    }
+                if (rpcError) {
+                    console.error('❌ 탭 RPC 함수 실행 에러:', rpcError);
+                    throw new Error('등록 해제 실패: ' + rpcError.message);
                 }
 
-                // 3. user_course_access 테이블에서 접근 권한 제거
-                const { error: accessError } = await supabase
-                    .from('user_course_access')
-                    .delete()
-                    .eq('user_id', userId)
-                    .eq('course_id', courseId);
-
-                if (accessError) {
-                    console.warn('탭에서 접근 권한 테이블에서 제거 실패:', accessError);
-                } else {
-                    console.log('✅ 탭에서 user_course_access 테이블에서 권한 제거됨');
+                if (!result.success) {
+                    console.error('❌ 탭 등록 해제 처리 실패:', result);
+                    throw new Error('등록 해제 실패: ' + result.message);
                 }
 
-                // 4. 강좌 정보 확인
+                // 강좌 정보 확인
                 const { data: course, error: courseError } = await supabase
                     .from('courses')
                     .select('title, video_url')
@@ -4333,6 +4419,7 @@
             window.enrollStudent = enrollStudent;
             window.unenrollStudent = unenrollStudent;
             window.loadAllUsers = loadAllUsers;
+            window.manageCourseStudents = manageCourseStudents;
             
             // 탭 내 수강자 관리 함수들
             window.grantAllAccessFromTab = grantAllAccessFromTab;
@@ -4382,6 +4469,183 @@
             console.log('💡 디버깅 명령어: debugTest(), debugModal(), showAddCourseModal()');
         } catch (error) {
             console.error('❌ 전역 함수 노출 에러:', error);
+        }
+
+        // ==========================================
+        // 🛡️ 관리자 권한 및 데이터베이스 안전 접근 시스템
+        // ==========================================
+
+        // 관리자 권한 확인
+        async function checkAdminPermission() {
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser();
+                
+                if (error || !user) {
+                    return false;
+                }
+                
+                // 관리자 이메일 목록 (실제 관리자들)
+                const adminEmails = [
+                    'admin@baroedu.com',
+                    'bcshin0303@naver.com',
+                    'test@baroedu.com'
+                ];
+                
+                return adminEmails.includes(user.email);
+            } catch (error) {
+                console.error('관리자 권한 확인 오류:', error);
+                return false;
+            }
+        }
+
+        // 관리자용 안전한 사용자 목록 조회
+        async function getAdminUserList() {
+            try {
+                const isAdmin = await checkAdminPermission();
+                
+                if (!isAdmin) {
+                    throw new Error('관리자 권한이 필요합니다');
+                }
+
+                console.log('🔑 관리자 권한 확인됨 - 전체 사용자 조회 시작');
+
+                // 1차 시도: auth.users에서 조회 (RLS 우회 방법)
+                let userList = [];
+                
+                // Supabase의 auth 스키마에서 사용자 정보 조회 시도
+                const { data: authUsers, error: authError } = await supabase
+                    .from('auth.users')
+                    .select('id, email, raw_user_meta_data, created_at')
+                    .order('created_at', { ascending: false });
+
+                if (authError) {
+                    console.warn('auth.users 조회 실패:', authError);
+                    
+                    // 2차 시도: RPC 함수 사용
+                    const { data: rpcUsers, error: rpcError } = await supabase
+                        .rpc('get_all_users_admin');
+                    
+                    if (rpcError) {
+                        console.warn('RPC 조회 실패:', rpcError);
+                        
+                        // 3차 시도: 현재 사용자 정보로 제한된 목록 생성
+                        const { data: { user: currentUser } } = await supabase.auth.getUser();
+                        userList = [{
+                            id: currentUser.id,
+                            email: currentUser.email,
+                            name: currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || '관리자'
+                        }];
+                        
+                        console.log('⚠️ 제한된 모드: 현재 사용자만 등록 가능');
+                    } else {
+                        userList = rpcUsers;
+                    }
+                } else {
+                    userList = authUsers.map(user => ({
+                        id: user.id,
+                        email: user.email,
+                        name: user.raw_user_meta_data?.name || user.email?.split('@')[0] || '사용자'
+                    }));
+                }
+
+                console.log(`✅ 관리자용 사용자 목록 조회 완료: ${userList.length}명`);
+                return userList;
+                
+            } catch (error) {
+                console.error('❌ 관리자 사용자 목록 조회 실패:', error);
+                throw error;
+            }
+        }
+
+        // 관리자용 수강 정보 조회 (RLS 우회)
+        async function getAdminEnrollments(courseId) {
+            try {
+                const isAdmin = await checkAdminPermission();
+                
+                if (!isAdmin) {
+                    throw new Error('관리자 권한이 필요합니다');
+                }
+
+                console.log('🔑 관리자 권한으로 수강 정보 조회 중...');
+
+                // 1차 시도: RPC 함수 사용
+                const { data: enrollments, error: rpcError } = await supabase
+                    .rpc('get_course_enrollments_admin', { 
+                        p_course_id: courseId 
+                    });
+
+                if (rpcError) {
+                    console.warn('RPC 수강 정보 조회 실패:', rpcError);
+                    
+                    // 2차 시도: 직접 조회 (제한적)
+                    const { data: directEnrollments, error: directError } = await supabase
+                        .from('enrollments')
+                        .select('*')
+                        .eq('course_id', courseId);
+                    
+                    if (directError) {
+                        console.warn('직접 조회도 실패:', directError);
+                        return []; // 빈 배열 반환
+                    }
+                    
+                    return directEnrollments || [];
+                }
+
+                return enrollments || [];
+                
+            } catch (error) {
+                console.error('❌ 관리자 수강 정보 조회 실패:', error);
+                return [];
+            }
+        }
+
+        // 관리자용 안전한 등록 처리
+        async function adminEnrollUser(userId, courseId) {
+            try {
+                const isAdmin = await checkAdminPermission();
+                
+                if (!isAdmin) {
+                    throw new Error('관리자 권한이 필요합니다');
+                }
+
+                console.log('🔑 관리자 권한으로 사용자 등록 처리 중...');
+
+                // 1차 시도: RPC 함수 사용
+                const { data: result, error: rpcError } = await supabase
+                    .rpc('admin_enroll_user', {
+                        p_user_id: userId,
+                        p_course_id: courseId
+                    });
+
+                if (rpcError) {
+                    console.warn('RPC 등록 실패:', rpcError);
+                    
+                    // 2차 시도: 직접 삽입
+                    const { error: insertError } = await supabase
+                        .from('enrollments')
+                        .insert({
+                            user_id: userId,
+                            course_id: courseId,
+                            status: 'enrolled',
+                            progress: 0,
+                            created_at: new Date().toISOString()
+                        });
+                    
+                    if (insertError) {
+                        throw new Error(`등록 실패: ${insertError.message}`);
+                    }
+                    
+                    console.log('✅ 직접 삽입으로 등록 완료');
+                } else {
+                    console.log('✅ RPC 함수로 등록 완료');
+                }
+
+                return true;
+                
+            } catch (error) {
+                console.error('❌ 관리자 등록 처리 실패:', error);
+                throw error;
+            }
         }
     </script>
 </body>

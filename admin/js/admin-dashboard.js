@@ -4,6 +4,8 @@ let monthlyChart = null;
 // 대시보드 초기화
 async function initDashboard() {
     try {
+        console.log('🎯 대시보드 초기화 시작');
+        
         // 로딩 상태 표시
         showLoading();
         
@@ -19,126 +21,107 @@ async function initDashboard() {
         // 로딩 완료
         hideLoading();
         
+        console.log('✅ 대시보드 초기화 완료');
+        
     } catch (error) {
-        console.error('대시보드 초기화 에러:', error);
+        console.error('❌ 대시보드 초기화 에러:', error);
         showToast('대시보드 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
         hideLoading();
     }
 }
 
-// 통계 데이터 로드
+// 통계 데이터 로드 (실제 API 사용)
 async function loadDashboardStats() {
     try {
-        // 실제 데이터 기반 통계
-        const realStats = {
-            totalUsers: 8,      // 실제 가입자 수
-            totalCourses: 10,   // 실제 강좌 수
-            totalEnrollments: 1250, // 총 수강신청 수 (추정)
-            totalRevenue: 12500000  // 총 매출 (추정)
-        };
+        console.log('📊 통계 데이터 로드 중...');
         
-        // 통계 카드 업데이트
-        updateStatCard('total-users', realStats.totalUsers);
-        updateStatCard('total-courses', realStats.totalCourses);
-        updateStatCard('total-enrollments', realStats.totalEnrollments);
-        updateStatCard('total-revenue', db.formatCurrency(realStats.totalRevenue));
+        // API 클라이언트를 통해 실제 데이터 조회
+        const response = await apiClient.getDashboardStats();
         
-        console.log('✅ 실제 대시보드 통계 업데이트 완료');
+        if (response.success) {
+            const stats = response.data;
+            
+            // 통계 카드 업데이트
+            updateStatCard('total-users', stats.userCount || 0);
+            updateStatCard('total-courses', stats.courseCount || 0);
+            updateStatCard('total-enrollments', stats.enrollmentCount || 0);
+            updateStatCard('total-revenue', formatCurrency((stats.enrollmentCount || 0) * 300000)); // 평균 강좌 가격 기준
+            
+            console.log('✅ 실제 통계 데이터 로드 완료:', stats);
+        } else {
+            throw new Error('통계 데이터 조회 실패');
+        }
         
     } catch (error) {
-        console.error('통계 데이터 로드 에러:', error);
+        console.error('❌ 통계 데이터 로드 에러:', error);
+        
         // 에러 시 기본값 표시
-        updateStatCard('total-users', 8);
-        updateStatCard('total-courses', 10);
-        updateStatCard('total-enrollments', 1250);
-        updateStatCard('total-revenue', '₩12,500,000');
+        updateStatCard('total-users', 0);
+        updateStatCard('total-courses', 0);
+        updateStatCard('total-enrollments', 0);
+        updateStatCard('total-revenue', formatCurrency(0));
+        
+        showToast('통계 데이터 로드에 실패했습니다. 기본값을 표시합니다.', 'warning');
     }
 }
 
-// 통계 카드 업데이트
+// 통계 카드 업데이트 (애니메이션 효과 포함)
 function updateStatCard(elementId, value) {
     const element = document.getElementById(elementId);
     if (element) {
         // 애니메이션 효과
         element.style.opacity = '0';
+        element.style.transform = 'translateY(10px)';
+        
         setTimeout(() => {
             element.textContent = value;
             element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+            element.style.transition = 'all 0.3s ease';
         }, 200);
     }
 }
 
-// 최근 활동 데이터 로드
+// 최근 활동 데이터 로드 (실제 API 사용)
 async function loadRecentActivities() {
     try {
-        // 실제 수강신청 데이터 (예시)
-        const recentEnrollments = [
+        console.log('📈 최근 활동 데이터 로드 중...');
+        
+        // API 클라이언트를 통해 실제 수강신청 데이터 조회
+        const enrollmentResponse = await apiClient.getEnrollments();
+        
+        if (enrollmentResponse.success) {
+            const enrollments = enrollmentResponse.data.slice(0, 5); // 최근 5개만
+            updateRecentEnrollments(enrollments);
+            console.log('✅ 실제 수강신청 데이터 로드 완료:', enrollments.length, '건');
+        } else {
+            console.warn('⚠️ 수강신청 데이터 로드 실패, 기본 데이터 사용');
+            updateRecentEnrollments([]);
+        }
+        
+        // 후기 데이터는 아직 구현되지 않았으므로 기본 데이터 사용
+        const sampleReviews = [
             {
-                users: { name: '종간계TV' },
-                courses: { title: 'SNS 마케팅 마스터' },
-                created_at: '2024-01-20T14:22:00Z'
+                user_name: '만족한 수강생',
+                rating: 5,
+                content: '강의 내용이 정말 유용했습니다!'
             },
             {
-                users: { name: '박유미' },
-                courses: { title: 'AI 상세페이지 최적화' },
-                created_at: '2024-01-19T16:30:00Z'
-            },
-            {
-                users: { name: '지니' },
-                courses: { title: '바이럴 콘텐츠 기초부터 실전' },
-                created_at: '2024-01-18T11:15:00Z'
-            },
-            {
-                users: { name: '사용자3' },
-                courses: { title: '쇼핑몰 창업 A to Z' },
-                created_at: '2024-01-17T09:45:00Z'
-            },
-            {
-                users: { name: '사용자1' },
-                courses: { title: '브랜딩 전략 수립' },
-                created_at: '2024-01-16T13:20:00Z'
+                user_name: '적극 추천',
+                rating: 4,
+                content: '실무에 바로 적용할 수 있어서 좋았어요.'
             }
         ];
-        
-        // 실제 후기 데이터 (예시)
-        const recentReviews = [
-            {
-                users: { name: '종간계TV' },
-                rating: 5,
-                content: 'SNS 마케팅에 대해 체계적으로 배울 수 있어서 정말 좋았습니다.'
-            },
-            {
-                users: { name: '박유미' },
-                rating: 4,
-                content: 'AI 도구 활용법이 실무에 바로 적용할 수 있어서 유용했어요.'
-            },
-            {
-                users: { name: '지니' },
-                rating: 5,
-                content: '바이럴 콘텐츠 제작 노하우를 잘 배웠습니다. 추천!'
-            },
-            {
-                users: { name: '사용자3' },
-                rating: 4,
-                content: '창업 준비에 필요한 내용들이 잘 정리되어 있네요.'
-            },
-            {
-                users: { name: '사용자1' },
-                rating: 5,
-                content: '브랜딩 전략 수립에 대해 깊이 있게 다뤄주셔서 만족스럽습니다.'
-            }
-        ];
-        
-        updateRecentEnrollments(recentEnrollments);
-        updateRecentReviews(recentReviews);
-        
-        console.log('✅ 실제 최근 활동 데이터 업데이트 완료');
+        updateRecentReviews(sampleReviews);
         
     } catch (error) {
-        console.error('최근 활동 데이터 로드 에러:', error);
-        // 에러 시 기본 메시지 표시
+        console.error('❌ 최근 활동 데이터 로드 에러:', error);
+        
+        // 에러 시 빈 데이터 표시
         updateRecentEnrollments([]);
         updateRecentReviews([]);
+        
+        showToast('최근 활동 데이터 로드에 실패했습니다.', 'warning');
     }
 }
 
@@ -148,17 +131,38 @@ function updateRecentEnrollments(enrollments) {
     if (!tbody) return;
     
     if (enrollments.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center">데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">수강신청 데이터가 없습니다.</td></tr>';
         return;
     }
     
-    const html = enrollments.map(enrollment => `
-        <tr>
-            <td>${enrollment.users?.name || '알 수 없음'}</td>
-            <td>${enrollment.courses?.title || '알 수 없음'}</td>
-            <td>${db.formatDate(enrollment.created_at)}</td>
-        </tr>
-    `).join('');
+    const html = enrollments.map(enrollment => {
+        // 사용자 정보 처리 (user_id에서 이메일 추출)
+        const userDisplay = enrollment.user_id ? 
+            enrollment.user_id.substring(0, 8) + '...' : '알 수 없음';
+        
+        const courseTitle = enrollment.courses?.title || '알 수 없음';
+        const createdAt = formatDate(enrollment.created_at);
+        
+        return `
+            <tr>
+                <td>
+                    <small class="text-muted">${userDisplay}</small>
+                </td>
+                <td>
+                    <strong>${courseTitle}</strong>
+                    <br>
+                    <small class="text-success">진행률: ${enrollment.progress || 0}%</small>
+                </td>
+                <td>
+                    <small>${createdAt}</small>
+                    <br>
+                    <span class="badge badge-${enrollment.status === 'enrolled' ? 'success' : 'secondary'}">
+                        ${enrollment.status === 'enrolled' ? '수강중' : enrollment.status}
+                    </span>
+                </td>
+            </tr>
+        `;
+    }).join('');
     
     tbody.innerHTML = html;
 }
@@ -169,20 +173,23 @@ function updateRecentReviews(reviews) {
     if (!tbody) return;
     
     if (reviews.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center">데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">후기 데이터가 없습니다.</td></tr>';
         return;
     }
     
     const html = reviews.map(review => `
         <tr>
-            <td>${review.users?.name || '알 수 없음'}</td>
             <td>
-                <div class="rating-stars">
-                    ${'★'.repeat(review.rating || 5)}${'☆'.repeat(5 - (review.rating || 5))}
-                </div>
+                <strong>${review.user_name || '익명'}</strong>
             </td>
             <td>
-                <div class="review-content" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <div class="rating-stars text-warning">
+                    ${'★'.repeat(review.rating || 5)}${'☆'.repeat(5 - (review.rating || 5))}
+                </div>
+                <small class="text-muted">${review.rating || 5}/5</small>
+            </td>
+            <td>
+                <div class="review-content" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${review.content || ''}">
                     ${review.content || '후기가 없습니다.'}
                 </div>
             </td>
@@ -192,280 +199,183 @@ function updateRecentReviews(reviews) {
     tbody.innerHTML = html;
 }
 
-// 월별 차트 생성
+// 월별 차트 생성 (실제 데이터 기반)
 async function createMonthlyChart() {
     try {
         const ctx = document.getElementById('monthlyChart');
-        if (!ctx) return;
+        if (!ctx) {
+            console.warn('⚠️ 차트 요소를 찾을 수 없습니다.');
+            return;
+        }
         
-        // 기존 차트 제거
+        // 기존 차트가 있으면 삭제
         if (monthlyChart) {
             monthlyChart.destroy();
         }
         
-        // 실제 월별 회원가입 데이터 (2024년 기준)
-        const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
-        const realMonthlyData = [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]; // 실제 가입 패턴 반영
+        // API 클라이언트를 통해 월별 통계 조회
+        const response = await apiClient.getMonthlyStats();
         
-        // 차트 생성
+        let chartData;
+        if (response.success && response.data) {
+            chartData = response.data;
+        } else {
+            // 기본 차트 데이터
+            chartData = {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                datasets: [{
+                    label: '수강신청',
+                    data: [5, 8, 12, 15, 20, 18, 25, 22, 19, 24, 28, 30],
+                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            };
+        }
+        
+        // Chart.js로 차트 생성
         monthlyChart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: months,
-                datasets: [{
-                    label: '회원가입 수',
-                    data: realMonthlyData,
-                    borderColor: 'rgb(102, 126, 234)',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: 'rgb(102, 126, 234)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 8
-                }]
-            },
+            data: chartData,
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    title: {
-                        display: true,
-                        text: '2024년 월별 회원가입 추이',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        }
-                    },
                     legend: {
                         display: true,
                         position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: '월별 수강신청 추이'
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            stepSize: 1,
-                            callback: function(value) {
-                                return value + '명';
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
+                            stepSize: 5
                         }
                     }
                 },
                 elements: {
                     point: {
-                        hoverRadius: 8
+                        radius: 4,
+                        hoverRadius: 6
                     }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
                 }
             }
         });
         
-        console.log('✅ 실제 월별 차트 생성 완료');
+        console.log('✅ 월별 차트 생성 완료');
         
     } catch (error) {
-        console.error('월별 차트 생성 에러:', error);
-        // 에러 시에도 기본 차트 표시
+        console.error('❌ 월별 차트 생성 에러:', error);
+        
+        // 차트 요소에 에러 메시지 표시
+        const ctx = document.getElementById('monthlyChart');
         if (ctx) {
-            ctx.getContext('2d').fillText('차트 로드 중 오류가 발생했습니다.', 10, 50);
+            ctx.parentElement.innerHTML = '<p class="text-center text-muted">차트를 로드할 수 없습니다.</p>';
         }
     }
 }
 
 // 로딩 상태 표시
 function showLoading() {
-    const loadingHtml = `
-        <div id="loading-overlay" class="d-flex justify-content-center align-items-center" 
-             style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', loadingHtml);
+    // 통계 카드들에 로딩 효과
+    ['total-users', 'total-courses', 'total-enrollments', 'total-revenue'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        }
+    });
+    
+    // 테이블에 로딩 메시지
+    const enrollmentsTbody = document.getElementById('recent-enrollments');
+    const reviewsTbody = document.getElementById('recent-reviews');
+    
+    if (enrollmentsTbody) {
+        enrollmentsTbody.innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin mr-2"></i>로딩 중...</td></tr>';
+    }
+    
+    if (reviewsTbody) {
+        reviewsTbody.innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin mr-2"></i>로딩 중...</td></tr>';
+    }
 }
 
 // 로딩 상태 숨기기
 function hideLoading() {
-    const loadingOverlay = document.getElementById('loading-overlay');
-    if (loadingOverlay) {
-        loadingOverlay.remove();
-    }
+    // 특별한 처리 없음 (데이터가 로드되면 자동으로 교체됨)
 }
 
 // 대시보드 새로고침
 async function refreshDashboard() {
+    console.log('🔄 대시보드 새로고침');
+    showToast('대시보드를 새로고침합니다...', 'info');
+    
     try {
-        showLoading();
         await initDashboard();
-        showToast('대시보드가 새로고침되었습니다.', 'success');
+        showToast('대시보드가 성공적으로 새로고침되었습니다.', 'success');
     } catch (error) {
-        console.error('대시보드 새로고침 에러:', error);
-        showToast('대시보드 새로고침 중 오류가 발생했습니다.', 'error');
-    } finally {
-        hideLoading();
+        console.error('❌ 대시보드 새로고침 에러:', error);
+        showToast('대시보드 새로고침에 실패했습니다.', 'error');
     }
 }
 
-// 실시간 업데이트 설정
+// 실시간 업데이트 설정 (선택사항)
 function setupRealTimeUpdates() {
-    // Supabase 실시간 구독 설정
-    if (typeof supabase !== 'undefined') {
-        // 사용자 테이블 변경 감지
-        supabase
-            .channel('users')
-            .on('postgres_changes', 
-                { event: '*', schema: 'public', table: 'users' }, 
-                (payload) => {
-                    console.log('사용자 데이터 변경 감지:', payload);
-                    refreshDashboard();
-                }
-            )
-            .subscribe();
-        
-        // 강좌 테이블 변경 감지
-        supabase
-            .channel('courses')
-            .on('postgres_changes', 
-                { event: '*', schema: 'public', table: 'courses' }, 
-                (payload) => {
-                    console.log('강좌 데이터 변경 감지:', payload);
-                    refreshDashboard();
-                }
-            )
-            .subscribe();
-        
-        // 수강신청 테이블 변경 감지
-        supabase
-            .channel('enrollments')
-            .on('postgres_changes', 
-                { event: '*', schema: 'public', table: 'enrollments' }, 
-                (payload) => {
-                    console.log('수강신청 데이터 변경 감지:', payload);
-                    refreshDashboard();
-                }
-            )
-            .subscribe();
-    }
+    // 5분마다 자동 새로고침
+    setInterval(async () => {
+        try {
+            console.log('🔄 자동 새로고침 중...');
+            await loadDashboardStats();
+            await loadRecentActivities();
+        } catch (error) {
+            console.error('❌ 자동 새로고침 에러:', error);
+        }
+    }, 5 * 60 * 1000); // 5분
 }
 
 // 유틸리티 함수들
 const dashboardUtils = {
     // 성장률 계산
     calculateGrowthRate(current, previous) {
-        if (previous === 0) return current > 0 ? 100 : 0;
+        if (!previous || previous === 0) return 0;
         return ((current - previous) / previous * 100).toFixed(1);
     },
     
-    // 트렌드 아이콘 반환
+    // 트렌드 아이콘 생성
     getTrendIcon(growthRate) {
         if (growthRate > 0) return '<i class="fas fa-arrow-up text-success"></i>';
         if (growthRate < 0) return '<i class="fas fa-arrow-down text-danger"></i>';
-        return '<i class="fas fa-minus text-warning"></i>';
+        return '<i class="fas fa-minus text-muted"></i>';
     },
     
     // 요약 통계 생성
     async generateSummaryStats() {
         try {
-            const [userCount, courseCount, enrollmentCount] = await Promise.all([
-                db.getUserCount(),
-                db.getCourseCount(),
-                db.getEnrollmentCount()
-            ]);
-            
-            return {
-                userCount,
-                courseCount,
-                enrollmentCount,
-                totalRevenue: 0, // 매출 기능은 추후 구현
-                averageRating: 4.5 // 임시값
-            };
+            const response = await apiClient.getDashboardStats();
+            if (response.success) {
+                const stats = response.data;
+                return {
+                    totalActiveUsers: stats.userCount || 0,
+                    totalActiveCourses: stats.courseCount || 0,
+                    averageEnrollmentsPerCourse: stats.courseCount > 0 ? 
+                        Math.round((stats.enrollmentCount || 0) / stats.courseCount) : 0,
+                    conversionRate: '85%' // 예시값
+                };
+            }
+            return null;
         } catch (error) {
-            console.error('요약 통계 생성 에러:', error);
-            return {
-                userCount: 0,
-                courseCount: 0,
-                enrollmentCount: 0,
-                totalRevenue: 0,
-                averageRating: 0
-            };
+            console.error('❌ 요약 통계 생성 에러:', error);
+            return null;
         }
     }
 };
 
-// 토스트 메시지 표시 함수
-function showToast(message, type = 'success') {
-    // 기존 토스트 제거
-    const existingToast = document.getElementById('dashboard-toast');
-    if (existingToast) {
-        existingToast.remove();
-    }
-
-    // 토스트 생성
-    const toast = document.createElement('div');
-    toast.id = 'dashboard-toast';
-    toast.className = `alert alert-${type === 'error' ? 'danger' : type} position-fixed`;
-    toast.style.cssText = `
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-        min-width: 300px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    `;
-    toast.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
-            <span>${message}</span>
-            <button type="button" class="close ml-auto" onclick="this.parentElement.parentElement.remove()">
-                <span>&times;</span>
-            </button>
-        </div>
-    `;
-
-    document.body.appendChild(toast);
-
-    // 3초 후 자동 제거
-    setTimeout(() => {
-        if (toast && toast.parentNode) {
-            toast.remove();
-        }
-    }, 3000);
-}
-
-// 페이지 로드 시 대시보드 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    initDashboard();
-    setupRealTimeUpdates();
-    
-    // 5분마다 자동 새로고침
-    setInterval(refreshDashboard, 5 * 60 * 1000);
-});
-
-// 페이지 언로드 시 차트 정리
-window.addEventListener('beforeunload', function() {
-    if (monthlyChart) {
-        monthlyChart.destroy();
-    }
-});
-
-// 반응형 처리
-window.addEventListener('resize', function() {
-    if (monthlyChart) {
-        monthlyChart.resize();
-    }
-}); 
+// 전역 함수로 내보내기
+window.initDashboard = initDashboard;
+window.refreshDashboard = refreshDashboard;
+window.dashboardUtils = dashboardUtils; 

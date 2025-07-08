@@ -73,14 +73,12 @@ async function createCoursesTable(supabase) {
                     category_id: 'development',
                     price: 299000,
                     rating: 4.8,
-                    students: 1250,
+                    total_students: 1250,
                     status: 'published',
-                    thumbnail: 'images/pd1.jpg',
-                    duration: 60,
-                    lessons_count: 24,
-                    description: '초보자를 위한 웹 개발 완벽 가이드. HTML, CSS, JavaScript부터 React까지 체계적으로 배우세요.',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
+                    thumbnail_url: 'images/pd1.jpg',
+                    is_free: false,
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+                    created_at: new Date().toISOString()
                 },
                 {
                     title: '디지털 마케팅 마스터',
@@ -88,14 +86,12 @@ async function createCoursesTable(supabase) {
                     category_id: 'marketing',
                     price: 249000,
                     rating: 4.6,
-                    students: 890,
+                    total_students: 890,
                     status: 'published',
-                    thumbnail: 'images/pd2.jpg',
-                    duration: 45,
-                    lessons_count: 18,
-                    description: 'SNS 마케팅부터 구글 광고까지, 실전 디지털 마케팅 전략을 배워보세요.',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
+                    thumbnail_url: 'images/pd2.jpg',
+                    is_free: false,
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
+                    created_at: new Date().toISOString()
                 },
                 {
                     title: '창업 실무 완전정복',
@@ -103,14 +99,12 @@ async function createCoursesTable(supabase) {
                     category_id: 'business',
                     price: 399000,
                     rating: 4.9,
-                    students: 567,
+                    total_students: 567,
                     status: 'published',
-                    thumbnail: 'images/pd3.jpg',
-                    duration: 90,
-                    lessons_count: 32,
-                    description: '아이디어부터 사업자등록, 마케팅까지. 성공 창업을 위한 모든 것을 담았습니다.',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
+                    thumbnail_url: 'images/pd3.jpg',
+                    is_free: false,
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+                    created_at: new Date().toISOString()
                 },
                 {
                     title: 'AI 비즈니스 활용법',
@@ -118,14 +112,12 @@ async function createCoursesTable(supabase) {
                     category_id: 'technology',
                     price: 349000,
                     rating: 4.7,
-                    students: 723,
+                    total_students: 723,
                     status: 'published',
-                    thumbnail: 'images/pd4.jpg',
-                    duration: 30,
-                    lessons_count: 15,
-                    description: 'ChatGPT, 미드저니 등 AI 도구를 활용한 비즈니스 혁신 전략을 배워보세요.',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
+                    thumbnail_url: 'images/pd4.jpg',
+                    is_free: false,
+                    video_url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
+                    created_at: new Date().toISOString()
                 },
                 {
                     title: '브랜딩 전략 설계',
@@ -133,14 +125,12 @@ async function createCoursesTable(supabase) {
                     category_id: 'branding',
                     price: 199000,
                     rating: 4.5,
-                    students: 456,
+                    total_students: 456,
                     status: 'published',
-                    thumbnail: 'images/pd11.jpg',
-                    duration: 35,
-                    lessons_count: 14,
-                    description: '강력한 브랜드 아이덴티티 구축부터 고객 충성도 향상까지의 전략을 학습하세요.',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
+                    thumbnail_url: 'images/pd11.jpg',
+                    is_free: false,
+                    video_url: null,
+                    created_at: new Date().toISOString()
                 }
             ];
 
@@ -331,7 +321,7 @@ async function loadUserCourses(userId) {
 
         console.log('✅ Supabase 클라이언트 확인됨');
 
-        // 수강신청 정보 가져오기
+        // 수강신청 정보 가져오기 (실제 데이터베이스 구조에 맞춤)
         const { data: enrollments, error } = await supabase
             .from('enrollments')
             .select(`
@@ -341,13 +331,14 @@ async function loadUserCourses(userId) {
                     title,
                     instructor_name,
                     price,
-                    thumbnail,
-                    description,
-                    duration,
-                    lessons_count,
+                    thumbnail_url,
                     category_id,
                     rating,
-                    students
+                    total_students,
+                    status,
+                    video_url,
+                    is_free,
+                    created_at
                 )
             `)
             .eq('user_id', userId)
@@ -355,6 +346,12 @@ async function loadUserCourses(userId) {
 
         if (error) {
             console.error('❌ 수강 정보 쿼리 오류:', error);
+            console.error('📝 에러 세부정보:', {
+                code: error.code,
+                message: error.message,
+                details: error.details,
+                hint: error.hint
+            });
             throw new Error(`수강 정보를 불러오는 중 오류가 발생했습니다: ${error.message}`);
         }
 
@@ -403,10 +400,17 @@ async function renderUserCourses(enrollments) {
     
     enrollments.forEach(enrollment => {
         const course = enrollment.courses;
-        if (!course) return;
+        if (!course) {
+            console.warn('⚠️ 강좌 정보가 없는 수강신청 발견:', enrollment);
+            return;
+        }
         
-        const courseCard = createCourseCard(course, enrollment);
-        coursesGrid.appendChild(courseCard);
+        try {
+            const courseCard = createCourseCard(course, enrollment);
+            coursesGrid.appendChild(courseCard);
+        } catch (cardError) {
+            console.error('❌ 강좌 카드 생성 실패:', cardError, { course, enrollment });
+        }
     });
     
     // 필터 이벤트 재등록
@@ -426,16 +430,16 @@ function createCourseCard(course, enrollment) {
     const statusBadge = isCompleted ? '수료' : '진행 중';
     const statusClass = isCompleted ? 'completed' : 'progress';
     
-    // 남은 기간 계산
+    // 남은 기간 계산 (기본 90일 수강 기간)
     const enrollDate = new Date(enrollment.created_at);
     const now = new Date();
-    const courseDuration = course.duration || 60; // 기본 60일
+    const courseDuration = 90; // 기본 90일 수강 기간
     const endDate = new Date(enrollDate.getTime() + courseDuration * 24 * 60 * 60 * 1000);
     const remainingDays = Math.ceil((endDate - now) / (24 * 60 * 60 * 1000));
     
     div.innerHTML = `
         <div class="course-thumbnail">
-            <img src="${course.thumbnail || 'images/pd1.jpg'}" alt="${course.title}">
+            <img src="${course.thumbnail_url || 'images/pd1.jpg'}" alt="${course.title}">
             <span class="status-badge ${statusClass}">${statusBadge}</span>
         </div>
         <div class="course-info">
@@ -451,7 +455,7 @@ function createCourseCard(course, enrollment) {
                 ${isCompleted ? 
                     `<span class="completion-date">${formatDate(enrollment.completed_at || enrollment.created_at)} 수료</span>` :
                     `<span class="remaining-days">D-${remainingDays > 0 ? remainingDays : 0}</span>
-                     <span class="total-lessons">${course.lessons_count || 10}강 중 ${Math.ceil((progress/100) * (course.lessons_count || 10))}강 수강</span>`
+                     <span class="course-price">${course.is_free ? '무료 강좌' : Number(course.price || 0).toLocaleString() + '원'}</span>`
                 }
             </div>
             <button class="enter-classroom-btn" data-course-id="${course.id}">
